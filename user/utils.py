@@ -9,7 +9,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-def send_email_verify(request, user):
+def send_email_verification(request, user):
     try:
         current_site = get_current_site(request)
         context = {

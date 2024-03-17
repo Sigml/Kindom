@@ -13,8 +13,14 @@
             {{ form.last_name }}
             <label>Data urodzenia</label>
             {{ form.date_of_birth }}
+            <label>Hasło</label>
+            {{ form.password }}
+            <label>Powtórz haslo</label>
+            {{ form.password_confirmation }}
             <button type='submit'>Zarejestruj się</button>
+            {{form.errors}}
         </form>
         {{message}}
+        
     </div>
 {% endblock %}
