@@ -35,11 +35,11 @@ def user_profile_picture_path(instance, filename):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
-    username = models.CharField(max_lenght=32, unique=True)
-    first_name = models.CharField(max_lenght=32)
-    last_name = models.CharField(max_lenght=32)
+    username = models.CharField(max_length=32, unique=True)
+    first_name = models.CharField(max_length=32)
+    last_name = models.CharField(max_length=32)
     date_of_birth = models.DateField()
-    email = models.CharField(max_lenght=64)
+    email = models.EmailField(max_length=64)
     profile_picture = models.ImageField(upload_to=user_profile_picture_path, null=True, blank=True)
     description = models.TextField(max_length=200, null=True)
     
