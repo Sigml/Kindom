@@ -42,5 +42,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=64)
     profile_picture = models.ImageField(upload_to=user_profile_picture_path, null=True, blank=True)
     description = models.TextField(max_length=200, null=True)
+    verification_token = models.CharField(max_length=100, null=True, blank=True)
+    email_verify = models.BooleanField(default=False)
+    
     
     

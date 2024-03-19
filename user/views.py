@@ -9,6 +9,8 @@ from django.views import View
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponseServerError
+from django.core.mail import send_mail
+from django.urls import reverse_lazy
 
 
 class RegisterUserView(View):
@@ -40,20 +42,32 @@ class RegisterUserView(View):
                 message = "Coś poszło nie tak, spróbuj ponownie później"
                 return render(request, 'registration.html', {'message': message})
             
-            
+
 class EmailVerifyView(View):
     def get(self, request, uidb64, token):
         try:
             user = self.get_user(uidb64)
+            print(f"User: {user}, Token: {token}")
 
-            if user is not None and token_generator.check_token(user, token):
-                user.email_verify = True
-                login(request, user)
-                return redirect('main')
+            if user is not None:
+                is_token_valid = token_generator.check_token(user, token)
+                print(f"Is token valid: {is_token_valid}")
+
+                if is_token_valid:
+                    user.email_verify = True
+                    user.save()
+                    login(request, user)
+                    
+                    print(f"email_verify status after saving: {user.email_verify}")
+                    
+                    return redirect('login')
         except Exception as e:
-            print(f"Error sending email: {e}")
+            print(f"Błąd weryfikacji emaila: {e}")
+            return HttpResponseServerError("Wystąpił błąd podczas weryfikacji emaila.")
+        
         return redirect('invalid_verify')
-    
+
+
     @staticmethod
     def get_user(uidb64):
         try:

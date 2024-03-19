@@ -18,9 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from admin_panel import urls as admin_panel_urls
 from user import urls as user_urls
+from admin_panel.views import main
+# from user.views import EmailVerifyView
+# from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(admin_panel_urls)),
+    path('', main, name = 'main'),
+    path('admin_panel/', include(admin_panel_urls)),
+    path('user/', include(user_urls)),
 
 ]
