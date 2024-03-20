@@ -3,14 +3,15 @@ from .models import CustomUser
 from django.contrib.auth.tokens import default_token_generator as token_generator, default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from .utils import send_email_verification, send_email_reset_password
-from .forms import RegisterUserForm
 from django.contrib.auth import login, logout
 from django.views import View
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponseServerError
 from django.core.mail import send_mail
+from django.contrib import messages
 from django.urls import reverse_lazy
+from .forms import RegisterUserForm, LoginUserForm
 
 
 class RegisterUserView(View):
@@ -60,7 +61,7 @@ class EmailVerifyView(View):
                     
                     print(f"email_verify status after saving: {user.email_verify}")
                     
-                    return redirect('login')
+                    return redirect('main')
         except Exception as e:
             print(f"Błąd weryfikacji emaila: {e}")
             return HttpResponseServerError("Wystąpił błąd podczas weryfikacji emaila.")
@@ -86,14 +87,45 @@ class EmailVerifyView(View):
 
 
 class LoginUserView(View):
-    def get(self, request):
-        return render(request, 'login.html')
+    form_class = LoginUserForm
+    template_name = 'login.html'
+    success_url = '/'
+    
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        context = {
+            'form':form
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *agrs, **kwargs):
+        form = self.form_class(request.POST)
+        
+        context = {
+            'form':form
+        }
+        
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            
+            user = CustomUser.objects.authenticate(request, email=email, password=password)
+            
+            if user is not None:
+                login(request, user)
+                return redirect (self.success_url)
+            else:
+                form.add_error(None, 'Nie prawidłowy email lub hasło')
+                messages.error(request, 'Nie prawidłowy email lub hasło')
+                
+        return render(request, self.template_name, context)
 
 
 class LogoutUserView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('main')
+    
 
 class UserInfoView(View):
     pass
