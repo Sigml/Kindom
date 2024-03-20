@@ -1,6 +1,26 @@
-{% extends "base.html" %}
-{% block content %}
+{%extends 'base.html'%}
+{%block content%}
     <div class='login'>
-        <h3> Nie posiadasz konta <a href = {% url 'register' %}> zarejestruj się </a>
+        <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <label>Email:</label>
+            {{ form.email }}
+            <br>
+            <label>Hasło:</label>
+            {{ form.password }}
+            {% if form.errors %}
+                <div class="error-message">
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            {{ error }}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <br>
+            <button type="submit">Załoguj</button>
+            <h2>Nie masz konta <a href="{% url 'registration' %}">Zarejestruj się</a> </h2>
+            {% comment %} <h2> <a href="{% url 'reset_password' %}">Nie pamiętasz hasła?</a> </h2> {% endcomment %}
+        </form>
     </div>
-{% endblock %}
+    {% endblock %}
