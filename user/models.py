@@ -39,7 +39,7 @@ class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=32)
     last_name = models.CharField(max_length=32)
     date_of_birth = models.DateField(null=True)
-    email = models.EmailField(max_length=64)
+    email = models.EmailField(max_length=64,unique=True)
     profile_picture = models.ImageField(upload_to=user_profile_picture_path, null=True, blank=True)
     description = models.TextField(max_length=200, null=True)
     verification_token = models.CharField(max_length=100, null=True, blank=True)
