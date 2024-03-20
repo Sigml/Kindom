@@ -60,9 +60,9 @@ class RegisterUserForm(forms.ModelForm):
 
 class LoginUserForm(forms.Form):
     email = forms.CharField(widget=forms.TextInput(attrs={
-        'class':'form_control',
+        'class':'form-control',
         'placeholder':'email'
-    })),
+    }))
     password = forms.CharField(widget=forms.PasswordInput(attrs={
         'class':'form-control',
         'placeholder':'hasło'
