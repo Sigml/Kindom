@@ -125,3 +125,50 @@ a:hover {
     font-size: 24px;
     margin-bottom: 20px;
 }
+
+.update_user_form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #111;
+    border-radius: 10px;
+}
+
+.update_user_form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.update_user_form label {
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.update_user_form input[type="text"],
+.update_user_form textarea {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
+
+.update_user_form input[type="submit"] {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff0000;
+    color: #fff;
+    cursor: pointer;
+}
+
+.update_user_form input[type="submit"]:hover {
+    background-color: #ff6666;
+}
+
+.update_user_form input[type="text"]:focus,
+.update_user_form textarea:focus {
+    outline: none;
+    border-color: #ff0000;
+}

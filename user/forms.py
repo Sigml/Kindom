@@ -84,3 +84,37 @@ class ResetPasswordForm(forms.Form):
         'class': 'form-control',
         'placeholder': 'hasło'
     }))
+
+    def clean(self):
+        cleaned_data=super().clean()
+        password= cleaned_data.get('password')
+        password_confirmation = cleaned_data.get('password_confirmation')
+        
+        if password and password_confirmation and password != password_confirmation:
+            raise forms.ValidationError('Podane hasła róznią się')
+        
+        return cleaned_data
+    
+
+class UserInfoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'last_name', 'profile_picture', 'description']
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Imię'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Nazwiśko'
+            }),
+            'profile_picture': forms.ClearableFileInput(attrs={
+                'class':'form-control',
+                'plceholder': 'Zdięcie'
+            }),
+            'description':forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'O sobię'
+            })
+        }

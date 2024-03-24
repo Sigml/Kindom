@@ -5,6 +5,7 @@ from django.utils.http import urlsafe_base64_decode
 from .utils import send_email_verification, send_email_reset_password
 from django.contrib.auth import login, logout
 from django.views import View
+from django.views.generic import UpdateView
 from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponseServerError
@@ -12,7 +13,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.urls import reverse_lazy
 from django.db.models import Q
-from .forms import RegisterUserForm, LoginUserForm, SearchUserForm, ResetPasswordForm
+from .forms import RegisterUserForm, LoginUserForm, SearchUserForm, ResetPasswordForm, UserInfoUpdateForm
 
 
 class RegisterUserView(View):
@@ -123,11 +124,6 @@ class LogoutUserView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
         return redirect('main')
-    
-
-class UserInfoView(View):
-    def get(self, request, pk):
-        return 
 
 
 class SearchUserToResetPasswordView(View):
@@ -217,3 +213,38 @@ class ResetUserPasswordView(View):
             
         else:
             return redirect ('invalid_verify')
+        
+
+class UserInfoView(View):
+    def get (self, request):
+        if request.user.is_authenticated:
+            user_info = {
+                'profile_picture': request.user.profile_picture,
+                'username': request.user.username,
+                'email': request.user.email,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'date_of_birth': request.user.date_of_birth,
+                'description': request.user.description,
+            }
+
+            return render(request, 'user_info.html', {'form': user_info})
+
+        else:
+            return redirect('login')
+        
+
+class UserUpdateInfoView(UpdateView):
+    model = CustomUser
+    form_class = UserInfoUpdateForm
+    template_name = 'update_user_info.html'
+    success_url = reverse_lazy('user_info')
+    
+    def get_object(self, queryset=None):
+        return self.request.user
+    
+    def form_valid(self, form):
+        profile_picture = self.request.FILES.get('profile_picture')
+        if profile_picture:
+            form.instance.profile_picture = profile_picture
+        return super().form_valid(form)
