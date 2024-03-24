@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class='register'>
+        <form action='' method='post'>
+            {% csrf_token %}
+            <label>Podaj email albo nickname</label>
+            {{ form.username }}
+            <button type="submit">Wyszukaj</button>
+        </form>
+    </div>
+
+{% endblock %}
