@@ -9,7 +9,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         'profile_picture', 'email_verify','verification_token'
     )
     search_fields = (
-        'username', 'first_name', 'last_name', 'email', 'number_phone', 'password', 'email_verify','verification_token'
+        'username', 'first_name', 'last_name', 'email', 'number_phone', 'password', 'email_verify','verification_token', 'profile_picture'
     )
 
 
