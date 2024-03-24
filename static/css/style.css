@@ -114,3 +114,14 @@ a:hover {
 .register button[type="submit"]:hover {
     background-color: #ff6666; 
 }
+
+.email-check-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.email-check-container h1 {
+    color: red;
+    font-size: 24px;
+    margin-bottom: 20px;
+}

@@ -37,6 +37,10 @@ def send_email_reset_password(request, user):
             'token': token_generator.make_token(user)
         }
         message = render_to_string('verify_email_reset_password.html', context=context)
+        
+        user.verification_token = context['token']
+        user.save()
+        
         email = EmailMessage('Verify email', message, to=[user.email])
         email.send()
     except Exception as e:

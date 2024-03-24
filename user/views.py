@@ -11,7 +11,8 @@ from django.http import HttpResponseServerError
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.urls import reverse_lazy
-from .forms import RegisterUserForm, LoginUserForm
+from django.db.models import Q
+from .forms import RegisterUserForm, LoginUserForm, SearchUserForm, ResetPasswordForm
 
 
 class RegisterUserView(View):
@@ -52,14 +53,11 @@ class EmailVerifyView(View):
 
             if user is not None:
                 is_token_valid = token_generator.check_token(user, token)
-                print(f"Is token valid: {is_token_valid}")
 
                 if is_token_valid:
                     user.email_verify = True
                     user.save()
                     login(request, user)
-                    
-                    print(f"email_verify status after saving: {user.email_verify}")
                     
                     return redirect('main')
         except Exception as e:
@@ -128,4 +126,94 @@ class LogoutUserView(View):
     
 
 class UserInfoView(View):
-    pass
+    def get(self, request, pk):
+        return 
+
+
+class SearchUserToResetPasswordView(View):
+    form_class = SearchUserForm
+    template_name = 'search_user.html'
+    success_url = '/'
+    
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        
+        context = {
+            'form':form
+        }     
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, *agrs, **kwargs):
+        form = self.form_class(request.POST)
+        
+        context = {
+            'form':form
+        }
+        
+        if form.is_valid():
+            search_user = form.cleaned_data['username']      
+            user =  CustomUser.objects.filter(Q(email=search_user) | Q(username=search_user)).first()
+            
+            if user:
+                send_email_reset_password(request, user)
+                return render(request, 'confirm_email.html')
+            else:
+                return HttpResponseServerError('Nie znaleziono użytkownika')
+            
+        return render(request, self.template_name, context)
+                
+    
+class ResetUserPasswordView(View):
+    form_class = ResetPasswordForm
+    template_name = 'reset_password.html'
+    success_url = '/'
+    
+    def get(self, request, uid64, token):
+        user = self.get_user(uid64)
+        form = self.form_class
+        
+        context = {
+            'form':form
+        }
+        
+        if user is not None and token_generator.check_token(user, token):
+            user.email_verify = True
+            
+            return render(request, self.template_name, context)
+        
+    @staticmethod
+    def get_user(uidb64):
+        try:
+            uid = str(urlsafe_base64_decode(uidb64), 'utf-8')
+            user = CustomUser._default_manager.get(pk=uid)
+        except (
+            TypeError,
+            ValueError,
+            OverflowError,
+            CustomUser.DoesNotExist,
+            ValidationError,
+        ):
+            user = None
+        return user
+    
+    def post(self, request, uid64, token):
+        user = self.get_user(uid64)
+        form = self.form_class(request.POST)
+        
+        if user is not None and token_generator.check_token(user, token):
+            user.email_verify = True
+            
+            if form.is_valid():
+                cleaned_data = form.cleaned_data
+                user.set_password(cleaned_data['password'])
+                user.save()
+                login(request, user)
+                
+                return redirect('main')
+            
+            else:
+                return render(request, 'reset_password.html', {'form':form})
+            
+        else:
+            return redirect ('invalid_verify')

@@ -67,3 +67,20 @@ class LoginUserForm(forms.Form):
         'class':'form-control',
         'placeholder':'hasło'
     }))
+    
+    
+class SearchUserForm(forms.Form):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class':'form-control',
+    }))
+    
+    
+class ResetPasswordForm(forms.Form):
+    password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'hasło'
+    }))
+    password_confirmation = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'hasło'
+    }))
