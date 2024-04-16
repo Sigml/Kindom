@@ -19,6 +19,8 @@ from django.urls import path, include
 from admin_panel import urls as admin_panel_urls
 from user import urls as user_urls
 from admin_panel.views import main
+from django.conf import settings
+from django.conf.urls.static import static
 # from user.views import EmailVerifyView
 # from django.views.generic import TemplateView
 
@@ -29,3 +31,7 @@ urlpatterns = [
     path('user/', include(user_urls)),
 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

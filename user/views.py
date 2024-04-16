@@ -247,4 +247,13 @@ class UserUpdateInfoView(UpdateView):
         profile_picture = self.request.FILES.get('profile_picture')
         if profile_picture:
             form.instance.profile_picture = profile_picture
-        return super().form_valid(form)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            user = form.instance
+            if 'password' in cleaned_data:
+                user.set_password(cleaned_data['password'])
+                user.save()
+                login(self.request, user)
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
