@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class='update_user_form'>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <label>Imię</label>
         {{ form.first_name }}
@@ -12,6 +12,12 @@
         <label>Zdięcie</label>
         {{ form.profile_picture }}
         <input type="submit" value="Zaktualizuj">
+        <label>Podaj nowe haslo</label>
+        {{ form.password }}
+        <label>Powtorż haslo</label>
+        {{ form.password_confirmation }}
+        <input type="submit" value="Zmień hasło">
+
     </form>
 </div>
 

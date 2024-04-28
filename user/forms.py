@@ -97,9 +97,14 @@ class ResetPasswordForm(forms.Form):
     
 
 class UserInfoUpdateForm(forms.ModelForm):
+    password_confirmation = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class':'form-control',
+        'placeholder':'Powtórz hasło'
+    }))
+        
     class Meta:
         model = CustomUser
-        fields = ['first_name', 'last_name', 'profile_picture', 'description']
+        fields = ['first_name', 'last_name', 'profile_picture', 'description', 'password', 'password_confirmation',]
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'class':'form-control',
@@ -111,10 +116,16 @@ class UserInfoUpdateForm(forms.ModelForm):
             }),
             'profile_picture': forms.ClearableFileInput(attrs={
                 'class':'form-control',
-                'plceholder': 'Zdięcie'
+                'placeholder': 'Zdięcie'
             }),
             'description':forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'O sobię'
-            })
+            }),
+            'password': forms.PasswordInput(attrs={
+                'class':'form-control',
+                'placeholder':'password'
+            }),
         }
+        
+        
