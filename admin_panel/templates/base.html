@@ -23,12 +23,12 @@
                 <a href="{% url 'login' %}">Zaloguj</a>
             {% endif %}
         </div>
-        {% if user.is_staff %}
-            <div class="staff_link">
-
-            </div>
-        {% endif %}
     </header>
+    {% if user.is_staff %}
+    <div class="staff_link">
+        <a href="{% url 'crate_age' %}">Dodaj nową epoke</a>
+    </div>
+{% endif %}
     <div class='content-container'>
         {% block content %}
         {% endblock %}

@@ -29,7 +29,6 @@ urlpatterns = [
     path('', main, name = 'main'),
     path('admin_panel/', include(admin_panel_urls)),
     path('user/', include(user_urls)),
-
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class='admin_view'>
+    <h1>Wszystkie epoki</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa epoki</th>
+                <th>Początek epoki</th>
+                <th>Koniec epoki</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for age in age_all %}
+            <tr>
+                <td>{{ age.name }}</td>
+                <td>{{ age.start_of_era|date:"Y-m-d" }}</td>
+                <td>{{ age.end_of_era|date:"Y-m-d" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

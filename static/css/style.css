@@ -1,5 +1,5 @@
 body {
-    background-color: #000;
+    background-color: #fff;
     color: #fff;
     font-family: Arial, sans-serif;
     margin: 0;
@@ -9,16 +9,16 @@ body {
 }
 
 a {
-    color: red; 
+    color: #fff; 
     text-decoration: none;
 }
 
 a:hover {
-    color: #ff9999; 
+    color: #aaffaa; 
 }
 
 .header-container {
-    background-color: #000;
+    background-color: #0b0;
     padding: 20px;
     text-align: center;
     display: flex;
@@ -39,12 +39,12 @@ a:hover {
 }
 
 .login-container a {
-    color: #ff0000;
+    color: #fff;
     margin-right: 10px;
 }
 
 .login-container a:hover {
-    color: #ff9999; 
+    color: #aaffaa; 
 }
 
 .content-container {
@@ -52,7 +52,7 @@ a:hover {
 }
 
 .footer-container {
-    background-color: #000;
+    background-color: #0b0;
     color: #fff;
     text-align: center;
     padding: 10px 0;
@@ -70,7 +70,7 @@ a:hover {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #111;
+    background-color: #080;
     border-radius: 10px;
 }
 
@@ -93,7 +93,7 @@ a:hover {
     margin-bottom: 10px;
     border: 1px solid #666;
     border-radius: 5px;
-    background-color: #333;
+    background-color: #030;
     color: #fff;
 }
 
@@ -102,17 +102,17 @@ a:hover {
 .register input[type="password"]:focus,
 .register input[type="date"]:focus {
     outline: none;
-    border-color: #ff0000; 
+    border-color: #0f0; 
 }
 
 .register button[type="submit"] {
-    background-color: #ff0000; 
+    background-color: #0f0; 
     border: none;
     cursor: pointer;
 }
 
 .register button[type="submit"]:hover {
-    background-color: #ff6666; 
+    background-color: #aaffaa; 
 }
 
 .email-check-container {
@@ -121,7 +121,7 @@ a:hover {
 }
 
 .email-check-container h1 {
-    color: red;
+    color: lime;
     font-size: 24px;
     margin-bottom: 20px;
 }
@@ -130,7 +130,7 @@ a:hover {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    background-color: #111;
+    background-color: #080;
     border-radius: 10px;
 }
 
@@ -153,7 +153,7 @@ a:hover {
     margin-bottom: 10px;
     border: 1px solid #666;
     border-radius: 5px;
-    background-color: #333;
+    background-color: #030;
     color: #fff;
 }
 
@@ -165,17 +165,126 @@ a:hover {
 
 .update_user_form input[type="submit"] {
     border: none;
-    background-color: #ff0000;
+    background-color: #0f0;
     cursor: pointer;
 }
 
 .update_user_form input[type="submit"]:hover {
-    background-color: #ff6666;
+    background-color: #aaffaa;
 }
 
 .update_user_form input[type="text"]:focus,
 .update_user_form textarea:focus,
 .update_user_form input[type="file"]:focus {
     outline: none;
-    border-color: #ff0000;
+    border-color: #0f0;
+}
+
+.staff_link{
+    display: flex;
+    justify-content: left;
+}
+
+.staff_link a {
+    color: #0f0;
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid #0f0;
+    border-radius: 5px;
+    background-color: #080;
+}
+
+.staff_link a:hover {
+    background-color: #aaffaa;
+}
+
+.forms {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #080;
+    border-radius: 10px;
+}
+
+.forms form {
+    display: flex;
+    flex-direction: column;
+}
+
+.forms form input[type="text"],
+.forms form input[type="email"],
+.forms form input[type="password"],
+.forms form input[type="date"],
+.forms form button[type="submit"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #666;
+    border-radius: 5px;
+    background-color: #030;
+    color: #fff;
+}
+
+.forms form button[type="submit"] {
+    border: none;
+    background-color: #0f0;
+    cursor: pointer;
+}
+
+.forms form button[type="submit"]:hover {
+    background-color: #aaffaa;
+}
+
+.forms form input[type="text"]:focus,
+.forms form input[type="email"]:focus,
+.forms form input[type="password"]:focus,
+.forms form input[type="date"]:focus {
+    outline: none;
+    border-color: #0f0; 
+}
+
+.admin_view {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #080;
+    border-radius: 10px;
+}
+
+.admin_view h1 {
+    color: #fff;
+    text-align: center;
+}
+
+.admin_view table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.admin_view th,
+.admin_view td {
+    padding: 10px;
+    border: 1px solid #fff;
+    text-align: left;
+}
+
+.admin_view th {
+    background-color: #030;
+    color: #fff;
+}
+
+.admin_view tbody tr:nth-child(even) {
+    background-color: #0b0;
+}
+
+.admin_view tbody tr:nth-child(odd) {
+    background-color: #0a0;
+}
+
+.admin_view tbody td {
+    color: #fff;
+}
+
+.admin_view tbody tr:hover {
+    background-color: #aaffaa;
 }
