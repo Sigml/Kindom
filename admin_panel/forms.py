@@ -45,3 +45,27 @@ class CountryCreateForm(forms.ModelForm):
                 'placeholder':'Dochód'
             }),
         }
+        
+
+class ResourcesCreateForm(forms.ModelForm):
+    class Meta:
+        model = Resources
+        fields = ('country', 'name', 'quantity', 'price',)
+        widgets = {
+            'country': forms.Select(attrs={
+                'class':'form-control',
+                'placeholder':'Nazwa państwa'
+                }),
+            'name': forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Nazwa zasobu'
+                }),
+            'quantity':forms.NumberInput(attrs={
+                'class':'form-control',
+                'placeholder':'Ilość'
+                }),
+            'price':forms.NumberInput(attrs={
+                'class':'form-control',
+                'placeholder':'Cena'
+                }),
+        }

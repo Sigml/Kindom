@@ -13,9 +13,13 @@ class Country(models.Model):
     
     def __str__(self):
         return self.name
+    
+
+def get_default_country():
+    return Country.objects.first()
 
 class Resources(models.Model):
-    country = models.OneToOneField(Country, on_delete=models.CASCADE, related_name='resources')
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='resources', default=get_default_country)
     name = models.CharField(max_length=64)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
