@@ -18,7 +18,7 @@ a:hover {
 }
 
 .header-container {
-    background-color: #0b0;
+    background-color: rgb(1, 61, 1);
     padding: 20px;
     text-align: center;
     display: flex;
@@ -52,7 +52,7 @@ a:hover {
 }
 
 .footer-container {
-    background-color: #0b0;
+    background-color: rgb(1, 61, 1);
     color: #fff;
     text-align: center;
     padding: 10px 0;
@@ -215,6 +215,7 @@ a:hover {
 .forms form input[type="email"],
 .forms form input[type="password"],
 .forms form input[type="date"],
+.forms form input[type="number"],
 .forms form button[type="submit"] {
     padding: 10px;
     margin-bottom: 10px;
@@ -287,4 +288,45 @@ a:hover {
 
 .admin_view tbody tr:hover {
     background-color: #aaffaa;
+}
+
+.admin_view a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.admin_view a:hover {
+    text-decoration: underline;
+}
+
+.delete_view {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #800;
+    border-radius: 10px;
+}
+
+.delete_view p {
+    color: #fff;
+}
+
+.delete_view form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.delete_view button[type="submit"] {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #300;
+    color: #fff;
+    cursor: pointer;
+}
+
+.delete_view button[type="submit"]:hover {
+    background-color: #a00;
 }

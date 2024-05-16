@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='delete_view'>
+    <form method='post' action=''>
+        {% csrf_token %} 
+        <p> Czy na pewno chcesz usunąć element '{{ object }}'?</p>
+        <button type='submit' name='confirmation' value='yes'>Tak</button>
+        
+    </form>
+</div>
+
+{% endblock %}
