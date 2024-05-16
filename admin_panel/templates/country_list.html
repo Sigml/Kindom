@@ -11,6 +11,7 @@
                 <th>Iloćś mieszkańców</th>
                 <th>Dochód na rok</th>
                 <th></th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -21,7 +22,7 @@
                 <td>{{ country.population }}</td>
                 <td>{{ country.income }}</td>
                 <td><a href="{% url 'country_update' pk=country.pk %}">Zaktualizuj</a></td>
-                <td><a href="{% url 'age_update' pk=age.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'country_delete' pk=country.pk %}">Usuń</a></td>
             </tr>
             {% endfor %}
         </tbody>

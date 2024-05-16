@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Wszystkie zasoby</h1>
+        <table>
+            <thead>
+                <tr>
+                        <th>Nazwa kraju</th>
+                        <th>Nazwa zasobu</th>
+                        <th>Ilość </th>
+                        <th>Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in object_list %}
+                <tr>
+                    <td>{{resource.country.name}}</td>
+                    <td>{{resource.name}}</td>
+                    <td>{{resource.quantity}}</td>
+                    <td>{{resource.price}}</td>
+                    <td><a href="{% url 'resources_update' pk=resource.pk %}">Zaktualizuj</a></td>
+                    <td><a href="{% url 'resources_delete' pk=resource.pk %}">Usuń</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+
+{% endblock %}

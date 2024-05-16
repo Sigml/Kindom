@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
-from game.models import Age, Country
-from .forms import AgeCreateForm, CountryCreateForm
+from game.models import Age, Country, Resources
+from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm,)
 
 
 def main(request):
@@ -68,8 +68,37 @@ class CountryUpdateView(AdminRequiredMixin, UpdateView):
     success_url = reverse_lazy('country_list')
     
     
-class AgeDeleteView(AdminRequiredMixin, DeleteView):
+class CountryDeleteView(AdminRequiredMixin, DeleteView):
     model = Country
     template_name = 'delete.html'
     success_url = reverse_lazy('country_list')
 
+
+class ResourcesCreateView(AdminRequiredMixin, CreateView):
+    model = Resources
+    form_class = ResourcesCreateForm
+    template_name = 'forms.html'
+    success_url = reverse_lazy('resources_list')
+    
+
+class ResourcesListView(AdminRequiredMixin, ListView):
+    model = Resources
+    template_name = 'resources_list.html'
+    
+    def get_queruset(self, *agrs, **kwargs):
+        qs = super().get_queruset(*agrs, **kwargs)
+        qs = qs.order_by('-country')
+        return qs
+    
+
+class ResourcesUpdateView(AdminRequiredMixin, UpdateView):
+    model = Resources
+    template_name = 'forms.html'
+    form_class = ResourcesCreateForm
+    success_url = reverse_lazy('resources_list')
+    
+    
+class ResourcesDeleteView(AdminRequiredMixin, DeleteView):
+    model = Resources
+    template_name = 'delete.html'
+    success_url = reverse_lazy('resources_list')
