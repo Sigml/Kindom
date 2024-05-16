@@ -27,6 +27,9 @@
     {% if user.is_staff %}
     <div class="staff_link">
         <a href="{% url 'crate_age' %}">Dodaj nową epoke</a>
+        <a href="{% url 'all_ages' %}">Lista epok</a>
+        <a href="{% url 'country_create' %}">Dodaj nowe państwo</a>
+        <a href="{% url 'country_list' %}">Lista państw</a>
     </div>
 {% endif %}
     <div class='content-container'>

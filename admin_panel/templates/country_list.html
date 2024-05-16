@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Wszystkie kraje</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa kraju</th>
+                <th>Kapital</th>
+                <th>Iloćś mieszkańców</th>
+                <th>Dochód na rok</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for country in object_list %}
+            <tr>
+                <td>{{ country.name }}</td>
+                <td>{{ country.capital }}</td>
+                <td>{{ country.population }}</td>
+                <td>{{ country.income }}</td>
+                <td><a href="{% url 'country_update' pk=country.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'age_update' pk=age.pk %}">Zaktualizuj</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'country_create' %}">Dodaj nowe państwo</a>
+</div>
+
+
+{% endblock %}
