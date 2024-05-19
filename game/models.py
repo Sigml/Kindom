@@ -27,8 +27,12 @@ class Resources(models.Model):
     def __str__(self):
         return self.name
     
+def factory_image_upload_path(instance, filename):
+    return f'factories/{instance.name}/{filename}'
+    
 class Factory(models.Model):
     name  = models.CharField(max_length=64)
+    image = models.ImageField(upload_to= factory_image_upload_path, null=True)
     
     def __str__(self):
         return self.name

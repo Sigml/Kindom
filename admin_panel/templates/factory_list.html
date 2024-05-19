@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Lista baryk</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa fabryki</th>
+                <th>Obrazek fabryki</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for factory in object_list %}
+            <tr>
+                <td>{{ factory.name }}</td>
+                {% if factory.image %}
+                <td><img src="{{ factory.image.url }}" alt="Factory Image" width="50" height="50"></td>
+                    {% else %}
+                <td>Brak obrazka</td>
+                {% endif %}
+                
+                <td><a href="{% url 'factory_update' pk=factory.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'factory_delete' pk=factory.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'factory_create' %}">Dodaj nową fabryke</a>
+</div>
+
+
+{% endblock %}
