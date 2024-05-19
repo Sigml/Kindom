@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import (AgeCreateView, AgeListView, AgeUpdateView, AgeDeleteView, CountryCreateView, CountryListView, 
                     CountryUpdateView, CountryDeleteView, ResourcesCreateView, ResourcesListView, ResourcesUpdateView,
-                    ResourcesDeleteView)
+                    ResourcesDeleteView, FactoryCreateView, FactoryListView, FactoryUpdateView, FactoryDeleteView,
+                    )
 
 urlpatterns = [
     path('age_create/', AgeCreateView.as_view(), name='crate_age'),
@@ -16,5 +17,9 @@ urlpatterns = [
     path('resources_list/', ResourcesListView.as_view(), name='resources_list'),
     path('resources_update/<pk>/', ResourcesUpdateView.as_view(), name='resources_update'),
     path('resources_delete/<pk>/', ResourcesDeleteView.as_view(), name='resources_delete'),
+    path('factory_create/', FactoryCreateView.as_view(), name='factory_create'),
+    path('factory_all/', FactoryListView.as_view(), name='factory_list'),
+    path('factory_update/<pk>/', FactoryUpdateView.as_view(), name='factory_update'),
+    path('factory_delete/<pk>/', FactoryDeleteView.as_view(), name='factory_delete'),
     
 ]

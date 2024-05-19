@@ -7,6 +7,11 @@ class AgeCreateForm(forms.ModelForm):
     class Meta:
         model = Age
         fields = ('name', 'start_of_era', 'end_of_era',)
+        labels = {
+            'name': 'Nazwa epoki',
+            'start_of_era': 'Data początku epoki',
+            'end_of_era': 'Data końca epoki',
+        }
         widgets = {
             'name': forms.TextInput(attrs={
                 'class':'form-control',
@@ -27,6 +32,12 @@ class CountryCreateForm(forms.ModelForm):
     class Meta:
         model = Country
         fields = ('name', 'capital', 'population', 'income',)
+        labels = {
+            'name': 'Nazwa kraju',
+            'capital': 'Kapitał',
+            'population': 'Ilość mieskanców',
+            'income': 'Dochód',
+        }
         Widgets = {
             'name': forms.TextInput(attrs={
                 'class':'form-control',
@@ -51,6 +62,12 @@ class ResourcesCreateForm(forms.ModelForm):
     class Meta:
         model = Resources
         fields = ('country', 'name', 'quantity', 'price',)
+        labels = {
+            'country': 'Nazwa państwa',
+            'name': 'Nazwa zasobu',
+            'quantity': 'Ilość',
+            'price': 'Cena',
+        }
         widgets = {
             'country': forms.Select(attrs={
                 'class':'form-control',
@@ -68,4 +85,20 @@ class ResourcesCreateForm(forms.ModelForm):
                 'class':'form-control',
                 'placeholder':'Cena'
                 }),
+        }
+        
+
+class FactoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = Factory
+        fields = ('name', 'image', )
+        labels = {
+            'name':'Nazwa fabryki',
+            'image':'Obrazek fabryki',
+        }
+        widgets = {
+            'name':forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Nazwa fabryki'
+            })
         }

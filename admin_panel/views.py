@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
-from game.models import Age, Country, Resources
-from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm,)
+from game.models import (Age, Country, Resources, Factory) 
+from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm)
 
 
 def main(request):
@@ -102,3 +102,33 @@ class ResourcesDeleteView(AdminRequiredMixin, DeleteView):
     model = Resources
     template_name = 'delete.html'
     success_url = reverse_lazy('resources_list')
+
+
+class FactoryCreateView(AdminRequiredMixin, CreateView):
+    model = Factory
+    template_name = 'forms.html'
+    form_class = FactoryCreateForm
+    success_url = reverse_lazy('factory_list')
+    
+    
+class FactoryListView(AdminRequiredMixin, ListView):
+    model = Factory
+    template_name = 'factory_list.html'
+    
+    def get_queryset(self, *agrs, **kwargs):
+        qs = super().get_queryset(*agrs, **kwargs)
+        qs = qs.order_by('-id')
+        return qs
+    
+    
+class FactoryUpdateView(AdminRequiredMixin, UpdateView):
+    model = Factory
+    template_name = 'forms.html'
+    form_class = FactoryCreateForm
+    success_url = reverse_lazy('factory_list')
+    
+
+class FactoryDeleteView(AdminRequiredMixin, DeleteView):
+    model = Factory
+    template_name = 'delete.html'
+    success_url = reverse_lazy('factory_list')

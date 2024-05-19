@@ -216,6 +216,8 @@ a:hover {
 .forms form input[type="password"],
 .forms form input[type="date"],
 .forms form input[type="number"],
+.forms form select,
+.forms form input[type="file"],
 .forms form button[type="submit"] {
     padding: 10px;
     margin-bottom: 10px;
