@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
-from game.models import (Age, Country, Resources, Factory) 
-from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm)
+from game.models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory) 
+from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm, RequiredResourcesCreateForm,
+                    BuildFactoryCreateForm)
 
 
 def main(request):
@@ -132,3 +133,63 @@ class FactoryDeleteView(AdminRequiredMixin, DeleteView):
     model = Factory
     template_name = 'delete.html'
     success_url = reverse_lazy('factory_list')
+    
+
+class RequiredResourcesCreateView(AdminRequiredMixin, CreateView):
+    model = RequiredResources
+    template_name = 'forms.html'
+    form_class = RequiredResourcesCreateForm
+    success_url = reverse_lazy('required_resources_list')
+    
+    
+class RequiredResourcesListView(AdminRequiredMixin, ListView):
+    model = RequiredResources
+    template_name = 'required_resources_list.html'
+    
+    def get_queryset(self, *agrs, **kwargs):
+        qs = super().get_queryset(*agrs, **kwargs)
+        qs = qs.order_by('-id')
+        return qs
+    
+    
+class RequiredResourcesUpdateView(AdminRequiredMixin, UpdateView):
+    model = RequiredResources
+    template_name = 'forms.html'
+    form_class = RequiredResourcesCreateForm
+    success_url = reverse_lazy('required_resources_list')
+    
+
+class RequiredResourcesDeleteView(AdminRequiredMixin, DeleteView):
+    model = RequiredResources
+    template_name = 'delete.html'
+    success_url = reverse_lazy('required_resources_list')
+    
+    
+class BuildFactoryCreateView(AdminRequiredMixin, CreateView):
+    model = BuildFactory
+    template_name = 'forms.html'
+    form_class = BuildFactoryCreateForm
+    success_url = reverse_lazy('build_factory_list')
+    
+    
+class BuildFactoryListView(AdminRequiredMixin, ListView):
+    model = BuildFactory
+    template_name = 'build_factory_list.html'
+    
+    def get_queryset(self, *agrs, **kwargs):
+        qs = super().get_queryset(*agrs, **kwargs)
+        qs = qs.order_by('-id')
+        return qs
+    
+    
+class BuildFactoryUpdateView(AdminRequiredMixin, UpdateView):
+    model = BuildFactory
+    template_name = 'forms.html'
+    form_class = BuildFactoryCreateForm
+    success_url = reverse_lazy('build_factory_list')
+    
+
+class BuildFactoryDeleteView(AdminRequiredMixin, DeleteView):
+    model = BuildFactory
+    template_name = 'delete.html'
+    success_url = reverse_lazy('build_factory_list')

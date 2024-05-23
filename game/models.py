@@ -4,6 +4,9 @@ class Age(models.Model):
     name = models.CharField(max_length=64)
     start_of_era = models.DateField(null=True, blank=True)
     end_of_era = models.DateField(null=True, blank=True)
+    
+    def __str__(self):
+        return self.name
 
 class Country(models.Model):
     name = models.CharField(max_length=64, unique=True)
@@ -21,7 +24,7 @@ def get_default_country():
 class Resources(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='resources', default=get_default_country)
     name = models.CharField(max_length=64)
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
@@ -36,14 +39,6 @@ class Factory(models.Model):
     
     def __str__(self):
         return self.name
-
-class BuildFactory(models.Model):
-    factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='build_factory')
-    age = models.ForeignKey('Age', on_delete=models.CASCADE)
-    resources = models.ForeignKey(Resources, on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.factory.name
     
 class RequiredResources(models.Model):
     resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_resources')
@@ -52,7 +47,22 @@ class RequiredResources(models.Model):
 
     def __str__(self):
         return f"{self.resource.name} wymagany {self.quantity} dla produkcji {self.required_resource.name}"
+
+class BuildFactory(models.Model):
+    factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='build_factory')
+    age = models.ForeignKey('Age', on_delete=models.CASCADE)
+    resources_production = models.ForeignKey(RequiredResources, on_delete=models.CASCADE, null=True)
+    required_resource_1 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='build_factory_resource_1', default=0)
+    quantity_required_resource_1 = models.IntegerField(default=1)
+    required_resource_2 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='build_factory_resource_2', default=0)
+    quantity_required_resource_2 = models.IntegerField(default=1)
+    required_resource_3 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='build_factory_resource_3', default=0)
+    quantity_required_resource_3 = models.IntegerField(default=1)
     
+    def __str__(self):
+        return self.factory.name
+    
+
 class Ecology(models.Model):
     country = models.OneToOneField('Country', on_delete=models.CASCADE, related_name='ecology')
     air_quality = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  

@@ -102,3 +102,72 @@ class FactoryCreateForm(forms.ModelForm):
                 'placeholder':'Nazwa fabryki'
             })
         }
+        
+        
+class RequiredResourcesCreateForm(forms.ModelForm):
+    class Meta:
+        model = RequiredResources
+        fields = ('resource', 'required_resource', 'quantity',)
+        labels = {
+            'resource':'Zasób',
+            'required_resource':'Wymagany zasób',
+            'quantity':'ILość',
+        }
+        widgets = {
+            'required_resource':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'resource':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'quantity':forms.NumberInput(attrs={
+                'class':'form-control'
+            })
+        }
+        
+        
+class BuildFactoryCreateForm(forms.ModelForm):
+    class Meta:
+        model = BuildFactory
+        fields = ('factory', 'age', 'resources_production', 'required_resource_1', 'quantity_required_resource_1',
+                  'required_resource_2', 'quantity_required_resource_2', 'required_resource_3', 'quantity_required_resource_3',)
+        labels = {
+            'factory':'Fabryka', 
+            'age':'Epoka',
+            'resources_production':'Produkujący się zasob', 
+            'required_resource_1':'Zasob dla budowy nr 1',
+            'quantity_required_resource_1':'Ilość',
+            'required_resource_2':'Zasob dla budowy nr 2', 
+            'quantity_required_resource_2':'Ilość', 
+            'required_resource_3':'Zasob dla budowy nr 3', 
+            'quantity_required_resource_3':'Ilość',
+        }
+        widgets = {
+            'factory':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'age':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'resources_production':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'required_resource_1':forms.Select(attrs={
+                'class':'form-control'
+            }), 
+            'quantity_required_resource_1':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+             'required_resource_2':forms.Select(attrs={
+                'class':'form-control'
+            }),
+             'quantity_required_resource_2':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+             'required_resource_3':forms.Select(attrs={
+                'class':'form-control'
+            }),
+             'quantity_required_resource_3':forms.NumberInput(attrs={
+                'class':'form-control'
+            })
+        }
