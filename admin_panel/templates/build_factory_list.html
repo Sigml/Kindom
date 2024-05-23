@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Budowa fabryki</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Fabryka</th>
+                <th>Epoka </th>
+                <th>Produkowany zasob</th>
+                <th>Material dla budowy nr 1</th>
+                <th>Ilość</th>
+                <th>Material dla budowy nr 2</th>
+                <th>Ilość</th>
+                <th>Material dla budowy nr 3</th>
+                <th>Ilość</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for build_factory in object_list %}
+            <tr>
+                <td>{{ build_factory.factory }}</td>
+                <td>{{ build_factory.age }}</td>
+                <td>{{ build_factory.resources_production}}</td>
+                <td>{{ build_factory.required_resource_1 }}</td>
+                <td>{{ build_factory.quantity_required_resource_1 }}</td>
+                <td>{{ build_factory.required_resource_2 }}</td>
+                <td>{{ build_factory.quantity_required_resource_2 }}</td>
+                <td>{{ build_factory.required_resource_3 }}</td>
+                <td>{{ build_factory.quantity_required_resource_3 }}</td>
+
+                <td><a href="{% url 'build_factory_update' pk=build_factory.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'build_factory_delete' pk=build_factory.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'build_factory_create' %}">Dodaj nową fabrykę</a>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Wszystkie ulepszone zasoby</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Wymagany zasób</th>
+                <th>Ulepszony zasób </th>
+                <th>Iloćś</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for required_resource in object_list %}
+            <tr>
+                <td>{{ required_resource.required_resource }}</td>
+                <td>{{ required_resource.resource }}</td>
+                <td>{{ required_resource.quantity }}</td>
+                <td><a href="{% url 'required_resources_update' pk=required_resource.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'required_resources_delete' pk=required_resource.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'required_resources_create' %}">Dodaj nowy zasób</a>
+</div>
+
+
+{% endblock %}
