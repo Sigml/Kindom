@@ -171,3 +171,272 @@ class BuildFactoryCreateForm(forms.ModelForm):
                 'class':'form-control'
             })
         }
+        
+        
+class EcologyCreateForm(forms.ModelForm):
+    class Meta:
+        model = Ecology
+        fields = ('country', 'air_quality', 'water_pollution', 'forest_coverage', 'wildlife_population')
+        labels = {
+            'country':'Państwo',
+            'air_quality':'Stan powietrza',
+            'water_pollution':'Stan wody',
+            'forest_coverage':'Stan lasu',
+            'wildlife_population':'Żywność',
+        }
+        widgets = {
+            'country':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'air_quality':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+            'water_pollution':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+            'forest_coverage':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+            'wildlife_population':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
+        }
+        
+########
+class TradeCreateForm(forms.ModelForm):
+    class Meta:
+        models = Trade
+        fields = ('exporter', 'imports', 'resource',)
+        labels = {
+            'exporter':'eksporter',
+            'imports':'import',
+            'resource':'zasób',
+        }
+        widgets = {
+            'exporter':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'imports':forms.Select(attrs={
+                'class':'form-control'
+            }),
+            'resource':forms.Select(attrs={
+                'class':'form-control'
+            }),
+        }
+        
+        
+class AllianceCreateForm (forms.ModelForm):
+    class Meta:
+        model = Alliance
+        fields = ('name', 'members')
+        labels = {
+                'name':'Nazwa',
+                'members':'Członkowie'
+        }
+        widgets = {
+            'name':forms.TextInput(attrs={
+                'class':'form-control'
+                }),
+            'members':forms.SelectMultiple(attrs={
+                'class':'form-control'
+                }),
+        }
+        
+
+class TradeAgreementCreateForm(forms.ModelForm):
+    class Meta:
+        model = TradeAgreement
+        fields = ('alliance', 'participants', 'start_date', 'end_date',)
+        labels = {
+            'alliance':'Sojusz', 
+            'participants':'Uczestnicy', 
+            'start_date':'Data rozpoczęcia', 
+            'end_date':'Data końcowa',
+        }
+widgets = {
+            'alliance': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'participants': forms.SelectMultiple(attrs={
+                'class': 'form-control'
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+        }
+        
+        
+class PeaceTreatyCreateForm (forms.ModelForm):
+    class Meta:
+        model = PeaceTreaty
+        fields = ('country1', 'country2', 'start_date', 'end_date',)
+        labels = {
+            'country1':'Państwo',
+            'country2':'Państwo',
+            'start_date':'Data rozpoczęcia', 
+            'end_date':'Data końcowa',
+        }
+        widgets = {
+            'country1': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'country1':forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'start_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+        }
+        
+        
+class ArmyCreateForm (forms.ModelForm):
+    class Meta:
+        model = Army
+        fields = ('country', 'name', 'quantity', 'power',)
+        labels = {
+            'country':'Państwo',
+            'name': 'Nazwa wojska',
+            'quantity':'Ilość', 
+            'power':'Moc',
+        }
+        widgets = {
+            'country':forms.Select(attrs={
+                'class': 'form-control'
+            }), 
+            'name':forms.TextInput(attrs={
+                'class':'form-control'
+                }),
+            'quantity':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'power':forms.NumberInput(attrs={
+                'class':'form-control'}),
+        }
+        
+        
+class WarCreateForm(forms.ModelForm):
+    class Meta: 
+        model = War
+        fields = ('attacker', 'defender', 'start_date', 'end_date', 'status',)
+        labels = {
+            'attacker':'Atakujący',
+            'defender':'Obrońca', 
+            'start_date':'Data rozpoczęcia', 
+            'end_date':'Data końcowa',
+            'status':'stan',
+        }
+        widgets = {
+            'attacker':forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'defender':forms.Select(attrs={
+                'class': 'form-control'
+            }), 
+            'start_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
+            }),
+            'status':forms.BooleanField(attrs={
+                'class': 'form-control'
+            }),
+        }
+        
+        
+class TechnologyCreateForm (forms.ModelForm):
+    class Meta:
+        model = Technology
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military',)
+        labels = {
+            'age':'Epoka',
+            'name':'Nazma', 
+            'efficiency_production':'Efektywność produkcji',
+            'efficiency_trade':'Efektywność handlu',
+            'efficiency_military':'Efektywność wojskowa',
+        }
+        widgets = {
+            'age':forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'name':forms.Select(attrs={
+                'class':'form-control'
+                }), 
+            'efficiency_production':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'efficiency_trade':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'efficiency_military':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+        }
+        
+        
+class EventCreateForm (forms.ModelForm):
+    class Meta:
+        model = Event
+        fields = ('name', 'description', 'impact_economy', 'impact_society', 'impact_military',)
+        labels = {
+            'name':'Nazwa',
+            'description':'Opis',
+            'impact_economy':'Wpływ gospodarczy', 
+            'impact_society':'Wpływ społeczeństwa',
+            'impact_military':'Wpływ wojskowy',
+        }
+        widgets = {
+            'name':forms.TextInput(attrs={
+                'class':'form-control'
+                }),
+            'description':forms.TextInput(attrs={
+                'class':'form-control'
+                }),
+            'impact_economy':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'impact_society':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'impact_military':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+        }
+        
+    
+class SocialDevelopmentCreateForm(forms.ModelForm):
+    class Meta:
+        model = SocialDevelopment
+        fields = ('country', 'poverty_rate', 'public_health_index', 'education_index',)
+        labels = {
+            'country':'Kraj', 
+            'poverty_rate':'Wskaźnik zagrożenia',
+            'public_health_index':'Indeks zdrowia publicznego',
+            'education_index':'Indeks edukacji',
+        }
+        widgets = {
+            'country':forms.Select(attrs={
+                'class':'form-control'
+                }), 
+            'poverty_rate':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'public_health_index':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'education_index':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+        }

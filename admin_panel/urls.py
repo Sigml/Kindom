@@ -3,7 +3,8 @@ from .views import (AgeCreateView, AgeListView, AgeUpdateView, AgeDeleteView, Co
                     CountryUpdateView, CountryDeleteView, ResourcesCreateView, ResourcesListView, ResourcesUpdateView,
                     ResourcesDeleteView, FactoryCreateView, FactoryListView, FactoryUpdateView, FactoryDeleteView,
                     RequiredResourcesCreateView, RequiredResourcesListView, RequiredResourcesUpdateView, RequiredResourcesDeleteView,
-                    BuildFactoryCreateView, BuildFactoryListView, BuildFactoryUpdateView, BuildFactoryDeleteView,
+                    BuildFactoryCreateView, BuildFactoryListView, BuildFactoryUpdateView, BuildFactoryDeleteView, EcologyCreateView,
+                    EcologyListView, EcologyUpdateView, EcologyDeleteView,
                     
                     )
 
@@ -32,6 +33,9 @@ urlpatterns = [
     path('build_factory_list/', BuildFactoryListView.as_view(), name='build_factory_list'),
     path('build_factory_update/<pk>/', BuildFactoryUpdateView.as_view(), name='build_factory_update'),
     path('build_factory_delete/<pk>/', BuildFactoryDeleteView.as_view(), name='build_factory_delete'),
-    
+    path('ecology_create/', EcologyCreateView.as_view(), name='ecology_create'),
+    path('ecology_list/', EcologyListView.as_view(), name='ecology_list'),
+    path('ecology_update/<pk>/', EcologyUpdateView.as_view(), name='ecology_update'),
+    path('ecology_delete/<pk>/', EcologyDeleteView.as_view(), name='ecology_delete'),
     
 ]

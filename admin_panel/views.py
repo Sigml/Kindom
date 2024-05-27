@@ -2,9 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
-from game.models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory) 
+from game.models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory, Ecology) 
 from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm, RequiredResourcesCreateForm,
-                    BuildFactoryCreateForm)
+                    BuildFactoryCreateForm, EcologyCreateForm)
 
 
 def main(request):
@@ -193,3 +193,33 @@ class BuildFactoryDeleteView(AdminRequiredMixin, DeleteView):
     model = BuildFactory
     template_name = 'delete.html'
     success_url = reverse_lazy('build_factory_list')
+    
+
+class EcologyCreateView(AdminRequiredMixin, CreateView):
+    model = Ecology
+    template_name = 'forms.html'
+    form_class = EcologyCreateForm
+    success_url = reverse_lazy('ecology_list')
+    
+    
+class EcologyListView(AdminRequiredMixin, ListView):
+    model = Ecology
+    template_name = 'ecology_list.html'
+    
+    def get_queryset(self, *agrs, **kwargs):
+        qs = super().get_queryset(*agrs, **kwargs)
+        qs = qs.order_by('-id')
+        return qs
+    
+    
+class EcologyUpdateView(AdminRequiredMixin, UpdateView):
+    model = Ecology
+    template_name = 'forms.html'
+    form_class = EcologyCreateForm
+    success_url = reverse_lazy('ecology_list')
+    
+
+class EcologyDeleteView(AdminRequiredMixin, DeleteView):
+    model = Ecology
+    template_name = 'delete.html'
+    success_url = reverse_lazy('ecology_list')
