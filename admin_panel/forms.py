@@ -202,7 +202,7 @@ class EcologyCreateForm(forms.ModelForm):
             }),
         }
         
-########
+
 class TradeCreateForm(forms.ModelForm):
     class Meta:
         models = Trade
@@ -224,7 +224,7 @@ class TradeCreateForm(forms.ModelForm):
             }),
         }
         
-        
+
 class AllianceCreateForm (forms.ModelForm):
     class Meta:
         model = Alliance
@@ -270,7 +270,7 @@ widgets = {
             }),
         }
         
-        
+
 class PeaceTreatyCreateForm (forms.ModelForm):
     class Meta:
         model = PeaceTreaty
@@ -298,7 +298,7 @@ class PeaceTreatyCreateForm (forms.ModelForm):
             }),
         }
         
-        
+
 class ArmyCreateForm (forms.ModelForm):
     class Meta:
         model = Army
@@ -323,7 +323,7 @@ class ArmyCreateForm (forms.ModelForm):
                 'class':'form-control'}),
         }
         
-        
+               
 class WarCreateForm(forms.ModelForm):
     class Meta: 
         model = War
@@ -355,7 +355,7 @@ class WarCreateForm(forms.ModelForm):
             }),
         }
         
-        
+         ########
 class TechnologyCreateForm (forms.ModelForm):
     class Meta:
         model = Technology
