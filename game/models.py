@@ -63,7 +63,7 @@ class BuildFactory(models.Model):
         return self.factory.name
     
 
-class Ecology(models.Model):
+class PeaceTreatyEcology(models.Model):
     country = models.OneToOneField('Country', on_delete=models.CASCADE, related_name='ecology')
     air_quality = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  
     water_pollution = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  
