@@ -333,7 +333,7 @@ class WarCreateForm(forms.ModelForm):
             'defender':'Obrońca', 
             'start_date':'Data rozpoczęcia', 
             'end_date':'Data końcowa',
-            'status':'stan',
+            'status':'Stan',
         }
         widgets = {
             'attacker':forms.Select(attrs={
@@ -350,12 +350,11 @@ class WarCreateForm(forms.ModelForm):
                 'class': 'form-control', 
                 'type': 'date'
             }),
-            'status':forms.BooleanField(attrs={
+            'status':forms.Select(attrs={
                 'class': 'form-control'
             }),
         }
         
-         ########
 class TechnologyCreateForm (forms.ModelForm):
     class Meta:
         model = Technology

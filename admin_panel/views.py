@@ -230,7 +230,7 @@ class EcologyDeleteView(AdminRequiredMixin, DeleteView):
 class TradeCreateView(AdminRequiredMixin, CreateView):
     model = TradeAgreement
     template_name = 'forms.html'
-    form_class = TradeAgreementCreateForm
+    form_class = TradeCreateForm
     success_url = reverse_lazy('trade_list')
     
     
@@ -247,7 +247,7 @@ class TradeListView(AdminRequiredMixin, ListView):
 class TradeUpdateView(AdminRequiredMixin, UpdateView):
     model = Trade
     template_name = 'forms.html'
-    form_class = TradeAgreementCreateForm
+    form_class = TradeCreateForm
     success_url = reverse_lazy('trade_list')
     
 
@@ -290,7 +290,7 @@ class AllianceDeleteView(AdminRequiredMixin, DeleteView):
 class TradeAgreementCreateView(AdminRequiredMixin, CreateView):
     model = TradeAgreement
     template_name = 'forms.html'
-    form_class = TechnologyCreateForm
+    form_class = TradeAgreementCreateForm
     success_url = reverse_lazy('treade_agreement_list')
     
     
@@ -307,7 +307,7 @@ class TradeAgreementListView(AdminRequiredMixin, ListView):
 class TradeAgreementUpdateView(AdminRequiredMixin, UpdateView):
     model = TradeAgreement
     template_name = 'forms.html'
-    form_class = TechnologyCreateForm
+    form_class = TradeAgreementCreateForm
     success_url = reverse_lazy('treade_agreement_list')
     
 
