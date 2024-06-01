@@ -77,11 +77,16 @@ class Trade(models.Model):
     exporter = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='exports')
     imports = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='imports')
     resource = models.ForeignKey('Resources', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
+    
+    def __str__(self):
+        return f'Państwo {self.exporter.name} impotuje z {self.imports.name} zasob {self.resource.name} ccena {self.price}'
     
     
 class Alliance(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    members = models.ManyToManyField('Country', related_name='alliances')
+    member_1 = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='alliance_member_1', default=1)
+    member_2 = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='alliance_member_2', default=2)
 
     def __str__(self):
         return self.name

@@ -205,12 +205,13 @@ class EcologyCreateForm(forms.ModelForm):
 
 class TradeCreateForm(forms.ModelForm):
     class Meta:
-        models = Trade
-        fields = ('exporter', 'imports', 'resource',)
+        model = Trade
+        fields = ('exporter', 'imports', 'resource', 'price')
         labels = {
             'exporter':'eksporter',
-            'imports':'import',
+            'imports':'importer',
             'resource':'zasób',
+            'price':'Cena'
         }
         widgets = {
             'exporter':forms.Select(attrs={
@@ -222,22 +223,29 @@ class TradeCreateForm(forms.ModelForm):
             'resource':forms.Select(attrs={
                 'class':'form-control'
             }),
+            'price':forms.NumberInput(attrs={
+                'class':'form-control'
+            }),
         }
         
 
 class AllianceCreateForm (forms.ModelForm):
     class Meta:
         model = Alliance
-        fields = ('name', 'members')
+        fields = ('name', 'member_1', 'member_2',)
         labels = {
                 'name':'Nazwa',
-                'members':'Członkowie'
+                'member_1':'Członek souszu nr_1',
+                'member_2':'Członek souszu nr_2'
         }
         widgets = {
             'name':forms.TextInput(attrs={
                 'class':'form-control'
                 }),
-            'members':forms.SelectMultiple(attrs={
+            'member_1':forms.Select(attrs={
+                'class':'form-control'
+                }),
+                'member_2':forms.Select(attrs={
                 'class':'form-control'
                 }),
         }

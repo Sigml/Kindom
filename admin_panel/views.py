@@ -226,9 +226,9 @@ class EcologyDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('ecology_list')
     
-    
+
 class TradeCreateView(AdminRequiredMixin, CreateView):
-    model = TradeAgreement
+    model = Trade
     template_name = 'forms.html'
     form_class = TradeCreateForm
     success_url = reverse_lazy('trade_list')
@@ -236,7 +236,7 @@ class TradeCreateView(AdminRequiredMixin, CreateView):
     
 class TradeListView(AdminRequiredMixin, ListView):
     model = Trade
-    template_name = '.html'
+    template_name = 'trade_list.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)
@@ -256,7 +256,7 @@ class TradeDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('trade_list')
     
-    
+    ######
 class AllianceCreateView(AdminRequiredMixin, CreateView):
     model = Alliance
     template_name = 'forms.html'
@@ -266,7 +266,7 @@ class AllianceCreateView(AdminRequiredMixin, CreateView):
     
 class AllianceListView(AdminRequiredMixin, ListView):
     model = Alliance
-    template_name = '.html'
+    template_name = 'alliance_list.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)
@@ -277,7 +277,7 @@ class AllianceListView(AdminRequiredMixin, ListView):
 class AllianceUpdateView(AdminRequiredMixin, UpdateView):
     model = Alliance
     template_name = 'forms.html'
-    form_class = AgeCreateForm
+    form_class = AllianceCreateForm
     success_url = reverse_lazy('alliance_list')
     
 

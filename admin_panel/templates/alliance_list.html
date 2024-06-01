@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Wszystkie sojuszy</h1>
+        <table>
+            <thead>
+                <tr>
+                        <th>Nazwa sojuszy</th>
+                        <th>Nazwa clonków sojuszy</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alliance in object_list %}
+                <tr>
+                    <td>{{alliance.name}}</td>
+                    <td>{{alliance.member_1}}    {{alliance.member_2}}</td>
+                    <td><a href="{% url 'alliance_update' pk=alliance.pk %}">Zaktualizuj</a></td>
+                    <td><a href="{% url 'alliance_delete' pk=alliance.pk %}">Usuń</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'alliance_create' %}">Utwórz nowy sojusz</a>
+</div>
+
+{% endblock %}
