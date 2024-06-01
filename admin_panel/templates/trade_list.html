@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Wszystkie zasoby</h1>
+        <table>
+            <thead>
+                <tr>
+                        <th>Nazwa kraju eksportera</th>
+                        <th>Nazwa kraju importera</th>
+                        <th>Zasob </th>
+                        <th>Cena</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trade in object_list %}
+                <tr>
+                    <td>{{trade.exporter}}</td>
+                    <td>{{trade.imports}}</td>
+                    <td>{{trade.resource}}</td>
+                    <td>{{trade.price}}</td>
+                    <td><a href="{% url 'trade_update' pk=trade.pk %}">Zaktualizuj</a></td>
+                    <td><a href="{% url 'trade_delete' pk=trade.pk %}">Usuń</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'trade_create' %}">Utwórz nowy handel</a>
+</div>
+
+{% endblock %}

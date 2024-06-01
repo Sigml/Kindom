@@ -24,25 +24,48 @@
             {% endif %}
         </div>
     </header>
+    
     {% if user.is_staff %}
     <div class="staff_link">
-        <a href="{% url 'crate_age' %}">Dodaj nową epoke</a>
-        <a href="{% url 'all_ages' %}">Lista epok</a>
-        <a href="{% url 'country_create' %}">Dodaj nowe państwo</a>
-        <a href="{% url 'country_list' %}">Lista państw</a>
-        <a href="{% url 'resources_create' %}">Dodaj nowe zasoby</a>
-        <a href="{% url 'resources_list' %}">Lista zasobów</a>
-        <a href="{% url 'factory_create' %}">Stwórz nową fabryke</a>
-        <a href="{% url 'factory_list' %}">Lista fabryk</a>
-        <a href="{% url 'required_resources_create' %}">Dodaj ulepszony zasób</a>
-        <a href="{% url 'required_resources_list' %}">Lista ulepszonych zasobów</a>
-        <a href="{% url 'build_factory_create' %}">Dodaj nową fabrykę</a>
-        <a href="{% url 'build_factory_list' %}">Lista fabryk</a>
-        <a href="{% url 'ecology_create' %}">Dodaj nową ekologje</a>
-        <a href="{% url 'ecology_list' %}">Lista ekologii</a>
-
-
+        <div class="row">
+            <a href="{% url 'crate_age' %}">Dodaj nową epokę</a>
+            <a href="{% url 'all_ages' %}">Lista epok</a>
+            <a href="{% url 'country_create' %}">Dodaj nowe państwo</a>
+            <a href="{% url 'country_list' %}">Lista państw</a>
+            <a href="{% url 'resources_create' %}">Dodaj nowe zasoby</a>
+            <a href="{% url 'resources_list' %}">Lista zasobów</a>
+            <a href="{% url 'factory_create' %}">Stwórz nową fabrykę</a>
+            <a href="{% url 'factory_list' %}">Lista fabryk</a>
+            <a href="{% url 'required_resources_create' %}">Dodaj ulepszony zasób</a>
+            <a href="{% url 'required_resources_list' %}">Lista ulepszonych zasobów</a>
+            <a href="{% url 'build_factory_create' %}">Dodaj nową fabrykę</a>
+            <a href="{% url 'build_factory_list' %}">Lista fabryk</a>
+            <a href="{% url 'ecology_create' %}">Dodaj nową ekologię</a>
+            <a href="{% url 'ecology_list' %}">Lista ekologii</a>
+            <a href="{% url 'trade_create' %}">Dodaj nową ofertę handlową</a>
+            <a href="{% url 'trade_list' %}">Lista ofert handlowych</a>
+            <a href="{% url 'alliance_create' %}">Dodaj nowy sojusz</a>
+            <a href="{% url 'alliance_list' %}">Lista sojuszy</a>
+        </div>
+        <h1 style='color:red'>Do zrobienia </h1>
+        <div class="row">
+            <a href="{% url 'trade_agreement_create' %}">Dodaj nową umowę handlową</a>
+            <a href="{% url 'trade_agreement_list' %}">Lista umów handlowych</a>
+            <a href="{% url 'peace_treaty_create' %}">Dodaj nowy traktat pokojowy</a>
+            <a href="{% url 'peace_treaty_list' %}">Lista traktatów pokojowych</a>
+            <a href="{% url 'army_create' %}">Dodaj wojsko</a>
+            <a href="{% url 'army_list' %}">Lista wojsk</a>
+            <a href="{% url 'war_create' %}">Dodaj nową wojnę</a>
+            <a href="{% url 'war_list' %}">Lista wojen</a>
+            <a href="{% url 'technology_create' %}">Dodaj nową technologię</a>
+            <a href="{% url 'technology_list' %}">Lista technologii</a>
+            <a href="{% url 'event_create' %}">Dodaj nowe wydarzenie</a>
+            <a href="{% url 'event_list' %}">Lista wydarzeń</a>
+            <a href="{% url 'social_development_create' %}">Dodaj nowy rozwój społeczny</a>
+            <a href="{% url 'social_development_list' %}">Lista rozwojów społecznych</a>
+        </div>
     </div>
+    
 {% endif %}
     <div class='content-container'>
         {% block content %}
