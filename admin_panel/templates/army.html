@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Lista wojska</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Państwo</th>
+                <th>Jednostka</th>
+                <th>Ilość</th>
+                <th>Śila</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for army in object_list %}
+            <tr>
+                <td>{{ army.country }}</td>
+                <td>{{ army.name }}</td>
+                <td>{{ army.quantity }}</td>
+                <td>{{ army.power }}</td>
+
+                <td><a href="{% url 'army_update' pk=army.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'army_delete' pk=army.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'army_create' %}">Dodaj nowe wojsko</a>
+</div>
+
+
+{% endblock %}

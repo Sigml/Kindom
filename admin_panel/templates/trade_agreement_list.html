@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Lista umow</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa sojuszy</th>
+                <th>Uczesnicy</th>
+                <th>Data rozpoczęcia</th>
+                <th>Dota końca</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for trade_agreement in object_list %}
+            <tr>
+                <td>{{ trade_agreement.alliance }}</td>
+                <td>
+                    {% for participant in trade_agreement.participants.all %}
+                        {{ participant.name }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ trade_agreement.start_date }}</td>
+                <td>{{ trade_agreement.end_date }}</td>
+
+
+                
+                <td><a href="{% url 'trade_agreement_update' pk=trade_agreement.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'trade_agreement_delete' pk=trade_agreement.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'trade_agreement_create' %}">Dodaj nową umowę</a>
+</div>
+
+
+{% endblock %}

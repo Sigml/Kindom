@@ -17,13 +17,13 @@ class AgeCreateForm(forms.ModelForm):
                 'class':'form-control',
                 'placeholder':'Nazwa epoki'
             }),
-            'start_of_era': forms.TextInput(attrs={
-                'class':'form-control',
-                'placeholder':'Data początku epoki'
+            'start_of_era': forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
             }),
-            'end_of_era': forms.TextInput(attrs={
-                'class':'form-control',
-                'placeholder':'Data konca epoki'
+            'end_of_era':  forms.DateInput(attrs={
+                'class': 'form-control', 
+                'type': 'date'
             }),
         }
         
@@ -261,18 +261,18 @@ class TradeAgreementCreateForm(forms.ModelForm):
             'start_date':'Data rozpoczęcia', 
             'end_date':'Data końcowa',
         }
-widgets = {
+        widgets = {
             'alliance': forms.Select(attrs={
                 'class': 'form-control'
             }),
-            'participants': forms.SelectMultiple(attrs={
+            'participants': forms.CheckboxSelectMultiple(attrs={
                 'class': 'form-control'
             }),
-            'start_date': forms.DateInput(attrs={
+            'start_date':forms.DateInput(attrs={
                 'class': 'form-control', 
                 'type': 'date'
             }),
-            'end_date': forms.DateInput(attrs={
+            'end_date':forms.DateInput(attrs={
                 'class': 'form-control', 
                 'type': 'date'
             }),
