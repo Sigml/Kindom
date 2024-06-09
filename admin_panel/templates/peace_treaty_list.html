@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Lista traktatów pokojowych</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Państwo</th>
+                <th>Państwo</th>
+                <th>Data rozpoczęcia</th>
+                <th>Dota końca</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for peace_treaty in object_list %}
+            <tr>
+                <td>{{ peace_treaty.country1 }}</td>
+                <td>{{ peace_treaty.country2 }}</td>
+                <td>{{ peace_treaty.start_date }}</td>
+                <td>{{ peace_treaty.end_date }}</td>
+
+                <td><a href="{% url 'peace_treaty_update' pk=peace_treaty.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'peace_treaty_delete' pk=peace_treaty.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'peace_treaty_create' %}">Dodaj nowy traktat</a>
+</div>
+
+
+{% endblock %}

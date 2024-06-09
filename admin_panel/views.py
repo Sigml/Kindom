@@ -256,7 +256,7 @@ class TradeDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('trade_list')
     
-    ######
+
 class AllianceCreateView(AdminRequiredMixin, CreateView):
     model = Alliance
     template_name = 'forms.html'
@@ -291,12 +291,12 @@ class TradeAgreementCreateView(AdminRequiredMixin, CreateView):
     model = TradeAgreement
     template_name = 'forms.html'
     form_class = TradeAgreementCreateForm
-    success_url = reverse_lazy('treade_agreement_list')
+    success_url = reverse_lazy('trade_agreement_list')
     
     
 class TradeAgreementListView(AdminRequiredMixin, ListView):
     model = TradeAgreement
-    template_name = '.html'
+    template_name = 'trade_agreement_list.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)
@@ -308,25 +308,25 @@ class TradeAgreementUpdateView(AdminRequiredMixin, UpdateView):
     model = TradeAgreement
     template_name = 'forms.html'
     form_class = TradeAgreementCreateForm
-    success_url = reverse_lazy('treade_agreement_list')
+    success_url = reverse_lazy('trade_agreement_list')
     
 
 class TradeAgreementDeleteView(AdminRequiredMixin, DeleteView):
     model = TradeAgreement
     template_name = 'delete.html'
-    success_url = reverse_lazy('treade_agreement_list')
+    success_url = reverse_lazy('trade_agreement_list')
     
 
 class PeaceTreatyCreateView(AdminRequiredMixin, CreateView):
     model = PeaceTreaty
     template_name = 'forms.html'
     form_class = PeaceTreatyCreateForm
-    success_url = reverse_lazy('peace_teatry_list')
+    success_url = reverse_lazy('peace_treaty_list')
     
     
 class PeaceTreatyListView(AdminRequiredMixin, ListView):
     model = PeaceTreaty
-    template_name = '.html'
+    template_name = 'peace_treaty_list.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)
@@ -338,15 +338,15 @@ class PeaceTreatyUpdateView(AdminRequiredMixin, UpdateView):
     model = PeaceTreaty
     template_name = 'forms.html'
     form_class = PeaceTreatyCreateForm
-    success_url = reverse_lazy('peace_teatry_list')
+    success_url = reverse_lazy('peace_treaty_list')
     
 
 class PeaceTreatyDeleteView(AdminRequiredMixin, DeleteView):
     model = PeaceTreaty
     template_name = 'delete.html'
-    success_url = reverse_lazy('peace_teatry_list')
+    success_url = reverse_lazy('peace_treaty_list')
     
-    
+    ######
 class ArmyCreateView(AdminRequiredMixin, CreateView):
     model = Army
     template_name = 'forms.html'
@@ -356,7 +356,7 @@ class ArmyCreateView(AdminRequiredMixin, CreateView):
     
 class ArmyListView(AdminRequiredMixin, ListView):
     model = Army
-    template_name = '.html'
+    template_name = 'army.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)
