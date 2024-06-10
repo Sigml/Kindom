@@ -310,15 +310,23 @@ class PeaceTreatyCreateForm (forms.ModelForm):
 class ArmyCreateForm (forms.ModelForm):
     class Meta:
         model = Army
-        fields = ('country', 'name', 'quantity', 'power',)
+        fields = ('country', 'name', 'quantity', 'power', 'defense', 'required_resources_1', 'quantity_1', 
+                  'required_resources_2', 'quantity_2', 'required_resources_3', 'quantity_3')
         labels = {
             'country':'Państwo',
             'name': 'Nazwa wojska',
             'quantity':'Ilość', 
             'power':'Moc',
+            'defense':'Obrona',
+            'required_resources_1':'Zasob do stworzenia',
+            'quantity_1':'Iloćś', 
+            'required_resources_2':'Zasob do stworzenia', 
+            'quantity_2':'Iloćś', 
+            'required_resources_3':'Zasob do stworzenia', 
+            'quantity_3':'Iloćś'
         }
         widgets = {
-            'country':forms.Select(attrs={
+            'country':forms.CheckboxSelectMultiple(attrs={
                 'class': 'form-control'
             }), 
             'name':forms.TextInput(attrs={
@@ -328,7 +336,29 @@ class ArmyCreateForm (forms.ModelForm):
                 'class':'form-control'
                 }),
             'power':forms.NumberInput(attrs={
-                'class':'form-control'}),
+                'class':'form-control'
+                }),
+            'defense': forms.NumberInput(attrs={
+                'class': 'form-control'
+                }),
+            'required_resources_1':forms.Select(attrs={
+                'class': 'form-control'
+                }),
+            'quantity_1':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'required_resources_2':forms.Select(attrs={
+                'class': 'form-control'
+                }),
+            'quantity_2':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
+            'required_resources_3':forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'quantity_3':forms.NumberInput(attrs={
+                'class':'form-control'
+                }),
         }
         
                
