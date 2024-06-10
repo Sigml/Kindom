@@ -11,6 +11,7 @@
                 <th>Jednostka</th>
                 <th>Ilość</th>
                 <th>Śila</th>
+                <th>Obrona</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -18,10 +19,16 @@
         <tbody>
             {% for army in object_list %}
             <tr>
-                <td>{{ army.country }}</td>
+                <td>
+                    {% for country in army.country.all %}
+                        {{country.name}}{% if not forloop.last %}
+                        {% endif %}
+                    {% endfor %}
+                </td>
                 <td>{{ army.name }}</td>
                 <td>{{ army.quantity }}</td>
                 <td>{{ army.power }}</td>
+                <td>{{ army.defense }}</td>
 
                 <td><a href="{% url 'army_update' pk=army.pk %}">Zaktualizuj</a></td>
                 <td><a href="{% url 'army_delete' pk=army.pk %}">Usuń</a></td>

@@ -110,10 +110,20 @@ class PeaceTreaty(models.Model):
         return f"Traktat pokojowy - {self.country1.name} i {self.country2.name}"
 
 class Army(models.Model):
-    country = models.OneToOneField(Country, on_delete=models.CASCADE, related_name='army')
+    country = models.ManyToManyField(Country, related_name='army')
     name = models.CharField(max_length=64)
     quantity = models.IntegerField()
     power = models.IntegerField()
+    defense = models.IntegerField(default=0)
+    required_resources_1 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_resources_1', null=True)
+    quantity_1 = models.IntegerField(default=0)
+    required_resources_2 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_resources_2', null=True)
+    quantity_2 = models.IntegerField(default=0)
+    required_resources_3 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_resources_3', null=True)
+    quantity_3 = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
     
 class War(models.Model):
     attacker = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='wars_started')
