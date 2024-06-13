@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
-from game.models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory, Ecology, Trade, Alliance,
+from .models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory, Ecology, Trade, Alliance,
                          TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment) 
 from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm, RequiredResourcesCreateForm,
                     BuildFactoryCreateForm, EcologyCreateForm, TradeCreateForm, AllianceCreateForm, TradeAgreementCreateForm,

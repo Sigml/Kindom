@@ -1,5 +1,5 @@
 from django import forms
-from game.models import (Age, Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
+from .models import (Age, Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
                    Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment)
 
 
@@ -31,12 +31,13 @@ class AgeCreateForm(forms.ModelForm):
 class CountryCreateForm(forms.ModelForm):
     class Meta:
         model = Country
-        fields = ('name', 'capital', 'population', 'income',)
+        fields = ('name', 'capital', 'population', 'income', 'image',)
         labels = {
             'name': 'Nazwa kraju',
             'capital': 'Kapitał',
             'population': 'Ilość mieskanców',
             'income': 'Dochód',
+            'image': 'Obraz państwa'
         }
         Widgets = {
             'name': forms.TextInput(attrs={
@@ -61,12 +62,13 @@ class CountryCreateForm(forms.ModelForm):
 class ResourcesCreateForm(forms.ModelForm):
     class Meta:
         model = Resources
-        fields = ('country', 'name', 'quantity', 'price',)
+        fields = ('country', 'name', 'quantity', 'price', 'image',)
         labels = {
             'country': 'Nazwa państwa',
             'name': 'Nazwa zasobu',
             'quantity': 'Ilość',
             'price': 'Cena',
+            'image': 'Obraz zasobu',
         }
         widgets = {
             'country': forms.Select(attrs={
@@ -107,11 +109,12 @@ class FactoryCreateForm(forms.ModelForm):
 class RequiredResourcesCreateForm(forms.ModelForm):
     class Meta:
         model = RequiredResources
-        fields = ('resource', 'required_resource', 'quantity',)
+        fields = ('resource', 'required_resource', 'quantity', 'image',)
         labels = {
             'resource':'Zasób',
             'required_resource':'Wymagany zasób',
             'quantity':'ILość',
+            'image': 'Obraz zasobu',
         }
         widgets = {
             'required_resource':forms.Select(attrs={
@@ -311,7 +314,7 @@ class ArmyCreateForm (forms.ModelForm):
     class Meta:
         model = Army
         fields = ('country', 'name', 'quantity', 'power', 'defense', 'required_resources_1', 'quantity_1', 
-                  'required_resources_2', 'quantity_2', 'required_resources_3', 'quantity_3')
+                  'required_resources_2', 'quantity_2', 'required_resources_3', 'quantity_3', 'image',)
         labels = {
             'country':'Państwo',
             'name': 'Nazwa wojska',
@@ -323,7 +326,8 @@ class ArmyCreateForm (forms.ModelForm):
             'required_resources_2':'Zasob do stworzenia', 
             'quantity_2':'Iloćś', 
             'required_resources_3':'Zasob do stworzenia', 
-            'quantity_3':'Iloćś'
+            'quantity_3':'Iloćś',
+            'image':'Obraz wojska',
         }
         widgets = {
             'country':forms.CheckboxSelectMultiple(attrs={
@@ -396,19 +400,20 @@ class WarCreateForm(forms.ModelForm):
 class TechnologyCreateForm (forms.ModelForm):
     class Meta:
         model = Technology
-        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military',)
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image',)
         labels = {
             'age':'Epoka',
-            'name':'Nazma', 
+            'name':'Nazwa', 
             'efficiency_production':'Efektywność produkcji',
             'efficiency_trade':'Efektywność handlu',
             'efficiency_military':'Efektywność wojskowa',
+            'image': 'Obraz technologii',
         }
         widgets = {
             'age':forms.Select(attrs={
                 'class': 'form-control'
             }),
-            'name':forms.Select(attrs={
+            'name':forms.TextInput(attrs={
                 'class':'form-control'
                 }), 
             'efficiency_production':forms.NumberInput(attrs={
@@ -426,13 +431,14 @@ class TechnologyCreateForm (forms.ModelForm):
 class EventCreateForm (forms.ModelForm):
     class Meta:
         model = Event
-        fields = ('name', 'description', 'impact_economy', 'impact_society', 'impact_military',)
+        fields = ('name', 'description', 'impact_economy', 'impact_society', 'impact_military', 'image',)
         labels = {
             'name':'Nazwa',
             'description':'Opis',
             'impact_economy':'Wpływ gospodarczy', 
             'impact_society':'Wpływ społeczeństwa',
             'impact_military':'Wpływ wojskowy',
+            'image':"Obraz wydarżenia",
         }
         widgets = {
             'name':forms.TextInput(attrs={
@@ -456,17 +462,18 @@ class EventCreateForm (forms.ModelForm):
 class SocialDevelopmentCreateForm(forms.ModelForm):
     class Meta:
         model = SocialDevelopment
-        fields = ('country', 'poverty_rate', 'public_health_index', 'education_index',)
+        fields = ('name', 'poverty_rate', 'public_health_index', 'education_index', 'image',)
         labels = {
-            'country':'Kraj', 
+            'name':'Nazwa',
             'poverty_rate':'Wskaźnik zagrożenia',
             'public_health_index':'Indeks zdrowia publicznego',
             'education_index':'Indeks edukacji',
+            'image': ' Obraz',
         }
         widgets = {
-            'country':forms.Select(attrs={
+            'name':forms.TextInput(attrs={
                 'class':'form-control'
-                }), 
+                }),
             'poverty_rate':forms.NumberInput(attrs={
                 'class':'form-control'
                 }),
