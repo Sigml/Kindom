@@ -66,54 +66,69 @@ a:hover {
     margin: 0;
 }
 
-.register {
+.registration {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
     background-color: #080;
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
-.register form {
+.registration form {
     display: flex;
     flex-direction: column;
 }
 
-.register label {
+.registration label {
     color: #fff;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
-.register input[type="text"],
-.register input[type="email"],
-.register input[type="password"],
-.register input[type="date"],
-.register button[type="submit"] {
-    padding: 10px;
-    margin-bottom: 10px;
+.registration input[type="text"],
+.registration input[type="email"],
+.registration input[type="password"],
+.registration input[type="date"],
+.registration button[type="submit"] {
+    padding: 12px; 
+    margin-bottom: 12px;
     border: 1px solid #666;
     border-radius: 5px;
     background-color: #030;
     color: #fff;
+    transition: border-color 0.3s ease; 
 }
 
-.register input[type="text"]:focus,
-.register input[type="email"]:focus,
-.register input[type="password"]:focus,
-.register input[type="date"]:focus {
+.registration input[type="text"]:focus,
+.registration input[type="email"]:focus,
+.registration input[type="password"]:focus,
+.registration input[type="date"]:focus {
     outline: none;
     border-color: #0f0; 
 }
 
-.register button[type="submit"] {
+.registration button[type="submit"] {
     background-color: #0f0; 
     border: none;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: bold; 
 }
 
-.register button[type="submit"]:hover {
+.registration button[type="submit"]:hover {
     background-color: #aaffaa; 
 }
+
+.registration .form-control-password {
+    margin-bottom: 12px; 
+}
+
+.registration .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
 
 .email-check-container {
     text-align: center;
@@ -339,4 +354,27 @@ a:hover {
 
 .delete_view button[type="submit"]:hover {
     background-color: #a00;
+}
+
+.user_link {
+    margin-top: 20px; 
+}
+
+.user_link .row {
+    display: flex;
+    justify-content: center; 
+}
+
+.user_link a {
+    display: inline-block;
+    padding: 10px 20px; 
+    background-color: rgb(3, 122, 3);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease; 
+}
+
+.user_link a:hover {
+    background-color: #d9ff00; 
 }

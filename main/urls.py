@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 from admin_panel import urls as admin_panel_urls
 from user import urls as user_urls
+from game import urls as game_urls
 from admin_panel.views import main
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,6 +30,7 @@ urlpatterns = [
     path('', main, name = 'main'),
     path('admin_panel/', include(admin_panel_urls)),
     path('user/', include(user_urls)),
+    path('game/', include(game_urls)),
 ]
 
 if settings.DEBUG:

@@ -1,22 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class='register'>
+    <div class='registration'>
         <form action='' method='post'>
             {% csrf_token %}
-            <label>Nickname</label>
-            {{ form.username }}
-            <label>Email</label>
-            {{ form.email }}
-            <label>Imię</label>
-            {{ form.first_name }}
-            <label>Nazwisko</label>
-            {{ form.last_name }}
-            <label>Data urodzenia</label>
-            {{ form.date_of_birth }}
-            <label>Hasło</label>
-            {{ form.password }}
-            <label>Powtórz hasło</label>
-            {{ form.password_confirmation }}
+            {{ form.as_p}}
             <button type='submit'>Zarejestruj się</button>
             {% for field, errors in form.errors.items %}
                 {% for error in errors %}

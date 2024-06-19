@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from .views import (AgeCreateView, AgeListView, AgeUpdateView, AgeDeleteView, CountryCreateView, CountryListView, 
                     CountryUpdateView, CountryDeleteView, ResourcesCreateView, ResourcesListView, ResourcesUpdateView,
                     ResourcesDeleteView, FactoryCreateView, FactoryListView, FactoryUpdateView, FactoryDeleteView,
