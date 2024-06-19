@@ -6,6 +6,7 @@
     <table>
         <thead>
             <tr>
+                <th>Obraz kraju</th>
                 <th>Nazwa kraju</th>
                 <th>Kapital</th>
                 <th>Iloćś mieszkańców</th>
@@ -17,6 +18,7 @@
         <tbody>
             {% for country in object_list %}
             <tr>
+                <td><img src="{{ country.image.url }}" alt="Factory Image" width="50" height="50"></td>
                 <td>{{ country.name }}</td>
                 <td>{{ country.capital }}</td>
                 <td>{{ country.population }}</td>
