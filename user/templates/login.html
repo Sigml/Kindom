@@ -18,6 +18,7 @@
                 </div>
             {% endif %}
             <br>
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
             <button type="submit">Załoguj</button>
             <h2>Nie masz konta <a href="{% url 'registration' %}">Zarejestruj się</a> </h2>
             <h2> <a href="{% url 'search_user_to_reset_password' %}">Nie pamiętasz hasła?</a> </h2>
