@@ -4,6 +4,7 @@ class Age(models.Model):
     name = models.CharField(max_length=64)
     start_of_era = models.DateField(null=True, blank=True)
     end_of_era = models.DateField(null=True, blank=True)
+    image = models.ImageField(upload_to='age_image/', null=True, blank=True)
     
     def __str__(self):
         return self.name

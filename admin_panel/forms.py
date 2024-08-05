@@ -6,11 +6,12 @@ from .models import (Age, Country, Resources, Factory, BuildFactory, RequiredRes
 class AgeCreateForm(forms.ModelForm):
     class Meta:
         model = Age
-        fields = ('name', 'start_of_era', 'end_of_era',)
+        fields = ('name', 'start_of_era', 'end_of_era', 'image', )
         labels = {
             'name': 'Nazwa epoki',
             'start_of_era': 'Data początku epoki',
             'end_of_era': 'Data końca epoki',
+            'image': 'Obraz epoki'
         }
         widgets = {
             'name': forms.TextInput(attrs={
@@ -25,6 +26,7 @@ class AgeCreateForm(forms.ModelForm):
                 'class': 'form-control', 
                 'type': 'date'
             }),
+            
         }
         
 

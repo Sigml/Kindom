@@ -5,6 +5,7 @@
     <meta charset='UTF-8'>
     <title>Game</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/script.js' %}"defer></script>
 </head>
 
 <body>
@@ -18,7 +19,7 @@
                     <img src="{{ user.profile_picture.url }}" alt="User Avatar" width="50" height="50">
                 {% endif %}
                 <a href="{% url 'user_info' %}">Witaj, {{ user.username }}</a>
-                <br> <a href="{% url 'logout' %}"> Logout</a>
+                <br> <a href="{% url 'logout' %}"> Wyloguj</a>
             {% else %}
                 <a href="{% url 'login' %}">Zaloguj</a>
             {% endif %}

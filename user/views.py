@@ -112,7 +112,8 @@ class LoginUserView(View):
             
             if user is not None:
                 login(request, user)
-                return redirect (self.success_url)
+                next_url = request.POST.get('next', self.success_url) or self.success_url
+                return redirect (next_url)
             else:
                 form.add_error(None, 'Nie prawidłowy email lub hasło')
                 messages.error(request, 'Nie prawidłowy email lub hasło')

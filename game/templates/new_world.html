@@ -1,11 +1,66 @@
 {% extends 'base.html' %}
 {% block content %}
-        <div class='new_world'>
-            <ul>
-                {% for country in all_countries %}
-                    <li>{{ country.name }}</li>
-                {% endfor %}
-            </ul>
-    
+<div class="container country-view">
+    <div class="country-details">
+        <img id="country-image" src="" alt="">
+        <div class="card-header" id="country-name"></div>
+        <div class="card-body">
+            <p id="country-capital"></p>
+            <p id="country-population"></p>
+            <p id="country-income"></p>
         </div>
+        <div class="card-footer">
+            <button id="prev-btn" class="btn"></button>
+            <button id="next-btn" class="btn"></button>
+        </div>
+        <div class='choose-epoch'>
+            <button id="choose-epoch-btn" class="btn">Wybierz epokę</button>
+        </div>
+    </div>
+        
+        <div class="epoch-selector" id="epoch-selector" style="display: none;">
+            <form method="post" action="{% url 'create_new_world' %}">
+                {% csrf_token %}
+                <label for="epoch-select">Wybierz epokę:</label>
+                <select id="epoch-select" name="epoch_id">
+                    {% for age in all_age %}
+                    <option value="{{ age.id }}"
+                        data-name="{{ age.name }}"
+                        data-start="{{ age.start_of_era }}"
+                        data-end="{{ age.end_of_era }}"
+                        data-image="{% if age.image %}{{ age.image.url }}{% else %}None{% endif %}">
+                        {{ age.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn">Rozpocznij grę</button>
+            </form>
+            
+            <div id="epoch-image-container">
+                <img id="epoch-image" src="" alt="Epoch Image">
+                <div id="epoch-image-error" class="error" style="display: none;">
+                    Brak dostępnego obrazu
+                </div>
+            </div>
+        
+            <div id="epoch-info">
+                <h3 id="epoch-name"></h3>
+                <p id="epoch-dates"></p>
+            </div>
+        </div>
+    </div>
+
+    <script id="countries-data" type="application/json">
+        [
+            {% for country in all_countries %}
+            {
+                "name": "{{ country.name|escapejs }}",
+                "image": "{{ country.image.url|escapejs }}",
+                "capital": "{{ country.capital|escapejs }}",
+                "population": "{{ country.population|escapejs }}",
+                "income": "{{ country.income|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        ]
+    </script>
 {% endblock %}
