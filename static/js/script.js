@@ -1,109 +1,133 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const countriesData = JSON.parse(document.getElementById('countries-data').textContent);
-    const countryImage = document.getElementById('country-image');
+    console.log("Script loaded and DOM fully parsed");
+
+    const countrySelect = document.getElementById('country-select');
     const countryName = document.getElementById('country-name');
     const countryCapital = document.getElementById('country-capital');
     const countryPopulation = document.getElementById('country-population');
     const countryIncome = document.getElementById('country-income');
+    const countryDetails = document.querySelector('.country-details');
     const epochSelector = document.getElementById('epoch-selector');
     const chooseEpochBtn = document.getElementById('choose-epoch-btn');
-    const epochImage = document.getElementById('epoch-image');
-    const epochImageContainer = document.getElementById('epoch-image-container');
-    const epochImageError = document.getElementById('epoch-image-error');
-    const epochName = document.getElementById('epoch-name');
-    const epochDates = document.getElementById('epoch-dates');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const prevEpochBtn = document.getElementById('prev-epoch-btn');
+    const nextEpochBtn = document.getElementById('next-epoch-btn');
 
-    let currentIndex = 0;
-
-    function updateCountryDetails(index) {
-        if (index >= 0 && index < countriesData.length) {
-            const country = countriesData[index];
-            countryImage.src = country.image;
-            countryName.textContent = country.name;
-            countryCapital.textContent = `Capital: ${country.capital}`;
-            countryPopulation.textContent = `Population: ${country.population}`;
-            countryIncome.textContent = `Income: ${country.income}`;
+    const updateCountryView = () => {
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+        
+        if (!selectedOption) {
+            console.log("No country selected");
+            return;
         }
-    }
 
-    // Initialize with the first country
-    updateCountryDetails(currentIndex);
+        const name = selectedOption.getAttribute('data-country-name');
+        const capital = selectedOption.getAttribute('data-country-capital');
+        const population = selectedOption.getAttribute('data-country-population');
+        const income = selectedOption.getAttribute('data-country-income');
+        const imageUrl = selectedOption.getAttribute('data-country-image');
 
-    document.getElementById('prev-btn').addEventListener('click', function() {
-        if (currentIndex > 0) {
-            currentIndex--;
-            updateCountryDetails(currentIndex);
+        console.log(`Selected Country: ${name}`);
+        console.log(`Capital: ${capital}`);
+        console.log(`Population: ${population}`);
+        console.log(`Income: ${income}`);
+        console.log(`Image URL: ${imageUrl}`);
+
+        countryName.textContent = name;
+        countryCapital.textContent = `Kapital początkowy: ${capital}`;
+        countryPopulation.textContent = `Populacja początkowa: ${population}`;
+        countryIncome.textContent = `Dochod początkowy: ${income}`;
+        countryDetails.style.backgroundImage = imageUrl !== 'None' ? `url(${imageUrl})` : '';
+    };
+
+    const showEpochSelector = () => {
+        const selectedIndex = countrySelect.selectedIndex;
+        if (selectedIndex === -1) {
+            alert('Wybierz kraj przed kontynuowaniem.');
+            return;
         }
+
+        countryDetails.style.display = 'none';
+        epochSelector.style.display = 'block';
+
+        const selectedOption = countrySelect.options[selectedIndex];
+        console.log(`Selected Country for Epoch Selection: ${selectedOption.getAttribute('data-country-name')}`);
+
+        const firstEpochOption = document.querySelector('#epoch-select option');
+        if (firstEpochOption) {
+            console.log("Epoch option found:", firstEpochOption);
+            firstEpochOption.selected = true;
+            document.getElementById('epoch-name').textContent = firstEpochOption.getAttribute('data-name');
+            document.getElementById('epoch-dates').textContent = `Od: ${firstEpochOption.getAttribute('data-start')} Do: ${firstEpochOption.getAttribute('data-end')}`;
+            const epochImage = document.getElementById('epoch-image');
+            const imageUrl = firstEpochOption.getAttribute('data-image');
+            if (imageUrl !== 'None') {
+                epochImage.src = imageUrl;
+                document.getElementById('epoch-image-error').style.display = 'none';
+            } else {
+                document.getElementById('epoch-image-error').style.display = 'block';
+            }
+        }
+    };
+
+    prevBtn.addEventListener('click', () => {
+        countrySelect.selectedIndex = (countrySelect.selectedIndex === 0) ? countrySelect.options.length - 1 : countrySelect.selectedIndex - 1;
+        console.log(`Previous country selected: ${countrySelect.options[countrySelect.selectedIndex].text}`);
+        updateCountryView();
     });
 
-    document.getElementById('next-btn').addEventListener('click', function() {
-        if (currentIndex < countriesData.length - 1) {
-            currentIndex++;
-            updateCountryDetails(currentIndex);
-        }
+    nextBtn.addEventListener('click', () => {
+        countrySelect.selectedIndex = (countrySelect.selectedIndex === countrySelect.options.length - 1) ? 0 : countrySelect.selectedIndex + 1;
+        console.log(`Next country selected: ${countrySelect.options[countrySelect.selectedIndex].text}`);
+        updateCountryView();
     });
 
-    document.getElementById('choose-epoch-btn').addEventListener('click', function() {
-        const epochSelector = document.getElementById('epoch-selector');
+    chooseEpochBtn.addEventListener('click', showEpochSelector);
 
-        if (epochSelector.style.display === 'none' || epochSelector.style.display === '') {
-            epochSelector.style.display = 'block';
+    const updateEpochView = () => {
+        const selectedOption = document.querySelector('#epoch-select option:checked');
+        
+        if (!selectedOption) {
+            console.log("No epoch selected");
+            return;
+        }
+
+        const name = selectedOption.getAttribute('data-name');
+        const start = selectedOption.getAttribute('data-start');
+        const end = selectedOption.getAttribute('data-end');
+        const imageUrl = selectedOption.getAttribute('data-image');
+
+        console.log(`Selected Epoch: ${name}`);
+        console.log(`Start Date: ${start}`);
+        console.log(`End Date: ${end}`);
+        console.log(`Image URL: ${imageUrl}`);
+
+        document.getElementById('epoch-name').textContent = name;
+        document.getElementById('epoch-dates').textContent = `Od: ${start} Do: ${end}`;
+        const epochImage = document.getElementById('epoch-image');
+        if (imageUrl !== 'None') {
+            epochImage.src = imageUrl;
+            document.getElementById('epoch-image-error').style.display = 'none';
         } else {
-            epochSelector.style.display = 'none';
+            document.getElementById('epoch-image-error').style.display = 'block';
         }
+    };
+
+    prevEpochBtn.addEventListener('click', () => {
+        const epochSelect = document.getElementById('epoch-select');
+        epochSelect.selectedIndex = (epochSelect.selectedIndex === 0) ? epochSelect.options.length - 1 : epochSelect.selectedIndex - 1;
+        console.log(`Previous epoch selected: ${epochSelect.options[epochSelect.selectedIndex].getAttribute('data-name')}`);
+        updateEpochView();
     });
 
-    document.querySelector('.epoch-selector form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const epochId = document.getElementById('epoch-select').value;
-        if (epochId) {
-            window.location.href = `/game/start?epoch=${epochId}`;
-        } else {
-            alert('Wybierz epokę przed rozpoczęciem gry.');
-        }
-    });
-    
-    function toggleEpochSelector() {
-        if (epochSelector.style.display === 'none' || epochSelector.style.display === '') {
-            epochSelector.style.display = 'block';
-        } else {
-            epochSelector.style.display = 'none';
-        }
-    }
-
-    chooseEpochBtn.addEventListener('click', toggleEpochSelector);
-
-    document.getElementById('epoch-select').addEventListener('change', function() {
-        const selectedOption = this.options[this.selectedIndex];
-        const epochNameText = selectedOption.getAttribute('data-name');
-        const epochStart = selectedOption.getAttribute('data-start');
-        const epochEnd = selectedOption.getAttribute('data-end');
-        const epochImageUrl = selectedOption.getAttribute('data-image');
-
-        epochName.textContent = epochNameText;
-        epochDates.textContent = `Start: ${epochStart} | End: ${epochEnd}`;
-
-        if (epochImageUrl) {
-            epochImage.src = epochImageUrl;
-            epochImage.style.display = 'block'; // Pokaż obraz, jeśli URL jest poprawny
-            epochImageError.style.display = 'none'; // Ukryj komunikat o błędzie
-        } else {
-            epochImage.src = ''; // Wyczyść źródło obrazu
-            epochImage.style.display = 'none'; // Ukryj obraz
-            epochImageError.style.display = 'block'; // Pokaż komunikat o błędzie
-        }
+    nextEpochBtn.addEventListener('click', () => {
+        const epochSelect = document.getElementById('epoch-select');
+        epochSelect.selectedIndex = (epochSelect.selectedIndex === epochSelect.options.length - 1) ? 0 : epochSelect.selectedIndex + 1;
+        console.log(`Next epoch selected: ${epochSelect.options[epochSelect.selectedIndex].getAttribute('data-name')}`);
+        updateEpochView();
     });
 
-    document.querySelector('.epoch-selector form').addEventListener('submit', function(e) {
-        e.preventDefault(); // Zapobiegaj domyślnej wysyłce formularza
-        const epochId = document.getElementById('epoch-select').value;
-        if (epochId) {
-            window.location.href = `/game/start?epoch=${epochId}`;
-        } else {
-            alert('Wybierz epokę przed rozpoczęciem gry.');
-        }
-    });
 
-    // Upewnij się, że epoch-selector jest początkowo ukryty
-    epochSelector.style.display = 'none';
+    updateCountryView();
 });

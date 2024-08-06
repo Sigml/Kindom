@@ -16,7 +16,7 @@ class New_World_Create_View(View):
         all_age = Age.objects.all()
         context = {
             'all_countries':all_countries,
-            'all_age':all_age,
+            'all_age':all_age, 
         } 
         if not request.user.is_authenticated:
             login_url = f"{reverse_lazy('login')}?next={reverse_lazy('create_new_world')}"
