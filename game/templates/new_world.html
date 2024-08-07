@@ -1,73 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container country-view">
-    <div class="country-details" id="country-details">
-        <div class="card-header" id="country-name"></div>
-        <select id="country-select" style="display:none;">
-            {% for country in all_countries %}
-            <option value="{{ country.id }}"
-                data-country-name="{{ country.name }}"
-                data-country-capital="{{ country.capital }}"
-                data-country-population="{{ country.population }}"
-                data-country-income="{{ country.income }}"
-                data-country-image="{% if country.image %}{{ country.image.url }}{% else %}None{% endif %}">
-                {{ country.name }}
-            </option>
-            {% endfor %}
-        </select>
-        <div class="card-body">
-            <p id="country-capital"></p>
-            <p id="country-population"></p>
-            <p id="country-income"></p>
-        </div>
-        <div class="card-footer">
-            <button id="prev-btn" class="btn"></button>
-            <button id="next-btn" class="btn"></button>
-        </div>
-        <div class='choose-epoch'>
-            <button id="choose-epoch-btn" class="btn">Wybierz epokę</button>
-        </div>
-    </div>
-
-    
-    <div class="epoch-selector" id="epoch-selector">
-        <div class="card-header" id="epoch-name"></div>
-        <div class="card-body">
-            <p id="epoch-dates"></p>
-            <div id="epoch-image-container">
-                <img id="epoch-image" src="" alt="Epoch Image">
-                <div id="epoch-image-error" class="error" style="display: none;">
-                    Brak dostępnego obrazu
-                </div>
+<form method="post" action="{% url 'create_new_world' %}">
+    {% csrf_token %}
+    <div class="container">
+        <div class="country-details" id="country-details">
+            <div class="card-header" id="country-name"></div>
+            <div class="card-body">
+                <p id="country-capital"></p>
+                <p id="country-population"></p>
+                <p id="country-income"></p>
             </div>
-        </div>
-        <div class="epoch-footer">
-            <button id="prev-epoch-btn" class="btn"></button>
-            <button id="next-epoch-btn" class="btn"></button>
-        </div>
-    </div>
-
-<div class="epoch-selector" id="epoch-selector" style="display: none;">
-    <div class="card-header" id="epoch-name"></div>
-    <div class="card-body">
-        <p id="epoch-dates"></p>
-        <div id="epoch-image-container">
-            <img id="epoch-image" src="" alt="Epoch Image">
-            <div id="epoch-image-error" class="error" style="display: none;">
-                Brak dostępnego obrazu
+            <div class="card-footer">
+                <button type="button" id="prev-btn" class="btn"></button>
+                <button type="button" id="next-btn" class="btn"></button>
             </div>
+            <div class='choose-epoch'>
+                <button type="button" id="choose-epoch-btn" class="btn">Wybierz epokę</button>
+            </div>
+            <select id="country-select" name="country" style="display:none;">
+                {% for country in all_countries %}
+                <option value="{{ country.id }}"
+                    data-country-id="{{ country.id }}"
+                    data-country-name="{{ country.name }}"
+                    data-country-capital="{{ country.capital }}"
+                    data-country-population="{{ country.population }}"
+                    data-country-income="{{ country.income }}"
+                    data-country-image="{% if country.image %}{{ country.image.url }}{% else %}None{% endif %}">
+                    {{ country.name }}
+                </option>
+                {% endfor %}
+            </select>
         </div>
-    </div>
-    <div class="card-footer">
-        <button id="prev-epoch-btn" class="btn"></button>
-        <button id="next-epoch-btn" class="btn"></button>
-    </div>
-    <div class="epoch-selection-form">
-        <form method="post" action="{% url 'create_new_world' %}">
-            {% csrf_token %}
-            <select id="epoch-select" name="epoch_id" style="display: none;">
+
+        <div class="epoch-selector" id="epoch-selector" style="display: none;">
+            <div class="card-header" id="epoch-name"></div>
+            <div class="card-body">
+                <p id="epoch-dates"></p>
+            </div>
+            <div class="epoch-footer">
+                <button type="button" id="prev-epoch-btn" class="btn"></button>
+                <button type="button" id="next-epoch-btn" class="btn"></button>
+            </div>
+            <select id="epoch-select" name="age" style="display: none;">
                 {% for age in all_age %}
                 <option value="{{ age.id }}"
+                    data-age-id="{{ age.id }}"
                     data-name="{{ age.name }}"
                     data-start="{{ age.start_of_era }}"
                     data-end="{{ age.end_of_era }}"
@@ -76,9 +53,11 @@
                 </option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn">Rozpocznij grę</button>
-        </form>
+            <div class='choose-epoch'>
+                <button type="submit" id="confirm-epoch-btn" class="btn">Rozpocznij grę</button>
+            </div>
+
+        </div>
     </div>
-</div>
-</div>
+</form>
 {% endblock %}
