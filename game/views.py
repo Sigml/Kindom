@@ -31,14 +31,16 @@ class NewWorldCreateView(View):
             return redirect(login_url)
         
         form = NewWorldForm(request.POST)
+        print("Dane POST:", request.POST) 
+
         if form.is_valid():
             new_world = form.save(commit=False)
             new_world.user = request.user
             new_world.save()
-            form.save_m2m() 
+            form.save_m2m()  
             return redirect('game')
         else:
-            print("Błędy formularza:", form.errors)
+            print("Błędy formularza:", form.errors)  
         
         all_countries = Country.objects.all()
         all_age = Age.objects.all()
@@ -49,8 +51,21 @@ class NewWorldCreateView(View):
             'error': 'Proszę uzupełnić wszystkie wymagane pola.' 
         }
         return render(request, 'new_world.html', context)
+
         
             
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import NewWorld
+
 class InGameView(View):
     def get(self, request):
-        return render(request, 'game.html',)
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
+        in_game = NewWorld.objects.filter(user=request.user).select_related('country').prefetch_related('country__resources', 'country__ecology')
+        
+        context = {
+            'in_game': in_game
+        }
+        return render(request, 'game.html', context)
