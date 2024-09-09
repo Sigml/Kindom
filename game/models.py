@@ -2,11 +2,12 @@ from django.db import models
 
 from user.models import CustomUser
 from admin_panel.models import (Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
-                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment)
+                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, Age)
 
 class NewWorld(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_world')
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='user_country')
+    age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='user_age')
     resources = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='world_resources', null=True, blank=True)
     factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='world_factory', null=True, blank=True)
     build_factory = models.ForeignKey(BuildFactory, on_delete=models.CASCADE, related_name='world_build_factories', null=True, blank=True)

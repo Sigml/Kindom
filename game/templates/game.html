@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Gra</h1>
+<div class='in_game'>
+    {% for data in in_game %}
+        <h2>Kraj: {{ data.country.name }}</h2>
+        <p>Reserva: {{ data.country.capital }} zloto</p>
+        <p>Populacja: {{ data.country.population }}</p>
+        <p>Dochód: {{ data.country.income }}</p>
+        {% if data.country.image %}
+            <img src="{{ data.country.image.url }}" alt="{{ data.country.name }}">
+        {% endif %}
+
+        <h3>Surowce:</h3>
+        <ul>
+            {% for resource in data.country.resources.all %}
+                <li>
+                    <p>Nazwa: {{ resource.name }}</p>
+                    <p>Ilość: {{ resource.quantity }}</p>
+                    <p>Cena: {{ resource.price }}</p>
+                    {% if resource.image %}
+                        <img src="{{ resource.image.url }}" alt="{{ resource.name }}">
+                    {% endif %}
+                </li>
+            {% empty %}
+                <li>Brak dostępnych surowców.</li>
+            {% endfor %}
+        </ul>
+
+        <h3>Ekologia:</h3>
+        {% if data.country.ecology %}
+            <p>Jakość powietrza: {{ data.country.ecology.air_quality }}</p>
+            <p>Zanieczyszczenie wody: {{ data.country.ecology.water_pollution }}</p>
+            <p>Pokrycie lasów: {{ data.country.ecology.forest_coverage }}</p>
+            <p>Populacja dzikich zwierząt: {{ data.country.ecology.wildlife_population }}</p>
+        {% else %}
+            <p>Brak danych ekologicznych.</p>
+        {% endif %}
+    {% empty %}
+        <p>Brak danych o grze.</p>
+    {% endfor %}
+</div>
+{% endblock %}

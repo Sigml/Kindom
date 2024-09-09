@@ -7,22 +7,65 @@ from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, R
                    Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment)
 from user.models import CustomUser
 from .models import NewWorld
+from .forms import NewWorldForm
 
 
 
-class New_World_Create_View(View):
+class NewWorldCreateView(View):
     def get(self, request):
-        all_countries = Country.objects.all()
-        all_age = Age.objects.all()
-        context = {
-            'all_countries':all_countries,
-            'all_age':all_age, 
-        } 
         if not request.user.is_authenticated:
             login_url = f"{reverse_lazy('login')}?next={reverse_lazy('create_new_world')}"
             return redirect(login_url)
-        else:
-            return render (request, 'new_world.html', context)
         
-    
-    
+        all_countries = Country.objects.all()
+        all_age = Age.objects.all()
+        context = {
+            'all_countries': all_countries,
+            'all_age': all_age,
+        }
+        return render(request, 'new_world.html', context)
+
+    def post(self, request):
+        if not request.user.is_authenticated:
+            login_url = f"{reverse_lazy('login')}?next={reverse_lazy('create_new_world')}"
+            return redirect(login_url)
+        
+        form = NewWorldForm(request.POST)
+        print("Dane POST:", request.POST) 
+
+        if form.is_valid():
+            new_world = form.save(commit=False)
+            new_world.user = request.user
+            new_world.save()
+            form.save_m2m()  
+            return redirect('game')
+        else:
+            print("Błędy formularza:", form.errors)  
+        
+        all_countries = Country.objects.all()
+        all_age = Age.objects.all()
+        context = {
+            'all_countries': all_countries,
+            'all_age': all_age,
+            'form': form,
+            'error': 'Proszę uzupełnić wszystkie wymagane pola.' 
+        }
+        return render(request, 'new_world.html', context)
+
+        
+            
+from django.shortcuts import render, redirect
+from django.views import View
+from .models import NewWorld
+
+class InGameView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
+        in_game = NewWorld.objects.filter(user=request.user).select_related('country').prefetch_related('country__resources', 'country__ecology')
+        
+        context = {
+            'in_game': in_game
+        }
+        return render(request, 'game.html', context)
