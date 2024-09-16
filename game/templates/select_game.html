@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="select_game">
+    {% for data in in_game %}
+        <div class="game-card">
+            <h2 class="country-name">Kraj: {{ data.country.name }}</h2>
+            <h2 class="era-name">Era: {{ data.age.name }}</h2>
+
+            {% if data.country.image %}
+                <img src="{{ data.country.image.url }}" alt="{{ data.country.name }}">
+            {% endif %}
+
+            <div class="info">
+                <p>Reserva: {{ data.country.capital }} złoto</p>
+                <p>Populacja: {{ data.country.population }}</p>
+                <p>Dochód: {{ data.country.income }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>Brak danych o grze.</p>
+    {% endfor %}
+</div>
+{% comment %} <div class="select_game">
+    {% for data in in_game %}
+        <div class="game-card">
+            <h2 class="country-name">Kraj:{{ data.country.name }}  Era:{{ data.age.name }}</h2>
+
+            {% if data.country.image %}
+                <img src="{{ data.country.image.url }}" alt="{{ data.country.name }}">
+            {% endif %}
+
+            <div class="info">
+                <p>Reserva: {{ data.country.capital }} złoto Populacja: {{ data.country.population }} osób Dochód: {{ data.country.income }}</p>
+            </div>
+        </div>
+    {% empty %}
+        <p>Brak danych o grze.</p>
+    {% endfor %}
+</div> {% endcomment %}
+
+{% endblock %}
+
+

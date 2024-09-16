@@ -51,12 +51,7 @@ class NewWorldCreateView(View):
             'error': 'Proszę uzupełnić wszystkie wymagane pola.' 
         }
         return render(request, 'new_world.html', context)
-
-        
-            
-from django.shortcuts import render, redirect
-from django.views import View
-from .models import NewWorld
+    
 
 class InGameView(View):
     def get(self, request):
@@ -68,4 +63,4 @@ class InGameView(View):
         context = {
             'in_game': in_game
         }
-        return render(request, 'game.html', context)
+        return render(request, 'select_game.html', context)

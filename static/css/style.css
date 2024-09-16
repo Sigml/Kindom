@@ -543,3 +543,67 @@ a:hover {
     width: 150px;
     height: 50px;
 }
+
+.select_game {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    grid-gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.game-card {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.country-name {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.era-name {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+}
+
+.game-card img {
+    width: 220px; 
+    height: 220px;  
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+}
+
+.game-card .info {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.game-card .info p {
+    margin: 0;
+}
