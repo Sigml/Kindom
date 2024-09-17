@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 import json
@@ -53,7 +53,7 @@ class NewWorldCreateView(View):
         return render(request, 'new_world.html', context)
     
 
-class InGameView(View):
+class SelectGameView(View):
     def get(self, request):
         if not request.user.is_authenticated:
             return redirect('login')
@@ -64,3 +64,18 @@ class InGameView(View):
             'in_game': in_game
         }
         return render(request, 'select_game.html', context)
+    
+    
+class InGameView(View):
+    def get(self, request, pk):
+        game = get_object_or_404(NewWorld.objects.select_related('country', 'age', 'resources', 'ecology'), user=request.user, pk=pk)
+        
+        context = {
+            'game':game
+        }
+        if game.ecology:
+            print(f"Ekologia - Air Quality: {game.ecology.air_quality}, Water Pollution: {game.ecology.water_pollution}, Forest Coverage: {game.ecology.forest_coverage}, Wildlife Population: {game.ecology.wildlife_population}")
+        else:
+            print("Brak danych o ekologii.")
+        
+        return render (request, 'in_game.html', context)

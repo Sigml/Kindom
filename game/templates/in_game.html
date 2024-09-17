@@ -1,0 +1,45 @@
+{% extends "base.html"%}
+
+{% block content %}
+
+<div class="game-container">
+    <!-- Tło z obrazem kraju -->
+    {% if game.country.image %}
+        <div class="background-image" style="background-image: url('{{ game.country.image.url }}');"></div>
+    {% endif %}
+
+    <!-- Górna lewa sekcja -->
+    <div class="top-left">
+        <h2>Kraj: {{ game.country.name }}</h2>
+        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }})</h2>
+    </div>
+
+    <!-- Górna środkowa sekcja -->
+    <div class="top-center">
+        <p>Populacja: {{ game.country.population }} osób</p>
+    </div>
+
+    <!-- Górna prawa sekcja: Ekologia -->
+    {% if game.ecology %}
+        <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
+        <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
+        <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
+        <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
+    {% else %}
+        <p>Brak danych o ekologii.</p>
+    {% endif %}
+
+    <!-- Dolna sekcja: Zasoby -->
+    <div class="bottom-row">
+        <p>Rezerwa: {{ game.country.capital }} złoto</p>
+        {% if game.resources %}
+            <p>Zasób: {{ game.resources.name }} - Ilość: {{ game.resources.quantity }}</p>
+            <img src="{{ game.resources.image.url }}" alt="{{ game.resources.name }}">
+        {% else %}
+            <p>Brak zasobów.</p>
+        {% endif %}
+    </div>
+</div>
+
+
+{% endblock %}

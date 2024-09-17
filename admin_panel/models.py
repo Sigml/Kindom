@@ -70,7 +70,7 @@ class Ecology(models.Model):
     wildlife_population = models.DecimalField(max_digits=10, decimal_places=2, default=10.0) 
 
     def __str__(self):
-        return f"Ekologia - {self.country.name}"
+        return f"Ekologia - {self.air_quality, self.water_pollution,self.forest_coverage, self.wildlife_population}"
     
 class Trade(models.Model):
     exporter = models.ForeignKey('Country', on_delete=models.CASCADE, related_name='exports')
