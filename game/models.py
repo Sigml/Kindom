@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import datetime
 
 from user.models import CustomUser
 from admin_panel.models import (Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
@@ -9,6 +10,7 @@ class NewWorld(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='user_country')
     age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='user_age')
     resources = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='world_resources', null=True, blank=True)
+    time = models.DateTimeField(default=datetime(1,1,1))
     factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='world_factory', null=True, blank=True)
     build_factory = models.ForeignKey(BuildFactory, on_delete=models.CASCADE, related_name='world_build_factories', null=True, blank=True)
     required_resources = models.ManyToManyField(RequiredResources, related_name='world_required_resources', blank=True)

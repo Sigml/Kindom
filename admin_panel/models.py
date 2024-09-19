@@ -63,12 +63,16 @@ class BuildFactory(models.Model):
     
 
 class Ecology(models.Model):
-    country = models.OneToOneField('Country', on_delete=models.CASCADE, related_name='ecology')
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
     air_quality = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  
+    image_air_quality = models.ImageField(upload_to='ecology_images/', null=True, blank=True)
     water_pollution = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  
+    image_water_pollution = models.ImageField(upload_to='ecology_images/', null=True, blank=True)
     forest_coverage = models.DecimalField(max_digits=10, decimal_places=2, default=10.0)  
+    image_forest_coverage = models.ImageField(upload_to='ecology_images/', null=True, blank=True)
     wildlife_population = models.DecimalField(max_digits=10, decimal_places=2, default=10.0) 
-
+    image_wildlife_population = models.ImageField(upload_to='ecology_images/', null=True, blank=True)
+ 
     def __str__(self):
         return f"Ekologia - {self.air_quality, self.water_pollution,self.forest_coverage, self.wildlife_population}"
     

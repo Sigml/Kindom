@@ -6,7 +6,7 @@
         {% csrf_token %} 
         <p> Czy na pewno chcesz usunąć element '{{ object }}'?</p>
         <button type='submit' name='confirmation' value='yes'>Tak</button>
-        
+        <a href="{{ cancel_url }}" class="button">Nie</a>
     </form>
 </div>
 

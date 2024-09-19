@@ -11,7 +11,7 @@
     <!-- Górna lewa sekcja -->
     <div class="top-left">
         <h2>Kraj: {{ game.country.name }}</h2>
-        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }})</h2>
+        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }}) {{time}}</h2>
     </div>
 
     <!-- Górna środkowa sekcja -->
@@ -20,21 +20,29 @@
     </div>
 
     <!-- Górna prawa sekcja: Ekologia -->
-    {% if game.ecology %}
-        <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
-        <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
-        <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
-        <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
-    {% else %}
-        <p>Brak danych o ekologii.</p>
-    {% endif %}
+    <div class="top-right">
+        {% if game.ecology %}
+            <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
+            <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
+            <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
+            <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
+        {% else %}
+            <p>Brak danych o ekologii.</p>
+        {% endif %}
+    </div>
 
     <!-- Dolna sekcja: Zasoby -->
     <div class="bottom-row">
         <p>Rezerwa: {{ game.country.capital }} złoto</p>
         {% if game.resources %}
-            <p>Zasób: {{ game.resources.name }} - Ilość: {{ game.resources.quantity }}</p>
-            <img src="{{ game.resources.image.url }}" alt="{{ game.resources.name }}">
+            <p>Zasób:
+                {% if game.resources.image %}
+                <img src="{{ game.resources.image.url }}" alt="{{ game.resources.name }}">
+            {% else %}
+                <p>Brak obrazu zasobu.</p>
+            {% endif %}
+             {{ game.resources.name }} - Ilość: {{ game.resources.quantity }}</p>
+            
         {% else %}
             <p>Brak zasobów.</p>
         {% endif %}

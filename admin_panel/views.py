@@ -45,6 +45,11 @@ class AgeDeleteView(AdminRequiredMixin, DeleteView):
     model = Age
     template_name = 'delete.html'
     success_url = reverse_lazy('all_ages')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('all_ages')
+        return context
 
     
 class CountryCreateView(AdminRequiredMixin, CreateView):
@@ -75,6 +80,11 @@ class CountryDeleteView(AdminRequiredMixin, DeleteView):
     model = Country
     template_name = 'delete.html'
     success_url = reverse_lazy('country_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('country_list')
+        return context
 
 
 class ResourcesCreateView(AdminRequiredMixin, CreateView):
@@ -105,6 +115,11 @@ class ResourcesDeleteView(AdminRequiredMixin, DeleteView):
     model = Resources
     template_name = 'delete.html'
     success_url = reverse_lazy('resources_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('resources_list')
+        return context
 
 
 class FactoryCreateView(AdminRequiredMixin, CreateView):
@@ -136,6 +151,11 @@ class FactoryDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('factory_list')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('factory_list')
+        return context
+    
 
 class RequiredResourcesCreateView(AdminRequiredMixin, CreateView):
     model = RequiredResources
@@ -165,6 +185,11 @@ class RequiredResourcesDeleteView(AdminRequiredMixin, DeleteView):
     model = RequiredResources
     template_name = 'delete.html'
     success_url = reverse_lazy('required_resources_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('required_resources_list')
+        return context
     
     
 class BuildFactoryCreateView(AdminRequiredMixin, CreateView):
@@ -196,6 +221,11 @@ class BuildFactoryDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('build_factory_list')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('build_factory_list')
+        return context
+    
 
 class EcologyCreateView(AdminRequiredMixin, CreateView):
     model = Ecology
@@ -225,6 +255,12 @@ class EcologyDeleteView(AdminRequiredMixin, DeleteView):
     model = Ecology
     template_name = 'delete.html'
     success_url = reverse_lazy('ecology_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('ecology_list')
+        return context
+    
     
 
 class TradeCreateView(AdminRequiredMixin, CreateView):
@@ -256,6 +292,11 @@ class TradeDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('trade_list')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('trade_list')
+        return context
+    
 
 class AllianceCreateView(AdminRequiredMixin, CreateView):
     model = Alliance
@@ -285,6 +326,11 @@ class AllianceDeleteView(AdminRequiredMixin, DeleteView):
     model = Alliance
     template_name = 'delete.html'
     success_url = reverse_lazy('alliance_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('alliance_list')
+        return context
     
 
 class TradeAgreementCreateView(AdminRequiredMixin, CreateView):
@@ -316,6 +362,11 @@ class TradeAgreementDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('trade_agreement_list')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('trade_agreement_list')
+        return context
+    
 
 class PeaceTreatyCreateView(AdminRequiredMixin, CreateView):
     model = PeaceTreaty
@@ -346,6 +397,11 @@ class PeaceTreatyDeleteView(AdminRequiredMixin, DeleteView):
     template_name = 'delete.html'
     success_url = reverse_lazy('peace_treaty_list')
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('peace_treaty_list')
+        return context
+    
     ######
 class ArmyCreateView(AdminRequiredMixin, CreateView):
     model = Army
@@ -375,6 +431,11 @@ class ArmyDeleteView(AdminRequiredMixin, DeleteView):
     model = Army
     template_name = 'delete.html'
     success_url = reverse_lazy('army_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('army_list')
+        return context
 
 
 class WarCreateView(AdminRequiredMixin, CreateView):
@@ -405,6 +466,12 @@ class WarDeleteView(AdminRequiredMixin, DeleteView):
     model = War
     template_name = 'delete.html'
     success_url = reverse_lazy('war_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('war_list')
+        return context
+
 
 
 class TechnologyCreateView(AdminRequiredMixin, CreateView):
@@ -435,6 +502,11 @@ class TechnologyDeleteView(AdminRequiredMixin, DeleteView):
     model = Technology
     template_name = 'delete.html'
     success_url = reverse_lazy('technology_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('technology_list')
+        return context
 
 
 class EventCreateView(AdminRequiredMixin, CreateView):
@@ -465,6 +537,11 @@ class EventDeleteView(AdminRequiredMixin, DeleteView):
     model = Event
     template_name = 'delete.html'
     success_url = reverse_lazy('event_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('event_list')
+        return context
 
 
 class SocialDevelopmentCreateView(AdminRequiredMixin, CreateView):
@@ -495,3 +572,8 @@ class SocialDevelopmentDeleteView(AdminRequiredMixin, DeleteView):
     model = SocialDevelopment
     template_name = 'delete.html'
     success_url = reverse_lazy('social_development_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('social_development_list')
+        return context
