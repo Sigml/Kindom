@@ -34,6 +34,9 @@ class Resources(models.Model):
 class Factory(models.Model):
     name  = models.CharField(max_length=64)
     image = models.ImageField(upload_to='factory_image/', null=True, blank=True)
+    resource = models.ForeignKey(Resources, on_delete=models.CASCADE, default=1)
+    quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    
     
     def __str__(self):
         return self.name
