@@ -33,19 +33,22 @@
 
     <!-- Dolna sekcja: Zasoby -->
     <div class="bottom-row">
-        <p>Rezerwa: {{ game.country.capital }} złoto</p>
-        {% if game.resources %}
-            <p>Zasób:
-                {% if game.resources.image %}
-                <img src="{{ game.resources.image.url }}" alt="{{ game.resources.name }}">
+        <p>Złoto: {{ game.country.capital }} </p>
+        {% for resource in resources %}
+        <li>
+            <p>Nazwa: {{ resource.name }}</p>
+            {% if resource.image %}
+                <img src="{{ resource.image.url }}" alt="{{ resource.name }}">
             {% else %}
                 <p>Brak obrazu zasobu.</p>
             {% endif %}
-             {{ game.resources.name }} - Ilość: {{ game.resources.quantity }}</p>
+            <p>Ilość: {{ resource.quantity }}</p>
+            <p>Cena: {{ resource.price }}</p>
             
-        {% else %}
-            <p>Brak zasobów.</p>
-        {% endif %}
+        </li>
+    {% empty %}
+        <li>Brak dostępnych surowców.</li>
+    {% endfor %}
     </div>
 </div>
 

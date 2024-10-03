@@ -38,8 +38,12 @@ class NewWorldCreateView(View):
             new_world.user = request.user
 
             country = form.cleaned_data['country']
+            new_world.save() 
 
-            new_world.resources = Resources.objects.get(country=country)
+            resources = Resources.objects.filter(country=country)
+            print("Dostępne zasoby:", resources) 
+            new_world.resources.set(resources) 
+            print("Zasoby przypisane do nowego świata:", new_world.resources.all())
 
             existing_ecology = Ecology.objects.filter(country=country).first()
 
@@ -52,13 +56,10 @@ class NewWorldCreateView(View):
                     wildlife_population=existing_ecology.wildlife_population
                 )
 
-            new_world.save()
-            form.save_m2m()
+            new_world.save() 
+            form.save_m2m()  
 
-            print("Dane existing_ecology:", form)
             return redirect('in_game', pk=new_world.pk)
-        else:
-            print("Błędy formularza:", form.errors)
 
         all_countries = Country.objects.all()
         all_age = Age.objects.all()
@@ -69,6 +70,7 @@ class NewWorldCreateView(View):
             'error': 'Proszę uzupełnić wszystkie wymagane pola.'
         }
         return render(request, 'new_world.html', context)
+
 
 
     
@@ -100,7 +102,8 @@ class DeleteGameDeleteView(DeleteView):
     
 class InGameView(View):
     def get(self, request, pk):
-        game = get_object_or_404(NewWorld.objects.select_related('country', 'age', 'resources', 'ecology'), user=request.user, pk=pk)
+        game = get_object_or_404(NewWorld.objects.prefetch_related('country', 'age', 'resources', 'ecology'), user=request.user, pk=pk)
+        resources = game.resources.all()
         if not game.time or game.time.year == 1:
             game.time = game.age.start_of_era
         else:
@@ -108,7 +111,9 @@ class InGameView(View):
         
         context = {
             'game':game,
-            'time':game.time
+            'time':game.time,
+            'resources': resources
         }
-        
+        for resource in resources:
+            print(f"Zasób przekazywany do kontekstu: Nazwa: {resource.name}, Ilość: {resource.quantity}")
         return render (request, 'in_game.html', context)

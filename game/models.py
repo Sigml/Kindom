@@ -9,10 +9,10 @@ class NewWorld(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_world')
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='user_country')
     age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='user_age')
-    resources = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='world_resources', null=True, blank=True)
+    resources = models.ManyToManyField(Resources, related_name='world_resources', blank=True)
     time = models.DateTimeField(default=datetime(1,1,1))
     factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='world_factory', null=True, blank=True)
-    build_factory = models.ForeignKey(BuildFactory, on_delete=models.CASCADE, related_name='world_build_factories', null=True, blank=True)
+    build_factory = models.ManyToManyField(BuildFactory, related_name='world_build_factories', blank=True)
     required_resources = models.ManyToManyField(RequiredResources, related_name='world_required_resources', blank=True)
     ecology = models.OneToOneField(Ecology, on_delete=models.CASCADE, related_name='world_ecology', null=True, blank=True)
     trade = models.OneToOneField(Trade, on_delete=models.CASCADE, related_name='world_trade', null=True, blank=True)
@@ -27,3 +27,13 @@ class NewWorld(models.Model):
 
     def __str__(self):
         return self.country.name
+    
+    def list_resources(self):
+        return ", ".join([resource.name for resource in self.resources.all()])
+
+    list_resources.short_description = "Zasoby"
+
+    def list_build_factories(self):
+        return ", ".join([factory.name for factory in self.build_factory.all()])
+
+    list_build_factories.short_description = "Wybudowane fabryki"
