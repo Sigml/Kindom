@@ -95,10 +95,12 @@ class ResourcesCreateForm(forms.ModelForm):
 class FactoryCreateForm(forms.ModelForm):
     class Meta:
         model = Factory
-        fields = ('name', 'image', )
+        fields = ('name', 'image', 'resource', 'quantity')
         labels = {
             'name':'Nazwa fabryki',
             'image':'Obrazek fabryki',
+            'resource':'Wydobuwajacy zasob',
+            'quantity':'ilosc dziennie'
         }
         widgets = {
             'name':forms.TextInput(attrs={

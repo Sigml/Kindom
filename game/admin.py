@@ -3,7 +3,7 @@ from .models import NewWorld
 
 class NewWorldAdmin(admin.ModelAdmin):
     list_display = (
-        'user', 'country', 'age', 'resources', 'factory', 'build_factory', 
+        'user', 'country', 'age', 'list_resources', 'factory', 'list_build_factories', 
         'ecology', 'trade', 'alliance', 'trade_agreement', 'peace_treaty', 
         'army', 'war', 'technology', 'event', 'social_development'
     )
@@ -15,4 +15,6 @@ class NewWorldAdmin(admin.ModelAdmin):
         'technology__name', 'event__name', 'social_development__name'
     )
 
+
 admin.site.register(NewWorld, NewWorldAdmin)
+

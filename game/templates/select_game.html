@@ -13,16 +13,21 @@
             {% endif %}
 
             <div class="info">
-                <p>Reserva: {{ data.country.capital }} złoto</p>
+                <p>Rezerwa: {{ data.country.capital }} złoto</p>
                 <p>Populacja: {{ data.country.population }}</p>
                 <p>Dochód: {{ data.country.income }}</p>
             </div>
-            <a class='button' href="{% url 'in_game' data.id%}">Wrocz do gry</a>
+
+            <div class="button-container">
+                <a class='button' href="{% url 'in_game' data.id %}">Wróć do gry</a>
+                <a class='button delete' href="{% url 'delete_game' data.id %}">Usuń grę</a>
+            </div>
         </div>
     {% empty %}
         <p>Brak danych o grze.</p>
     {% endfor %}
 </div>
+
 {% endblock %}
 
 
