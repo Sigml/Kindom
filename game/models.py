@@ -37,3 +37,23 @@ class NewWorld(models.Model):
         return ", ".join([factory.name for factory in self.build_factory.all()])
 
     list_build_factories.short_description = "Wybudowane fabryki"
+    
+
+class Backpack(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='backpacks')
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='backpacks')
+    resources = models.ManyToManyField(Resources, through='BackpackResource', related_name='backpacks')
+    # required_resources = models.ManyToManyField(RequiredResources, through='BackpackResource', related_name='backpacks')
+
+    def __str__(self):
+        return f"Plecak dla {self.user.username}"
+
+class BackpackResource(models.Model):
+    backpack = models.ForeignKey(Backpack, on_delete=models.CASCADE)
+    resource = models.ForeignKey(Resources, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+    # required_resources = models.ForeignKey(RequiredResources, on_delete=models.CASCADE)
+    # quantity_required_resources = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.quantity} dla {self.resource.name} w {self.backpack.user.username} plecaku"

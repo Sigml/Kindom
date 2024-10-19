@@ -108,3 +108,16 @@ document.addEventListener('DOMContentLoaded', function() {
         updateCountryView();
     }
 });
+
+function toggleEcology() {
+    const ecologySection = document.getElementById('ecologySection');
+    const toggleButton = document.getElementById('toggleEcology');
+
+    if (ecologySection.style.display === 'none') {
+        ecologySection.style.display = 'block'; 
+        toggleButton.innerText = 'Ukryj Ekologię'; 
+    } else {
+        ecologySection.style.display = 'none';
+        toggleButton.innerText = 'Pokaż Ekologię'; 
+    }
+}

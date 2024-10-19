@@ -7,7 +7,7 @@ from django.http import JsonResponse
 from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
                    Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment)
 from user.models import CustomUser
-from .models import NewWorld
+from .models import NewWorld, Backpack, BackpackResource
 from .forms import NewWorldForm
 
 
@@ -41,9 +41,15 @@ class NewWorldCreateView(View):
             new_world.save() 
 
             resources = Resources.objects.filter(country=country)
-            print("Dostępne zasoby:", resources) 
             new_world.resources.set(resources) 
-            print("Zasoby przypisane do nowego świata:", new_world.resources.all())
+            backpack, create = Backpack.objects.get_or_create(user=request.user, country=country)
+
+            for resource in resources:
+                backpack_resources, create = BackpackResource.objects.get_or_create(
+                    backpack=backpack,
+                    resource=resource,
+                    defaults={'quantity':1000}
+                )
 
             existing_ecology = Ecology.objects.filter(country=country).first()
 
@@ -58,7 +64,9 @@ class NewWorldCreateView(View):
 
             new_world.save() 
             form.save_m2m()  
-
+            backpack_resources = BackpackResource.objects.filter(backpack=backpack)
+            for br in backpack_resources:
+                print(f'plecak: {br.resource.name} - {br.quantity}')
             return redirect('in_game', pk=new_world.pk)
 
         all_countries = Country.objects.all()
@@ -103,7 +111,9 @@ class DeleteGameDeleteView(DeleteView):
 class InGameView(View):
     def get(self, request, pk):
         game = get_object_or_404(NewWorld.objects.prefetch_related('country', 'age', 'resources', 'ecology'), user=request.user, pk=pk)
+        backpack = Backpack.objects.get(user=request.user, country=game.country)
         resources = game.resources.all()
+        backpack_resources= BackpackResource.objects.filter(backpack=backpack)
         if not game.time or game.time.year == 1:
             game.time = game.age.start_of_era
         else:
@@ -112,8 +122,8 @@ class InGameView(View):
         context = {
             'game':game,
             'time':game.time,
-            'resources': resources
+            'resources': resources,
+            'backpack':backpack,
+            'backpack_resources': backpack_resources
         }
-        for resource in resources:
-            print(f"Zasób przekazywany do kontekstu: Nazwa: {resource.name}, Ilość: {resource.quantity}")
         return render (request, 'in_game.html', context)

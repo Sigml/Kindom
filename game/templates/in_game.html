@@ -21,34 +21,33 @@
 
     <!-- Górna prawa sekcja: Ekologia -->
     <div class="top-right">
-        {% if game.ecology %}
-            <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
-            <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
-            <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
-            <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
-        {% else %}
-            <p>Brak danych o ekologii.</p>
-        {% endif %}
+        <button id="toggleEcology" onclick="toggleEcology()">Ukryj Ekologię</button>
+        <div id="ecologySection">
+            {% if game.ecology %}
+                <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
+                <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
+                <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
+                <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
+            {% else %}
+                <p>Brak danych o ekologii.</p>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Dolna sekcja: Zasoby -->
     <div class="bottom-row">
         <p>Złoto: {{ game.country.capital }} </p>
-        {% for resource in resources %}
-        <li>
-            <p>Nazwa: {{ resource.name }}</p>
-            {% if resource.image %}
-                <img src="{{ resource.image.url }}" alt="{{ resource.name }}">
-            {% else %}
-                <p>Brak obrazu zasobu.</p>
+        <ul>
+            {% for resource in backpack_resources %}
+                <li> {% if resource.resource.image %} <img src="{{ resource.resource.image.url }}" alt="{{ resource.resource.name }}" style="width: 20px; height: 20;">
+                    {% else %}
+                <span>brak obrazku</span>
             {% endif %}
-            <p>Ilość: {{ resource.quantity }}</p>
-            <p>Cena: {{ resource.price }}</p>
-            
-        </li>
-    {% empty %}
-        <li>Brak dostępnych surowców.</li>
-    {% endfor %}
+            - {{ resource.resource.name }} - Ilość: {{ resource.quantity }}</li>
+            {% empty %}
+                <li>Plecak jest pusty.</li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
