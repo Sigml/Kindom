@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.edit import DeleteView
+from datetime import timedelta, date, datetime
 import json
 from django.http import JsonResponse
 from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
@@ -114,10 +115,16 @@ class InGameView(View):
         backpack = Backpack.objects.get(user=request.user, country=game.country)
         resources = game.resources.all()
         backpack_resources= BackpackResource.objects.filter(backpack=backpack)
-        if not game.time or game.time.year == 1:
-            game.time = game.age.start_of_era
-        else:
-            game.time
+        
+        if not game.time or game.time.date() < game.age.start_of_era:
+            game.time = datetime.combine(game.age.start_of_era, datetime.min.time())
+        elif game.time.date() < game.age.end_of_era:
+            game.time += timedelta(days=1)
+            if game.time.date() > game.age.end_of_era:
+                game.time = datetime.combine(game.age.end_of_era, datetime.min.time())
+
+        game.save()
+            
         
         context = {
             'game':game,
@@ -127,3 +134,13 @@ class InGameView(View):
             'backpack_resources': backpack_resources
         }
         return render (request, 'in_game.html', context)
+    
+    
+def update_game_day(request, pk):
+    game = get_object_or_404(Game, pk=pk)
+    game.time += timedelta(days=1)
+    game.save()
+    
+    return JsonResponse({
+        'new_time': game.time.strftime('%Y-%m-%d'), 
+    })

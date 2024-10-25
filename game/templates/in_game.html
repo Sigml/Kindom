@@ -1,55 +1,90 @@
 {% extends "base.html"%}
-
+{% load static %}
 {% block content %}
-
 <div class="game-container">
     <!-- Tło z obrazem kraju -->
     {% if game.country.image %}
         <div class="background-image" style="background-image: url('{{ game.country.image.url }}');"></div>
     {% endif %}
 
-    <!-- Górna lewa sekcja -->
+    <!-- Górna lewa sekcja: Kraj i Era -->
     <div class="top-left">
         <h2>Kraj: {{ game.country.name }}</h2>
-        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }}) {{time}}</h2>
+        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }}) <span id="current-date">{{ time }}</span></h2>
     </div>
-
-    <!-- Górna środkowa sekcja -->
+    
+    <script>
+        const gameUrl = "{% url 'in_game' pk=game.pk %}";
+    
+        function updateGameDay() {
+            fetch(`{{ url 'update_game_day' pk=game.pk }}`) // Zaktualizuj URL do nowego widoku
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        console.error('Error:', response.statusText);
+                    }
+                })
+                .then(data => {
+                    // Zaktualizuj element z nową datą
+                    document.getElementById('current-date').textContent = data.new_time;
+                })
+                .catch(error => console.error('Error updating day:', error));
+        }
+    
+        document.addEventListener('DOMContentLoaded', function() {
+            setInterval(updateGameDay, 15000); // Ustawienie interwału
+        });
+    </script>
+    <!-- Górna środkowa sekcja: Populacja -->
     <div class="top-center">
-        <p>Populacja: {{ game.country.population }} osób</p>
+        <span class="tooltip" data-title="Populacja" ><img src="{% static 'images/Screenshot from 2024-10-25 17-47-57.png' %}" title="Populacja" alt="Populacja" class="icon"> {{ game.country.population }} osób</span>
     </div>
 
-    <!-- Górna prawa sekcja: Ekologia -->
+    <!-- Górna prawa sekcja: Plecak i Złoto z możliwością ukrycia -->
     <div class="top-right">
-        <button id="toggleEcology" onclick="toggleEcology()">Ukryj Ekologię</button>
+        <button id="toggleBackpack" onclick="toggleBackpack()">Plecak</button>
+        <div id="backpackSection">
+            <span class="tooltip" data-title="Złoto" ><img src="{% static 'images/Screenshot from 2024-10-25 18-06-12.png' %}" title="Złoto" alt="Złoto" class="icon"> {{ game.country.capital }} </span>
+            <ul>
+                {% for resource in backpack_resources %}
+                    <li>
+                        {% if resource.resource.image %}
+                        <span class="tooltip" data-title="{{ resource.resource.name }}" ><img src="{{ resource.resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon"> </span>
+                        {% else %}
+                            <span>brak obrazku</span>
+                        {% endif %}
+                        {{ resource.quantity }}
+                    
+                    </li>
+                {% empty %}
+                    <li>Plecak jest pusty.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Dolna sekcja: Ekologia w jednej linii -->
+    <div class="bottom-row">
         <div id="ecologySection">
             {% if game.ecology %}
-                <p>Stan powietrza: {{ game.ecology.air_quality }}</p>
-                <p>Zanieczyszczenie wody: {{ game.ecology.water_pollution }}</p>
-                <p>Pokrycie lasów: {{ game.ecology.forest_coverage }}</p>
-                <p>Populacja dzikich zwierząt: {{ game.ecology.wildlife_population }}</p>
+                <div class="indicator">
+                    <span class="tooltip" data-title="Stan powietrza" ><img src="{% static 'images/Screenshot from 2024-10-25 17-29-10.png' %}" title="Stan powietrza" alt="Stan powietrza" class="icon"> </span>
+                    <div class="bar" style="width: {{ game.ecology.air_quality|floatformat:0 }}0%; background-color: {% if game.ecology.air_quality <= 3 %}red{% elif game.ecology.air_quality <= 7 %}yellow{% else %}green{% endif %};"></div>
+    
+                    <span class="tooltip" data-title="Zanieczyszczenie wody"><img src="{% static 'images/Screenshot from 2024-10-25 17-30-08.png' %}" title="Zanieczyszczenie wody" alt="Zanieczyszczenie wody" class="icon"> </span>
+                    <div class="bar" style="width: {{ game.ecology.water_pollution|floatformat:0 }}0%; background-color: {% if game.ecology.water_pollution <= 3 %}red{% elif game.ecology.water_pollution <= 7 %}yellow{% else %}green{% endif %};"></div>
+    
+                    <span class="tooltip" data-title="Pokrycie lasów"><img src="{% static 'images/Screenshot from 2024-10-25 17-30-30.png' %}" title="Pokrycie lasów" alt="Pokrycie lasów" class="icon">   </span>
+                    <div class="bar" style="width: {{ game.ecology.forest_coverage|floatformat:0 }}0%; background-color: {% if game.ecology.forest_coverage <= 3 %}red{% elif game.ecology.forest_coverage <= 7 %}yellow{% else %}green{% endif %};"></div>
+    
+                    <span class="tooltip" data-title="Populacja dzikich zwierząt"><img src="{% static 'images/Screenshot from 2024-10-25 17-31-07.png' %}" title="Populacja dzikich zwierząt" alt="Populacja dzikich zwierząt" class="icon"></span>
+                    <div class="bar" style="width: {{ game.ecology.wildlife_population|floatformat:0 }}0%; background-color: {% if game.ecology.wildlife_population <= 3 %}red{% elif game.ecology.wildlife_population <= 7 %}yellow{% else %}green{% endif %};"></div>
+                </div>
             {% else %}
                 <p>Brak danych o ekologii.</p>
             {% endif %}
         </div>
     </div>
-
-    <!-- Dolna sekcja: Zasoby -->
-    <div class="bottom-row">
-        <p>Złoto: {{ game.country.capital }} </p>
-        <ul>
-            {% for resource in backpack_resources %}
-                <li> {% if resource.resource.image %} <img src="{{ resource.resource.image.url }}" alt="{{ resource.resource.name }}" style="width: 20px; height: 20;">
-                    {% else %}
-                <span>brak obrazku</span>
-            {% endif %}
-            - {{ resource.resource.name }} - Ilość: {{ resource.quantity }}</li>
-            {% empty %}
-                <li>Plecak jest pusty.</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
-
 
 {% endblock %}

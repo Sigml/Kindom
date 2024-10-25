@@ -109,15 +109,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function toggleEcology() {
-    const ecologySection = document.getElementById('ecologySection');
-    const toggleButton = document.getElementById('toggleEcology');
-
-    if (ecologySection.style.display === 'none') {
-        ecologySection.style.display = 'block'; 
-        toggleButton.innerText = 'Ukryj Ekologię'; 
+function toggleBackpack() {
+    var backpackSection = document.getElementById("backpackSection");
+    if (backpackSection.style.display === "none") {
+        backpackSection.style.display = "block";
     } else {
-        ecologySection.style.display = 'none';
-        toggleButton.innerText = 'Pokaż Ekologię'; 
+        backpackSection.style.display = "none";
     }
 }
+
+function updateGameDay() {
+    const gameUrl = "{% url 'in_game' pk=game.pk %}"; // Upewnij się, że ten URL jest poprawnie zdefiniowany
+    fetch(gameUrl)
+        .then(response => {
+            if (response.ok) {
+                window.location.reload();  // Odświeżenie strony w celu pokazania nowego dnia
+            } else {
+                console.error('Error:', response.statusText);
+            }
+        })
+        .catch(error => console.error('Error updating day:', error));
+}
+setInterval(updateGameDay, 15000);
+
