@@ -8,34 +8,29 @@
     {% endif %}
 
     <!-- Górna lewa sekcja: Kraj i Era -->
-    <div class="top-left">
-        <h2>Kraj: {{ game.country.name }}</h2>
-        <h2>Era: {{ game.age.name }} ({{ game.age.start_of_era }} - {{ game.age.end_of_era }}) <span id="current-date">{{ time }}</span></h2>
+    <div class="top-left">   
+        <div id="game-container" data-url="{% url 'update_game_day' game.pk %}">
+            <div class="era-info">
+                <h3 class="era-name-in-game">{{ game.age.name }}</h3>
+                <div class="era-dates">
+                    <span class="start-date">{{ game.age.start_of_era|date:"d-m-Y" }}</span> - 
+                    <span class="end-date">{{ game.age.end_of_era|date:"d-m-Y" }}</span>
+                </div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: {{ percentage }}%;"></div>
+                </div>
+                <div class="current-date">
+                    <strong>Aktualna data:</strong> <span id="current-date">{{ time }}</span>
+                </div>
+            </div>
+        </div>
     </div>
+<script>
+
+</script>
+
     
-    <script>
-        const gameUrl = "{% url 'in_game' pk=game.pk %}";
-    
-        function updateGameDay() {
-            fetch(`{{ url 'update_game_day' pk=game.pk }}`) // Zaktualizuj URL do nowego widoku
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        console.error('Error:', response.statusText);
-                    }
-                })
-                .then(data => {
-                    // Zaktualizuj element z nową datą
-                    document.getElementById('current-date').textContent = data.new_time;
-                })
-                .catch(error => console.error('Error updating day:', error));
-        }
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            setInterval(updateGameDay, 15000); // Ustawienie interwału
-        });
-    </script>
+
     <!-- Górna środkowa sekcja: Populacja -->
     <div class="top-center">
         <span class="tooltip" data-title="Populacja" ><img src="{% static 'images/Screenshot from 2024-10-25 17-47-57.png' %}" title="Populacja" alt="Populacja" class="icon"> {{ game.country.population }} osób</span>
@@ -52,7 +47,7 @@
                         {% if resource.resource.image %}
                         <span class="tooltip" data-title="{{ resource.resource.name }}" ><img src="{{ resource.resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon"> </span>
                         {% else %}
-                            <span>brak obrazku</span>
+                            <span><img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon"</span>
                         {% endif %}
                         {{ resource.quantity }}
                     

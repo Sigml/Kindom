@@ -118,17 +118,31 @@ function toggleBackpack() {
     }
 }
 
-function updateGameDay() {
-    const gameUrl = "{% url 'in_game' pk=game.pk %}"; // Upewnij się, że ten URL jest poprawnie zdefiniowany
-    fetch(gameUrl)
-        .then(response => {
-            if (response.ok) {
-                window.location.reload();  // Odświeżenie strony w celu pokazania nowego dnia
-            } else {
-                console.error('Error:', response.statusText);
-            }
-        })
-        .catch(error => console.error('Error updating day:', error));
-}
-setInterval(updateGameDay, 15000);
+document.addEventListener('DOMContentLoaded', function() {
+    const updateGameDayUrl = document.getElementById('game-container').dataset.url;
+    console.log(updateGameDayUrl); 
 
+    setInterval(function() {
+        fetch(updateGameDayUrl)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.error('Error:', response.statusText);
+                    return null;
+                }
+            })
+            .then(data => {
+                if (data) {
+                    if (data.new_time) {
+                        document.getElementById('current-date').textContent = data.new_time;
+                    }
+                    const percentageBar = document.querySelector('.progress-bar');
+                    if (percentageBar) {
+                        percentageBar.style.width = data.percentage + '%'; // Ustawienie szerokości paska postępu
+                    }
+                }
+            })
+            .catch(error => console.error('Error updating day:', error));
+    }, 15000);
+});

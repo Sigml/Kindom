@@ -656,6 +656,48 @@ a:hover {
     position: absolute;
     top: 10px;
     left: 10px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px; /* Ustalamy maksymalną szerokość kontenera */
+}
+
+.era-info {
+    text-align: center; 
+    margin-bottom: 20px; /* Większy dolny margines */
+}
+
+.era-name-in-game {
+    font-size: 2em; 
+    color: #007c15; 
+    margin: 0; 
+}
+
+.era-dates {
+    font-style: italic; 
+    margin: 10px 0; 
+}
+
+.progress-container {
+    background-color: rgba(0, 102, 255, 0.5);
+    border-radius: 5px; 
+    height: 12px; 
+    overflow: hidden;
+    margin: 15px 0; 
+}
+
+.progress-bar {
+    background-color: #4CAF50; 
+    height: 100%; 
+    transition: width 0.3s;
+}
+
+.current-date {
+    font-weight: bold;
+    margin-top: 20px;
+    font-size: 1.2em; 
+    text-align: center; 
 }
 
 .top-center {
@@ -668,13 +710,37 @@ a:hover {
 .top-right {
     position: absolute;
     top: 10px;
-    right: 1px;
-    width: 300px;
-    text-align: left;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 200px; 
+    text-align: center;
 }
 
 .top-right ul li {
     margin-bottom: 5px; 
+}
+
+#toggleBackpack {
+    background-color: #007c15;
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    padding: 10px 15px; 
+    font-size: 1em; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#toggleBackpack:hover {
+    background-color: #005f10; 
+    transform: scale(1.05);
+}
+
+#toggleBackpack:active {
+    transform: scale(0.95); 
 }
 
 #backpackSection ul {

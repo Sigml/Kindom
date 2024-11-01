@@ -116,6 +116,7 @@ class InGameView(View):
         resources = game.resources.all()
         backpack_resources= BackpackResource.objects.filter(backpack=backpack)
         
+        
         if not game.time or game.time.date() < game.age.start_of_era:
             game.time = datetime.combine(game.age.start_of_era, datetime.min.time())
         elif game.time.date() < game.age.end_of_era:
@@ -128,7 +129,7 @@ class InGameView(View):
         
         context = {
             'game':game,
-            'time':game.time,
+            'time':game.time.strftime('%d-%m-%Y'),
             'resources': resources,
             'backpack':backpack,
             'backpack_resources': backpack_resources
@@ -137,10 +138,19 @@ class InGameView(View):
     
     
 def update_game_day(request, pk):
-    game = get_object_or_404(Game, pk=pk)
+    game = get_object_or_404(NewWorld, pk=pk)
     game.time += timedelta(days=1)
+    
+    current_date = game.time.date()
+    start_date = game.age.start_of_era
+    end_date = game.age.end_of_era
+    
+    total_duration = (end_date - start_date).days
+    elapsed_duration = (current_date - start_date).days
+    percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
+   
     game.save()
     
-    return JsonResponse({
-        'new_time': game.time.strftime('%Y-%m-%d'), 
-    })
+    new_time = game.time.strftime('%d-%m-%Y')  
+    
+    return JsonResponse({"new_time": new_time,  "percentage": percentage})
