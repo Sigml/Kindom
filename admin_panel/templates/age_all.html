@@ -9,6 +9,8 @@
                 <th>Nazwa epoki</th>
                 <th>Początek epoki</th>
                 <th>Koniec epoki</th>
+                <th>Obraz</th>
+                <th>Mapa</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -19,6 +21,12 @@
                 <td>{{ age.name }}</td>
                 <td>{{ age.start_of_era|date:"Y-m-d" }}</td>
                 <td>{{ age.end_of_era|date:"Y-m-d" }}</td>
+                <td><img src="{{ age.image.url }}" style="max-width: 100px; max-height: 100px;"></td>
+                <td>{% if age.background %} 
+                    <img src="{{ age.background.url }}" alt="Background Image" style="max-width: 100px; max-height: 100px;">
+                    {% else %} None
+                    {% endif %}
+                </td>
                 <td><a href="{% url 'age_update' pk=age.pk %}">Zaktualizuj</a></td>
                 <td><a href="{% url 'age_delete' pk=age.pk %}">Usuń</a></td>
             </tr>

@@ -6,12 +6,13 @@ from .models import (Age, Country, Resources, Factory, BuildFactory, RequiredRes
 class AgeCreateForm(forms.ModelForm):
     class Meta:
         model = Age
-        fields = ('name', 'start_of_era', 'end_of_era', 'image', )
+        fields = ('name', 'start_of_era', 'end_of_era', 'image', 'background')
         labels = {
             'name': 'Nazwa epoki',
             'start_of_era': 'Data początku epoki',
             'end_of_era': 'Data końca epoki',
-            'image': 'Obraz epoki'
+            'image': 'Obraz epoki',
+            'background': 'mapa gry'
         }
         widgets = {
             'name': forms.TextInput(attrs={
@@ -64,26 +65,16 @@ class CountryCreateForm(forms.ModelForm):
 class ResourcesCreateForm(forms.ModelForm):
     class Meta:
         model = Resources
-        fields = ('country', 'name', 'quantity', 'price', 'image',)
+        fields = ('name', 'price', 'image',)
         labels = {
-            'country': 'Nazwa państwa',
             'name': 'Nazwa zasobu',
-            'quantity': 'Ilość',
             'price': 'Cena',
             'image': 'Obraz zasobu',
         }
         widgets = {
-            'country': forms.Select(attrs={
-                'class':'form-control',
-                'placeholder':'Nazwa państwa'
-                }),
             'name': forms.TextInput(attrs={
                 'class':'form-control',
                 'placeholder':'Nazwa zasobu'
-                }),
-            'quantity':forms.NumberInput(attrs={
-                'class':'form-control',
-                'placeholder':'Ilość'
                 }),
             'price':forms.NumberInput(attrs={
                 'class':'form-control',
@@ -95,18 +86,20 @@ class ResourcesCreateForm(forms.ModelForm):
 class FactoryCreateForm(forms.ModelForm):
     class Meta:
         model = Factory
-        fields = ('name', 'image', 'resource', 'quantity')
+        fields = ('name', 'image', 'resource', 'quantity', 'technology')
         labels = {
             'name':'Nazwa fabryki',
             'image':'Obrazek fabryki',
             'resource':'Wydobuwajacy zasob',
-            'quantity':'ilosc dziennie'
+            'quantity':'ilosc dziennie',
+            'technology':'wymagana technologia'
         }
         widgets = {
             'name':forms.TextInput(attrs={
                 'class':'form-control',
                 'placeholder':'Nazwa fabryki'
             })
+            
         }
         
         
@@ -404,7 +397,7 @@ class WarCreateForm(forms.ModelForm):
 class TechnologyCreateForm (forms.ModelForm):
     class Meta:
         model = Technology
-        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image',)
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite',)
         labels = {
             'age':'Epoka',
             'name':'Nazwa', 
@@ -412,6 +405,8 @@ class TechnologyCreateForm (forms.ModelForm):
             'efficiency_trade':'Efektywność handlu',
             'efficiency_military':'Efektywność wojskowa',
             'image': 'Obraz technologii',
+            'prerequisite':'wymagana technologia'
+            
         }
         widgets = {
             'age':forms.Select(attrs={

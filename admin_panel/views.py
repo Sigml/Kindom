@@ -129,6 +129,8 @@ class FactoryCreateView(AdminRequiredMixin, CreateView):
     success_url = reverse_lazy('factory_list')
     
     
+    
+    
 class FactoryListView(AdminRequiredMixin, ListView):
     model = Factory
     template_name = 'factory_list.html'

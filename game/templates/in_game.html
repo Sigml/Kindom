@@ -3,8 +3,8 @@
 {% block content %}
 <div class="game-container">
     <!-- Tło z obrazem kraju -->
-    {% if game.country.image %}
-        <div class="background-image" style="background-image: url('{{ game.country.image.url }}');"></div>
+    {% if game.age.background %}
+        <div class="background-image" style="background-image: url('{{ game.age.background.url }}');"></div>
     {% endif %}
 
     <!-- Górna lewa sekcja: Kraj i Era -->

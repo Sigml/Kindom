@@ -4,7 +4,8 @@ class Age(models.Model):
     name = models.CharField(max_length=64)
     start_of_era = models.DateField(null=True, blank=True)
     end_of_era = models.DateField(null=True, blank=True)
-    image = models.ImageField(upload_to='age_image/', null=True, blank=True)
+    image = models.ImageField(upload_to='age_image/', max_length=255,null=True, blank=True)
+    background = models.ImageField(upload_to='background_age_image/',max_length=255, null=True, blank=True)
     
     def __str__(self):
         return self.name
@@ -14,28 +15,57 @@ class Country(models.Model):
     capital = models.CharField(max_length=64)
     population = models.IntegerField()
     income = models.IntegerField()
-    image = models.ImageField(upload_to='country_image/', null=True, blank=True)
+    image = models.ImageField(upload_to='country_image/', max_length=255, null=True, blank=True)
     
     def __str__(self):
         return self.name
 
 
 class Resources(models.Model):
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='resources')
-    name = models.CharField(max_length=64)
-    quantity = models.IntegerField(null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    image = models.ImageField(upload_to='resources_image/', null=True, blank=True)
+    name = models.CharField(max_length=64, unique=True) 
+    price = models.DecimalField(max_digits=10, decimal_places=2) 
+    image = models.ImageField(upload_to='resources_image/', max_length=255, null=True, blank=True)
     
     def __str__(self):
         return self.name
 
+
+class CountryResource(models.Model):
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='country_resources')  
+    resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='country_resources') 
+    quantity = models.IntegerField(null=True) 
+    
+    def __str__(self):
+        return f"{self.resource.name} - {self.country.name} - {self.quantity}"
+
+class Technology(models.Model):
+    age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='age')
+    name = models.CharField(max_length=100, unique=True)
+    efficiency_production = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
+    efficiency_trade = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
+    efficiency_military = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
+    image = models.ImageField(upload_to='technology_image', null=True, blank=True)
+    prerequisite = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='next_technologies')
+    
+    def __str__(self):
+        return self.name
+    
     
 class Factory(models.Model):
+    FACTORY_TYPE_CHOICES = [
+        ('MILITARY', 'Wojsko'),          
+        ('DEFENSE', 'Obrona'),         
+        ('MINING', 'Wydobycie surowców'),
+        ('DEVELOPMENT', 'Rozwój'),     
+        ('HOUSING', 'Mieszkalnictwo'),  
+        ('WONDERS', 'Cudy świata'), 
+    ]
     name  = models.CharField(max_length=64)
-    image = models.ImageField(upload_to='factory_image/', null=True, blank=True)
+    image = models.ImageField(upload_to='factory_image/', max_length=255, null=True, blank=True)
     resource = models.ForeignKey(Resources, on_delete=models.CASCADE, default=1)
     quantity = models.DecimalField(max_digits=10, decimal_places=2, default=1)
+    type = models.CharField(choices=FACTORY_TYPE_CHOICES, max_length=255, default='MILITARY')
+    technology = models.ManyToManyField('Technology', related_name='technology', blank=True,)
     
     
     def __str__(self):
@@ -45,7 +75,7 @@ class RequiredResources(models.Model):
     resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_resources')
     required_resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='required_for_resources')
     quantity = models.IntegerField()
-    image = models.ImageField(upload_to='required_resources_images/', null=True, blank=True)
+    image = models.ImageField(upload_to='required_resources_images/', max_length=255, null=True, blank=True)
 
     def __str__(self):
         return f"{self.resource.name} wymagany {self.quantity} dla produkcji {self.required_resource.name}"
@@ -60,6 +90,8 @@ class BuildFactory(models.Model):
     quantity_required_resource_2 = models.IntegerField()
     required_resource_3 = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='build_factory_resource_3')
     quantity_required_resource_3 = models.IntegerField()
+    technology = models.ManyToManyField('Technology', related_name='required_technology', blank=True)
+    
     
     def __str__(self):
         return self.factory.name
@@ -139,13 +171,6 @@ class War(models.Model):
     end_date = models.DateField(null=True, blank=True)
     status = models.CharField(max_length=20, choices=[('ongoing', 'Trwająca'), ('ended', 'Zakończona')], default='ongoing')
     
-class Technology(models.Model):
-    age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='age')
-    name = models.CharField(max_length=100, unique=True)
-    efficiency_production = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
-    efficiency_trade = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
-    efficiency_military = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
-    image = models.ImageField(upload_to='technology_image', null=True, blank=True)
     
 class Event(models.Model):
     name = models.CharField(max_length=100)
