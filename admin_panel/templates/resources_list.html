@@ -6,25 +6,20 @@
         <table>
             <thead>
                 <tr>
-                        <th>Nazwa kraju</th>
                         <th>Nazwa zasobu</th>
                         <th>Obrazek </th>
-                        <th>Ilość </th>
                         <th>Cena</th>
                 </tr>
             </thead>
             <tbody>
                 {% for resource in object_list %}
                 <tr>
-                    <td>{{resource.country}}</td>
                     <td>{{resource.name}}</td>
                     {% if resource.image %}
                         <td> <img src="{{ resource.image.url }}" alt="{{ resource.name }}" width="100"></td>
                     {% else %}
                         <td>Brak obrazka</td>
                     {% endif %}
-
-                    <td>{{resource.quantity}}</td>
 
                     <td>{{resource.price}}</td>
                     <td><a href="{% url 'resources_update' pk=resource.pk %}">Zaktualizuj</a></td>

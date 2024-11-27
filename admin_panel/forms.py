@@ -1,6 +1,7 @@
 from django import forms
 from .models import (Age, Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
-                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment)
+                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment,
+                   CountryResource)
 
 
 class AgeCreateForm(forms.ModelForm):
@@ -82,6 +83,33 @@ class ResourcesCreateForm(forms.ModelForm):
                 }),
         }
         
+        
+class CountryResourceCreateForm(forms.Form):
+    country = forms.ModelChoiceField(
+        queryset=Country.objects.all(), 
+        label='Państwo', widget=forms.Select(attrs={'class':'form-control'})
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        resources= Resources.objects.all()
+        for resource in resources:
+            self.fields[f"quantity_{resource.id}"] = forms.IntegerField(
+                label=f"Ilość dla {resource.name}",
+                required=False,
+                widget=forms.NumberInput(attrs={'class':'form-control'})
+            )
+            
+        
+class CountryResourceUpdateForm(forms.Form):
+    quantity = forms.IntegerField(
+        label="Ilość",
+        required=False,
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
+
+
+
 
 class FactoryCreateForm(forms.ModelForm):
     class Meta:

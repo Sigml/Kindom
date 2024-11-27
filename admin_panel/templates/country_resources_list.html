@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="admin_view">
+    <h1 class="mb-4">Lista Zasobów w Państwach</h1>
+    <a href="{% url 'country_resources_create' %}" >Dodaj Zasób</a>
+
+    {% if object_list %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Państwo</th>
+                <th>Zasób</th>
+                <th>Ilość</th>
+         
+            </tr>
+        </thead>
+        <tbody>
+            {% for resource in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ resource.country.name }}</td>
+                <td>{{ resource.resource.name }}</td>
+                <td>{{ resource.quantity }}</td>
+                <td>
+                    <a href="{% url 'country_resources_update' resource.id %}">Edytuj</a>
+            
+                </td>
+                <td>
+              
+                    <a href="{% url 'country_resources_delete' resource.id %}" >Usuń</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Brak zasobów w państwach.</p>
+    {% endif %}
+</div>
+{% endblock %}

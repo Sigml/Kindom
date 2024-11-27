@@ -32,7 +32,7 @@ class Resources(models.Model):
 
 class CountryResource(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='country_resources')  
-    resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='country_resources') 
+    resource = models.ForeignKey(Resources, on_delete=models.CASCADE, related_name='resources_country') 
     quantity = models.IntegerField(null=True) 
     
     def __str__(self):

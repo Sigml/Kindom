@@ -1,12 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.views.generic import View
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic import CreateView, View, ListView, UpdateView, DeleteView
 from .models import (Age, Country, Resources, Factory, RequiredResources, BuildFactory, Ecology, Trade, Alliance,
-                         TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment) 
+                         TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, CountryResource) 
 from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, FactoryCreateForm, RequiredResourcesCreateForm,
                     BuildFactoryCreateForm, EcologyCreateForm, TradeCreateForm, AllianceCreateForm, TradeAgreementCreateForm,
-                    PeaceTreatyCreateForm, ArmyCreateForm, WarCreateForm, TechnologyCreateForm, EventCreateForm, SocialDevelopmentCreateForm)
+                    PeaceTreatyCreateForm, ArmyCreateForm, WarCreateForm, TechnologyCreateForm, EventCreateForm, SocialDevelopmentCreateForm, 
+                    CountryResourceCreateForm, CountryResourceUpdateForm)
 
 
 def main(request):
@@ -578,4 +581,80 @@ class SocialDevelopmentDeleteView(AdminRequiredMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["cancel_url"] = reverse_lazy('social_development_list')
+        return context
+
+
+class CountryResourceCreateView(AdminRequiredMixin, View):
+    template_name = 'forms.html'
+
+    def get(self, request, *args, **kwargs):
+        form = CountryResourceCreateForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = CountryResourceCreateForm(request.POST)
+        if form.is_valid():
+            country = form.cleaned_data['country']
+            for field_name, value in form.cleaned_data.items():
+                if field_name.startswith('quantity_') and value is not None:
+                    resource_id = field_name.split('_')[1]
+                    resource = Resources.objects.get(id=resource_id)
+                    CountryResource.objects.update_or_create(
+                        country=country,
+                        resource=resource,
+                        defaults={'quantity': value}
+                    )
+            return redirect('country_resources_list')
+        return render(request, self.template_name, {'form': form})
+    
+    
+class CountryResourceListView(AdminRequiredMixin, ListView):
+    model = CountryResource
+    template_name = 'country_resources_list.html'
+    
+    def get_queryset(self, *agrs, **kwargs):
+        qs = super().get_queryset(*agrs, **kwargs)
+        qs = qs.order_by('-id')
+        return qs
+    
+
+class CountryResourceUpdateView(AdminRequiredMixin, View):
+    template_name = 'forms.html'
+    success_url = reverse_lazy('country_resources_list')
+
+    def get(self, request, *args, **kwargs):
+        country_resource = self.get_object()
+        country = country_resource.country
+
+
+        resources = country.country_resources.all()
+
+
+        resource_forms = []
+        for country_res in resources:
+            form = CountryResourceUpdateForm(  
+                initial={'quantity': country_res.quantity},
+                prefix=f"quantity_{country_res.resource.id}"  
+            )
+            resource_forms.append(form)
+
+        print(f"Formularze: {resource_forms}") 
+
+        context = {
+            'resource_forms': resource_forms,
+            'country': country
+        }
+
+        return render(request, self.template_name, context)
+
+
+
+class CountryResourceDeleteView(AdminRequiredMixin, DeleteView):
+    model = CountryResource
+    template_name = 'delete.html'
+    success_url = reverse_lazy('country_resources_list')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["cancel_url"] = reverse_lazy('country_resources_list')
         return context

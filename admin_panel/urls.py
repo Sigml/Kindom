@@ -11,6 +11,7 @@ from .views import (AgeCreateView, AgeListView, AgeUpdateView, AgeDeleteView, Co
                     ArmyDeleteView, WarCreateView, WarListView, WarUpdateView, WarDeleteView, TechnologyCreateView, TechnologyListView,
                     TechnologyDeleteView, TechnologyUpdateView, EventCreateView, EventListView, EventUpdateView, EventDeleteView,     
                     SocialDevelopmentCreateView, SocialDevelopmentListView, SocialDevelopmentUpdateView, SocialDevelopmentDeleteView, 
+                    CountryResourceCreateView, CountryResourceListView, CountryResourceDeleteView, CountryResourceUpdateView,
                     
                     )
 
@@ -79,5 +80,10 @@ urlpatterns = [
     path('social_development_list/', SocialDevelopmentListView.as_view(), name='social_development_list'),
     path('social_development_update/<pk>/', SocialDevelopmentUpdateView.as_view(), name='social_development_update'),
     path('social_development_delete/<pk>/', SocialDevelopmentDeleteView.as_view(), name='social_development_delete'),
+    path('country_resources_create/', CountryResourceCreateView.as_view(), name='country_resources_create'),
+    path('country_resources_list/', CountryResourceListView.as_view(), name='country_resources_list'),
+    path('country_resources_update/<pk>/', CountryResourceUpdateView.as_view(), name='country_resources_update'),
+    path('country_resources_delete/<pk>/', CountryResourceDeleteView.as_view(), name='country_resources_delete'),
+
 
 ]
