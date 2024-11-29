@@ -3,57 +3,56 @@ from datetime import datetime
 
 from user.models import CustomUser
 from admin_panel.models import (Country, Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
-                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, Age)
+                   Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, Age, 
+                   CountryResource)
 
 class NewWorld(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='user_world')
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='user_country')
-    age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='user_age')
-    resources = models.ManyToManyField(Resources, related_name='world_resources', blank=True)
-    time = models.DateTimeField(default=datetime(1,1,1))
-    factory = models.OneToOneField(Factory, on_delete=models.CASCADE, related_name='world_factory', null=True, blank=True)
-    build_factory = models.ManyToManyField(BuildFactory, related_name='world_build_factories', blank=True)
-    required_resources = models.ManyToManyField(RequiredResources, related_name='world_required_resources', blank=True)
-    ecology = models.OneToOneField(Ecology, on_delete=models.CASCADE, related_name='world_ecology', null=True, blank=True)
-    trade = models.OneToOneField(Trade, on_delete=models.CASCADE, related_name='world_trade', null=True, blank=True)
-    alliance = models.OneToOneField(Alliance, on_delete=models.CASCADE, related_name='world_alliance', null=True, blank=True)
-    trade_agreement = models.OneToOneField(TradeAgreement, on_delete=models.CASCADE, related_name='world_trade_agreement', null=True, blank=True)
-    peace_treaty = models.OneToOneField(PeaceTreaty, on_delete=models.CASCADE, related_name='world_peace_treaty', null=True, blank=True)
-    army = models.OneToOneField(Army, on_delete=models.CASCADE, related_name='world_army', null=True, blank=True)
-    war = models.OneToOneField(War, on_delete=models.CASCADE, related_name='world_war', null=True, blank=True)
-    technology = models.OneToOneField(Technology, on_delete=models.CASCADE, related_name='world_technology', null=True, blank=True)
-    event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name='world_event', null=True, blank=True)
-    social_development = models.OneToOneField(SocialDevelopment, on_delete=models.CASCADE, related_name='world_social_development', null=True, blank=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='worlds')
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='worlds')
+    age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='worlds')
+    resources = models.ManyToManyField(Resources, through='NewWorldResource', related_name='worlds', blank=True)
+    time = models.DateTimeField(default=datetime(1, 1, 1))
+    factories = models.ManyToManyField(Factory, through='NewWorldFactory', related_name='worlds', blank=True)
+    build_factories = models.ManyToManyField(BuildFactory, related_name='worlds', blank=True)
+    required_resources = models.ManyToManyField(RequiredResources, related_name='worlds', blank=True)
+    ecology = models.ManyToManyField(Ecology, related_name='worlds', blank=True)
+    trade = models.OneToOneField(Trade, on_delete=models.CASCADE, related_name='worlds', null=True, blank=True)
+    alliances = models.ManyToManyField(Alliance, related_name='worlds', blank=True)
+    trade_agreements = models.ManyToManyField(TradeAgreement, related_name='worlds', blank=True)
+    peace_treaties = models.ManyToManyField(PeaceTreaty, related_name='worlds', blank=True)
+    armies = models.ManyToManyField(Army, related_name='worlds', blank=True)
+    wars = models.ManyToManyField(War, related_name='worlds', blank=True)
+    technologies = models.ManyToManyField(Technology, related_name='worlds', blank=True)
+    events = models.ManyToManyField(Event, related_name='worlds', blank=True)
+    social_development = models.OneToOneField(SocialDevelopment, on_delete=models.CASCADE, related_name='worlds', null=True, blank=True)
 
     def __str__(self):
-        return self.country.name
-    
+        return f"{self.user.username} - {self.country.name} - {self.age.name}"
+
     def list_resources(self):
-        return ", ".join([resource.name for resource in self.resources.all()])
+        return ", ".join([f"{nw.resource.name} ({nw.quantity})" for nw in self.newworldresource_set.all()])
 
     list_resources.short_description = "Zasoby"
 
-    def list_build_factories(self):
-        return ", ".join([factory.name for factory in self.build_factory.all()])
+    def list_factories(self):
+        return ", ".join([f"{nw.factory.name} ({nw.quantity})" for nw in self.newworldfactory_set.all()])
 
-    list_build_factories.short_description = "Wybudowane fabryki"
-    
+    list_factories.short_description = "Fabryki"
 
-class Backpack(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='backpacks')
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='backpacks')
-    resources = models.ManyToManyField(Resources, through='BackpackResource', related_name='backpacks')
-    # required_resources = models.ManyToManyField(RequiredResources, through='BackpackResource', related_name='backpacks')
 
-    def __str__(self):
-        return f"Plecak dla {self.user.username}"
-
-class BackpackResource(models.Model):
-    backpack = models.ForeignKey(Backpack, on_delete=models.CASCADE)
+class NewWorldResource(models.Model):
+    new_world = models.ForeignKey(NewWorld, on_delete=models.CASCADE)
     resource = models.ForeignKey(Resources, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0)
-    # required_resources = models.ForeignKey(RequiredResources, on_delete=models.CASCADE)
-    # quantity_required_resources = models.IntegerField(default=0)
 
     def __str__(self):
-        return f"{self.quantity} dla {self.resource.name} w {self.backpack.user.username} plecaku"
+        return f"{self.resource.name} ({self.quantity}) dla {self.new_world.country.name}"
+
+
+class NewWorldFactory(models.Model):
+    new_world = models.ForeignKey(NewWorld, on_delete=models.CASCADE)
+    factory = models.ForeignKey(Factory, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f"{self.factory.name} ({self.quantity}) dla {self.new_world.country.name}"

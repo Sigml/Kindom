@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django import forms
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import View
@@ -623,30 +624,61 @@ class CountryResourceUpdateView(AdminRequiredMixin, View):
     success_url = reverse_lazy('country_resources_list')
 
     def get(self, request, *args, **kwargs):
-        country_resource = self.get_object()
+        country_resource = self.get_country_resource()
         country = country_resource.country
 
-
+        fields = {}
         resources = country.country_resources.all()
 
-
-        resource_forms = []
         for country_res in resources:
-            form = CountryResourceUpdateForm(  
-                initial={'quantity': country_res.quantity},
-                prefix=f"quantity_{country_res.resource.id}"  
+            fields[f"quantity_{country_res.resource.id}"] = forms.IntegerField(
+                initial=country_res.quantity,
+                required=False,
+                widget=forms.NumberInput(attrs={'class': 'form-control'}),
+                label=f"Ilość dla {country_res.resource.name}"
             )
-            resource_forms.append(form)
-
-        print(f"Formularze: {resource_forms}") 
+            
+        DynamicCountryResourceForm = type('DynamicCountryResourceForm', (forms.Form,), fields)
+        form = DynamicCountryResourceForm()
 
         context = {
-            'resource_forms': resource_forms,
+            'form': form,
             'country': country
         }
 
         return render(request, self.template_name, context)
 
+    def post(self, request, *args, **kwargs):
+        country_resource = self.get_country_resource()
+        country = country_resource.country
+
+        resources = country.country_resources.all()
+
+        fields = {}
+        for country_res in resources:
+            fields[f"quantity_{country_res.resource.id}"] = forms.IntegerField(
+                required=False,
+                widget=forms.NumberInput(attrs={'class': 'form-control'}),
+                label=f"Ilość dla {country_res.resource.name}"
+            )
+
+        DynamicCountryResourceForm = type('DynamicCountryResourceForm', (forms.Form,), fields)
+        form = DynamicCountryResourceForm(request.POST)
+
+        if form.is_valid():
+            for country_res in resources:
+                field_name = f"quantity_{country_res.resource.id}"
+                quantity = form.cleaned_data.get(field_name)
+                if quantity is not None:
+                    country_res.quantity = quantity
+                    country_res.save()
+
+            return HttpResponseRedirect(self.success_url)
+
+        return render(request, self.template_name, {'form': form, 'country': country})
+
+    def get_country_resource(self):
+        return get_object_or_404(CountryResource, pk=self.kwargs['pk'])
 
 
 class CountryResourceDeleteView(AdminRequiredMixin, DeleteView):
