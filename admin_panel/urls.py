@@ -12,6 +12,7 @@ from .views import (AgeCreateView, AgeListView, AgeUpdateView, AgeDeleteView, Co
                     TechnologyDeleteView, TechnologyUpdateView, EventCreateView, EventListView, EventUpdateView, EventDeleteView,     
                     SocialDevelopmentCreateView, SocialDevelopmentListView, SocialDevelopmentUpdateView, SocialDevelopmentDeleteView, 
                     CountryResourceCreateView, CountryResourceListView, CountryResourceDeleteView, CountryResourceUpdateView,
+                    admin_panel, 
                     
                     )
 
@@ -84,6 +85,7 @@ urlpatterns = [
     path('country_resources_list/', CountryResourceListView.as_view(), name='country_resources_list'),
     path('country_resources_update/<pk>/', CountryResourceUpdateView.as_view(), name='country_resources_update'),
     path('country_resources_delete/<pk>/', CountryResourceDeleteView.as_view(), name='country_resources_delete'),
+    path('admin-panel/', admin_panel, name='admin_panel')
 
 
 ]

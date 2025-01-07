@@ -47,8 +47,16 @@ class NewWorldCreateView(View):
             new_world = NewWorld(user=request.user, country=country, age=age)
             new_world.save()
 
-            resources = [cr.resource for cr in CountryResource.objects.filter(country=country)]
-            new_world.resources.set(resources)
+            country_resources = CountryResource.objects.filter(country=country)
+            for country_resource in country_resources:
+                resource=country_resource.resource
+                quantity=country_resource.quantity
+                
+                NewWorldResource.objects.create(
+                    new_world=new_world,
+                    resource=resource,
+                    quantity=quantity
+                )
 
             existing_ecology = Ecology.objects.filter(country=country).first()
 
@@ -72,16 +80,9 @@ class NewWorldCreateView(View):
                 new_world.technologies.add(technologies.first())
 
             new_world.save()
+            
+            print(existing_ecology)
 
-            print(f"Zasoby dla {new_world.country.name}:")
-        # Iteracja po zasobach i wyświetlenie ich ilości
-        for resource in resources:
-            # Znajdź odpowiedni obiekt NewWorldResource dla zasobu i pobierz jego ilość
-            resource_quantity = NewWorldResource.objects.filter(new_world=new_world, resource=resource)
-            if resource_quantity:
-                print(f"{resource.name}, {resource_quantity.quantity}")
-            else:
-                print(f"{resource.name}, 0")
 
             return redirect('in_game', pk=new_world.pk)
         
@@ -102,7 +103,7 @@ class SelectGameView(View):
         if not request.user.is_authenticated:
             return redirect('login')
         
-        in_game = NewWorld.objects.filter(user=request.user).select_related('country').prefetch_related('country__resources',)
+        in_game = NewWorld.objects.filter(user=request.user).select_related('country')
         
         context = {
             'in_game': in_game
@@ -131,9 +132,22 @@ class InGameView(View):
         backpack = NewWorldResource.objects.filter(
             new_world=game,  
         )
-        
-
         resources = game.resources.all()
+        ecology = game.ecology.first() if game.ecology.exists() else None
+        
+        if ecology:
+            ecology_bars = {
+                'air_quality': float(ecology.air_quality) * 10,  # szerokość wypełniona
+                'water_pollution': float(ecology.water_pollution) * 10,
+                'forest_coverage': float(ecology.forest_coverage) * 10,
+                'wildlife_population': float(ecology.wildlife_population) * 10,
+                'air_quality_empty': 100 - float(ecology.air_quality) * 10,
+                'water_pollution_empty': 100 - float(ecology.water_pollution) * 10,
+                'forest_coverage_empty': 100 - float(ecology.forest_coverage) * 10,
+                'wildlife_population_empty': 100 - float(ecology.wildlife_population) * 10,
+            }
+        else:
+            ecology_bars = None
 
         if not game.time or game.time.date() < game.age.start_of_era:
             game.time = datetime.combine(game.age.start_of_era, datetime.min.time())
@@ -149,7 +163,9 @@ class InGameView(View):
             'time': game.time.strftime('%d-%m-%Y'),
             'resources': resources,
             'backpack': backpack,
-            'backpack_resources': backpack
+            'backpack_resources': backpack,
+            'ecology': ecology, 
+            'ecology_bars': ecology_bars,
         }
 
         return render(request, 'in_game.html', context)

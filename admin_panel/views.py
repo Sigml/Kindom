@@ -16,6 +16,9 @@ from .forms import (AgeCreateForm, CountryCreateForm, ResourcesCreateForm, Facto
 def main(request):
     return render(request, 'base.html')
 
+def admin_panel(request):
+    return render(request, 'admin_panel.html')
+
 
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
