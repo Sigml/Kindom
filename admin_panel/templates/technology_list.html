@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class='admin_view'>
+    <h1>Lista technologij</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nazwa technologii</th>
+                <th>Obrazek technologii</th>
+                <th>Opis</th>
+                <th>wymagane zasoby</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for technology in object_list %}
+            <tr>
+                <td>{{ technology.name }}</td>
+                {% if technology.image %}
+                <td><img src="{{ technology.image.url }}" alt="Factory Image" width="50" height="50"></td>
+                    {% else %}
+                <td>Brak obrazka</td>
+                {% endif %}
+                <td>{{ technology.description }}</td>
+                <td>{{ technology.resources }}</td>
+                <td>{{ technology.quantyti }}</td>
+                
+                
+                <td><a href="{% url 'technology_update' pk=technology.pk %}">Zaktualizuj</a></td>
+                <td><a href="{% url 'technology_delete' pk=technology.pk %}">Usuń</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+        <a href="{% url 'technology_create' %}">Dodaj nową technologię</a>
+</div>
+
+
+{% endblock %}

@@ -423,9 +423,15 @@ class WarCreateForm(forms.ModelForm):
         }
         
 class TechnologyCreateForm (forms.ModelForm):
+    resource_1 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 1', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_1 = forms.IntegerField(label='Ilość zasobu 1', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    resource_2 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 2', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_2 = forms.IntegerField(label='Ilość zasobu 2', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    resource_3 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 3', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_3 = forms.IntegerField(label='Ilość zasobu 3', widget=forms.NumberInput(attrs={'class':'form-control'}))
     class Meta:
         model = Technology
-        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite',)
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite','description')
         labels = {
             'age':'Epoka',
             'name':'Nazwa', 
@@ -433,28 +439,69 @@ class TechnologyCreateForm (forms.ModelForm):
             'efficiency_trade':'Efektywność handlu',
             'efficiency_military':'Efektywność wojskowa',
             'image': 'Obraz technologii',
-            'prerequisite':'wymagana technologia'
+            'prerequisite':'wymagana technologia',
+            'description':'Opis',
             
         }
         widgets = {
-            'age':forms.Select(attrs={
-                'class': 'form-control'
-            }),
-            'name':forms.TextInput(attrs={
-                'class':'form-control'
-                }), 
-            'efficiency_production':forms.NumberInput(attrs={
-                'class':'form-control'
-                }),
-            'efficiency_trade':forms.NumberInput(attrs={
-                'class':'form-control'
-                }),
-            'efficiency_military':forms.NumberInput(attrs={
-                'class':'form-control'
-                }),
+            'age': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'efficiency_production': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'efficiency_trade': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'efficiency_military': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
         
-        
+class TechnologyCreateForm(forms.ModelForm):
+    resource_1 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 1', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_1 = forms.IntegerField(label='Ilość zasobu 1', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    resource_2 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 2', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_2 = forms.IntegerField(label='Ilość zasobu 2', widget=forms.NumberInput(attrs={'class':'form-control'}))
+    resource_3 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 3', widget=forms.Select(attrs={'class':'form-control'}))
+    quantity_3 = forms.IntegerField(label='Ilość zasobu 3', widget=forms.NumberInput(attrs={'class':'form-control'}))
+
+    class Meta:
+        model = Technology
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite', 'description',)
+        labels = {
+            'age': 'Epoka',
+            'name': 'Nazwa',
+            'efficiency_production': 'Efektywność produkcji',
+            'efficiency_trade': 'Efektywność handlu',
+            'efficiency_military': 'Efektywność wojskowa',
+            'image': 'Obraz technologii',
+            'prerequisite': 'wymagana technologia',
+            'description': 'Opis',
+        }
+        widgets = {
+            'age': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'efficiency_production': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'efficiency_trade': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'efficiency_military': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+        }
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if commit:
+            instance.save()
+
+            # Dodaj zasoby do technologii za pomocą add()
+            if self.cleaned_data['resource_1'] is not None:
+                instance.resources.add(self.cleaned_data['resource_1'], through_defaults={'quantity': self.cleaned_data['quantity_1']})
+            if self.cleaned_data['resource_2'] is not None:
+                instance.resources.add(self.cleaned_data['resource_2'], through_defaults={'quantity': self.cleaned_data['quantity_2']})
+            if self.cleaned_data['resource_3'] is not None:
+                instance.resources.add(self.cleaned_data['resource_3'], through_defaults={'quantity': self.cleaned_data['quantity_3']})
+        print(self.cleaned_data) 
+        return instance
+    
+    
+
+            
+            
 class EventCreateForm (forms.ModelForm):
     class Meta:
         model = Event
@@ -475,7 +522,7 @@ class EventCreateForm (forms.ModelForm):
                 'class':'form-control'
                 }),
             'impact_economy':forms.NumberInput(attrs={
-                'class':'form-control'
+                'class':'form-control', 
                 }),
             'impact_society':forms.NumberInput(attrs={
                 'class':'form-control'
@@ -511,3 +558,4 @@ class SocialDevelopmentCreateForm(forms.ModelForm):
                 'class':'form-control'
                 }),
         }
+        

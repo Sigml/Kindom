@@ -492,7 +492,7 @@ class TechnologyCreateView(AdminRequiredMixin, CreateView):
     
 class TechnologyListView(AdminRequiredMixin, ListView):
     model = Technology
-    template_name = '.html'
+    template_name = 'technology_list.html'
     
     def get_queryset(self, *agrs, **kwargs):
         qs = super().get_queryset(*agrs, **kwargs)

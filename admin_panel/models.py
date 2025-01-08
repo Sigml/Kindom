@@ -46,6 +46,10 @@ class Technology(models.Model):
     efficiency_military = models.DecimalField(max_digits=10, decimal_places=2, default=1.0)
     image = models.ImageField(upload_to='technology_image', null=True, blank=True)
     prerequisite = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='next_technologies')
+    description = models.TextField(max_length=300, null=True, blank=True)
+    resources = models.ManyToManyField(Resources, related_name='resources_to_unlock', blank=True)
+    vailable = models.BooleanField(default=False)
+    
     
     def __str__(self):
         return self.name
