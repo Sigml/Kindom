@@ -47,7 +47,13 @@ class Technology(models.Model):
     image = models.ImageField(upload_to='technology_image', null=True, blank=True)
     prerequisite = models.ForeignKey('self', null=True, blank=True, on_delete=models.SET_NULL, related_name='next_technologies')
     description = models.TextField(max_length=300, null=True, blank=True)
-    resources = models.ManyToManyField(Resources, related_name='resources_to_unlock', blank=True)
+    resource_1 = models.ForeignKey(Resources, related_name='resources_to_unlock_1', blank=True, on_delete=models.CASCADE)
+    quantity_1 = models.IntegerField(null=True, blank=True)
+    resource_2 = models.ForeignKey(Resources, related_name='resources_to_unlock_2', blank=True, on_delete=models.CASCADE)
+    quantity_2 = models.IntegerField(null=True, blank=True)
+    resource_3 = models.ForeignKey(Resources, related_name='resources_to_unlock_3', blank=True, on_delete=models.CASCADE)
+    quantity_3 = models.IntegerField(null=True, blank=True)
+    time_to_unlock = models.IntegerField(null=True, blank=True)
     vailable = models.BooleanField(default=False)
     
     

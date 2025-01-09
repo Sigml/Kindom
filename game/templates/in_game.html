@@ -1,4 +1,4 @@
-{% extends "base.html"%}
+{% extends "base.html" %}
 {% load static %}
 {% block content %}
 <div class="game-container">
@@ -25,41 +25,81 @@
             </div>
         </div>
     </div>
-<script>
-
-</script>
-
-    
 
     <!-- Górna środkowa sekcja: Populacja -->
     <div class="top-center">
-        <span class="tooltip" data-title="Populacja" ><img src="{% static 'images/Screenshot from 2024-10-25 17-47-57.png' %}" title="Populacja" alt="Populacja" class="icon"> {{ game.country.population }} osób</span>
+        <span class="tooltip" data-title="Populacja" >
+            <img src="{% static 'images/Screenshot from 2024-10-25 17-47-57.png' %}" title="Populacja" alt="Populacja" class="icon">
+            {{ game.country.population }} osób
+        </span>
     </div>
 
     <!-- Górna prawa sekcja: Plecak i Złoto z możliwością ukrycia -->
     <div class="top-right">
-
-        <button id="toggleBackpack" onclick="toggleBackpack()"><span class="tooltip" data-title="">
-            <img src="{% static 'images/Screenshot from 2025-01-07 12-21-53.png' %}" 
-                 title="Stan powietrza" alt="Stan powietrza" class="icon"></button>
+        <button id="toggleBackpack" onclick="toggleBackpack()">
+            <span class="tooltip" data-title="">
+                <img src="{% static 'images/Screenshot from 2025-01-07 12-21-53.png' %}" 
+                     title="Plecak" alt="Plecak" class="icon">
+            </span>
+        </button>
         <div id="backpackSection">
-            <span class="tooltip" data-title="Złoto" ><img src="{% static 'images/Screenshot from 2024-10-25 18-06-12.png' %}" title="Złoto" alt="Złoto" class="icon"> {{ game.country.capital }} </span>
+            <span class="tooltip" data-title="Złoto" >
+                <img src="{% static 'images/Screenshot from 2024-10-25 18-06-12.png' %}" title="Złoto" alt="Złoto" class="icon">
+                {{ game.country.capital }}
+            </span>
             <ul>
                 {% for resource in backpack_resources %}
                     <li>
                         {% if resource.resource.image %}
-                        <span class="tooltip" data-title="{{ resource.resource.name }}" ><img src="{{ resource.resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon"> </span>
+                            <span class="tooltip" data-title="{{ resource.resource.name }}" >
+                                <img src="{{ resource.resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon">
+                            </span>
                         {% else %}
-                            <span><img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon"</span>
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
                         {% endif %}
                         {{ resource.quantity }}
-                    
                     </li>
                 {% empty %}
                     <li>Plecak jest pusty.</li>
                 {% endfor %}
             </ul>
         </div>
+    </div>
+
+    <!-- Lewa sekcja: Technologia -->
+    <div class="left-center-up">
+        <button class="tech-button" id="expand-all-btn">
+            Wybierz technologię
+        </button>
+        {% for technology in technologies %}
+            <div class="technology-item" data-tech-id="{{ technology.id }}"
+
+
+
+            >
+                <div class="tech-name" id="tech-{{ technology.id }}">
+                    {% if technology.image %}
+                        <img src="{{ technology.image }}" alt="{{ technology.name }}" data-expanded="false">
+                    {% endif %}
+                    <p class="tech-name-label">{{ technology.name }}</p>
+                    <p class="tech-name-description">{{ technology.description }}</p>
+                    <p class="tech-name-resource_1">{{ technology.resource_1 }}</p>
+                    <p class="tech-name-quantity_1">{{ technology.quantity_1 }}</p>
+                    <p class="tech-name-resource_2">{{ technology.resource_2 }}</p>
+                    <p class="tech-name-quantity_2">{{ technology.quantity_2 }}</p>
+                    <p class="tech-name-resource_3">{{ technology.resource_3 }}</p>
+                    <p class="tech-name-quantity_3">{{ technology.quantity_3 }}</p>
+                </div>
+                <div class="tech-details" style="display: none;">
+                    <p>{{ technology.description }}</p>
+                    <p>Efektywność produkcji: {{ technology.efficiency_production }}</p>
+                    <p>Efektywność handlu: {{ technology.efficiency_trade }}</p>
+                    <p>Efektywność wojskowa: {{ technology.efficiency_military }}</p>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
     <!-- Dolna sekcja: Ekologia w jednej linii -->
@@ -124,8 +164,6 @@
             {% endif %}
         </div>
     </div>
-    
-    
-        
+</div>
 
 {% endblock %}

@@ -75,9 +75,8 @@ class NewWorldCreateView(View):
             factories = BuildFactory.objects.filter(age=age)
             new_world.build_factories.set(factories)
 
-            technologies = Technology.objects.filter(age=age)
-            if technologies.exists():
-                new_world.technologies.add(technologies.first())
+            technologies = Technology.objects.all()
+            new_world.technologies.set(technologies)
 
             new_world.save()
             
@@ -125,13 +124,14 @@ class DeleteGameDeleteView(DeleteView):
 class InGameView(View):
     def get(self, request, pk):
         game = get_object_or_404(
-            NewWorld.objects.prefetch_related('country', 'age', 'resources', 'ecology'),
+            NewWorld.objects.prefetch_related('country', 'age', 'resources', 'ecology', 'technologies'),
             user=request.user, pk=pk
         )
 
         backpack = NewWorldResource.objects.filter(
             new_world=game,  
         )
+        technology = game.technologies.filter(age=game.age)
         resources = game.resources.all()
         ecology = game.ecology.first() if game.ecology.exists() else None
         
@@ -166,7 +166,12 @@ class InGameView(View):
             'backpack_resources': backpack,
             'ecology': ecology, 
             'ecology_bars': ecology_bars,
+            'technologies':technology
         }
+        print(f'cala lista technologii{game.technologies.all()}') 
+        print(f'dostepne technologii:{technology}') 
+        technology_all = game.technologies.all()
+        print(technology_all)  # Debugowanie
 
         return render(request, 'in_game.html', context)
     

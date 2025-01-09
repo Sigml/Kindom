@@ -298,7 +298,7 @@ a:hover {
 }
 
 .admin_view {
-    max-width: 800px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 20px;
     background-color: #080;
@@ -818,31 +818,27 @@ a:hover {
     align-items: center;
 }
 
-/* Styl dla barów */
 .bar {
     width: 100%;
     height: 20px;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 10px; /* odstęp między paskami */
+    margin-bottom: 10px;
     margin-top: 7px;
 }
 
-/* Styl dla wypełnionych barów */
 .bar-filled {
     height: 100%;
     border-radius: 10px 0 0 10px;
     
 }
 
-/* Styl dla pustych barów */
 .bar-empty {
     height: 100%;
     background-color: #f0f0f0;
 }
 
-/* Styl dla ikony w tooltipie */
 .icon {
     width: 25px;
     height: 25px;
@@ -850,3 +846,108 @@ a:hover {
     margin-right: 5px;
 }
 
+.left-center-up {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Styl dla każdego elementu technologii */
+.technology-item {
+    position: relative;
+    width: 250px;
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease;
+}
+
+/* Styl dla nazwy technologii i obrazu */
+.tech-name {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.tech-name img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
+}
+
+/* Styl dla kolorowego obrazka po kliknięciu */
+.tech-name[data-expanded="true"] img {
+    filter: none;
+}
+
+/* Styl dla tekstu przycisku i jego wyrównania */
+.tech-name-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #333;
+    text-align: center;
+}
+
+/* Styl dla obrazka przy najechaniu */
+.tech-name img:hover {
+    filter: none;
+}
+
+/* Styl dla aktywnej technologii i kolorowania */
+.tech-name[data-expanded="true"] .tech-name-label {
+    color: green;
+}
+
+.tech-name[data-expanded="false"] .tech-name-label {
+    color: red;
+}
+
+/* Styl dla szczegółów technologii */
+.tech-details {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    display: none;
+    width: 250px;
+    box-sizing: border-box;
+}
+
+/* Pokazanie szczegółów po najechaniu */
+.technology-item:hover .tech-details {
+    display: block;
+}
+
+/* Styl dla przycisku */
+.tech-button {
+    position: absolute;
+    left: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #555;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+/* Styl dla przycisku po najechaniu */
+.tech-button:hover {
+    background-color: #777;
+}

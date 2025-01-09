@@ -454,16 +454,10 @@ class TechnologyCreateForm (forms.ModelForm):
 
         
 class TechnologyCreateForm(forms.ModelForm):
-    resource_1 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 1', widget=forms.Select(attrs={'class':'form-control'}))
-    quantity_1 = forms.IntegerField(label='Ilość zasobu 1', widget=forms.NumberInput(attrs={'class':'form-control'}))
-    resource_2 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 2', widget=forms.Select(attrs={'class':'form-control'}))
-    quantity_2 = forms.IntegerField(label='Ilość zasobu 2', widget=forms.NumberInput(attrs={'class':'form-control'}))
-    resource_3 = forms.ModelChoiceField(queryset=Resources.objects.all(), label='Zasób 3', widget=forms.Select(attrs={'class':'form-control'}))
-    quantity_3 = forms.IntegerField(label='Ilość zasobu 3', widget=forms.NumberInput(attrs={'class':'form-control'}))
-
     class Meta:
         model = Technology
-        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite', 'description',)
+        fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite', 'description',
+                  'time_to_unlock', 'resource_1', 'quantity_1', 'resource_2', 'quantity_2', 'resource_3', 'quantity_3', )
         labels = {
             'age': 'Epoka',
             'name': 'Nazwa',
@@ -473,6 +467,13 @@ class TechnologyCreateForm(forms.ModelForm):
             'image': 'Obraz technologii',
             'prerequisite': 'wymagana technologia',
             'description': 'Opis',
+            'time_to_unlock': 'Czas odblokowania(dni)',
+            'resource_1': 'Zasób 1',
+            'quantity_1': 'Ilość zasobu 1',
+            'resource_2': 'Zasób 2',
+            'quantity_2': 'Ilość zasobu 2',
+            'resource_3': 'Zasób 3',
+            'quantity_3': 'Ilość zasobu 3',
         }
         widgets = {
             'age': forms.Select(attrs={'class': 'form-control'}),
@@ -480,24 +481,16 @@ class TechnologyCreateForm(forms.ModelForm):
             'efficiency_production': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
             'efficiency_trade': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
             'efficiency_military': forms.NumberInput(attrs={'class': 'form-control', 'type': 'number', 'step': 'any'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': forms.TextInput(attrs={'class': 'form-control'}),
+            'time_to_unlock': forms.NumberInput(attrs={'class': 'form-control'}),
+            'resource_1': forms.Select(attrs={'class': 'form-control'}),
+            'quantyty_1': forms.NumberInput(attrs={'class': 'form-control'}),
+            'resource_2': forms.Select(attrs={'class': 'form-control'}),
+            'quantity_2': forms.NumberInput(attrs={'class': 'form-control'}),
+            'resource_3': forms.Select(attrs={'class': 'form-control'}),
+            'quantity_3': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if commit:
-            instance.save()
-
-            # Dodaj zasoby do technologii za pomocą add()
-            if self.cleaned_data['resource_1'] is not None:
-                instance.resources.add(self.cleaned_data['resource_1'], through_defaults={'quantity': self.cleaned_data['quantity_1']})
-            if self.cleaned_data['resource_2'] is not None:
-                instance.resources.add(self.cleaned_data['resource_2'], through_defaults={'quantity': self.cleaned_data['quantity_2']})
-            if self.cleaned_data['resource_3'] is not None:
-                instance.resources.add(self.cleaned_data['resource_3'], through_defaults={'quantity': self.cleaned_data['quantity_3']})
-        print(self.cleaned_data) 
-        return instance
-    
     
 
             

@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevEpochBtn = document.getElementById('prev-epoch-btn');
     const nextEpochBtn = document.getElementById('next-epoch-btn');
     const confirmEpochBtn = document.getElementById('confirm-epoch-btn');
+    const expandAllBtn = document.getElementById('expand-all-btn');
+    const techItems = document.querySelectorAll('.technology-item');
 
     const updateCountryView = () => {
         const selectedOption = countrySelect.options[countrySelect.selectedIndex];
@@ -139,10 +141,30 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     const percentageBar = document.querySelector('.progress-bar');
                     if (percentageBar) {
-                        percentageBar.style.width = data.percentage + '%'; // Ustawienie szerokości paska postępu
+                        percentageBar.style.width = data.percentage + '%'; 
                     }
                 }
             })
             .catch(error => console.error('Error updating day:', error));
     }, 15000);
+});
+
+expandAllBtn.addEventListener('click', () => {
+    techItems.forEach(item => {
+        const techImg = item.querySelector('img');
+        const techDetails = item.querySelector('.tech-details');
+        const techNameLabel = item.querySelector('.tech-name-label');
+
+        const isExpanded = item.getAttribute('data-expanded') === 'true';
+        if (isExpanded) {
+            techImg.setAttribute('data-expanded', 'false');
+            techNameLabel.style.color = 'red';
+            item.setAttribute('data-expanded', 'false');
+        } else {
+            techImg.setAttribute('data-expanded', 'true');
+            techNameLabel.style.color = 'green';
+            item.setAttribute('data-expanded', 'true');
+        }
+        techDetails.style.display = isExpanded ? 'none' : 'block';
+    });
 });

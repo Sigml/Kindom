@@ -9,8 +9,9 @@
                 <th>Nazwa technologii</th>
                 <th>Obrazek technologii</th>
                 <th>Opis</th>
-                <th>wymagane zasoby</th>
-                <th></th>
+                <th>Wymagana epoka</th>
+                <th>Wymagana technologia</th>
+                <th>Wymagany czas(dni)</th>
             </tr>
         </thead>
         <tbody>
@@ -23,8 +24,19 @@
                 <td>Brak obrazka</td>
                 {% endif %}
                 <td>{{ technology.description }}</td>
-                <td>{{ technology.resources }}</td>
-                <td>{{ technology.quantyti }}</td>
+                <td>{{ technology.age }}</td>
+                {% if technology.prerequisite %}
+                <td>{{ technology.prerequisite}}</td>
+                {% else %}
+                <td>Brak</td>
+                {% endif %}
+                <td>{{ technology.time_to_unlock}}</td>
+                <td>{{ technology.resource_1 }}</td>
+                <td>{{ technology.quantity_1}}</td>
+                <td>{{ technology.resource_2 }}</td>
+                <td>{{ technology.quantity_2}}</td>
+                <td>{{ technology.resource_3 }}</td>
+                <td>{{ technology.quantity_3}}</td>
                 
                 
                 <td><a href="{% url 'technology_update' pk=technology.pk %}">Zaktualizuj</a></td>
