@@ -10,6 +10,7 @@
                 <th>Obrazek technologii</th>
                 <th>Opis</th>
                 <th>Wymagana epoka</th>
+                <th>Typ</th>
                 <th>Wymagana technologia</th>
                 <th>Wymagany czas(dni)</th>
             </tr>
@@ -30,6 +31,7 @@
                 {% else %}
                 <td>Brak</td>
                 {% endif %}
+                <td>{{ technology.get_type_display}}</td>
                 <td>{{ technology.time_to_unlock}}</td>
                 <td>{{ technology.resource_1 }}</td>
                 <td>{{ technology.quantity_1}}</td>

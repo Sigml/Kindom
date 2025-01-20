@@ -42,7 +42,7 @@
                      title="Plecak" alt="Plecak" class="icon">
             </span>
         </button>
-        <div id="backpackSection">
+        <div id="backpackSection" style="display: none;">
             <span class="tooltip" data-title="Złoto" >
                 <img src="{% static 'images/Screenshot from 2024-10-25 18-06-12.png' %}" title="Złoto" alt="Złoto" class="icon">
                 {{ game.country.capital }}
@@ -50,9 +50,9 @@
             <ul>
                 {% for resource in backpack_resources %}
                     <li>
-                        {% if resource.resource.image %}
+                        {% if resource.image %}
                             <span class="tooltip" data-title="{{ resource.resource.name }}" >
-                                <img src="{{ resource.resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon">
+                                <img src="{{ resource.image.url }}" title="{{ resource.resource.name }}" alt="{{ resource.resource.name }}" class="icon">
                             </span>
                         {% else %}
                             <span>
@@ -69,27 +69,42 @@
     </div>
 
     <!-- Lewa sekcja: Technologia -->
-    <div class="left-center-up">
-        <button class="tech-button" id="expand-all-btn">
-            Wybierz technologię
-        </button>
+    <div class="left-center">
+        
+        <div class="left-center-button">
+            <button id="technologyButton" class="tech-button" onclick="toggleTechnology()">
+                <span class="tooltip" data-title="">
+                    <img src="{% static 'images/Screenshot from 2025-01-20 10-15-54.png' %}" 
+                         title="technology" alt="technology" class="icon">
+                </span>
+            </button>
+        </div>
+        <div id="technologySection"
+        {% comment %} style="display: none;" {% endcomment %}
+        >
+            
+        <div class="type-technology">
         {% for technology in technologies %}
-            <div class="technology-item" data-tech-id="{{ technology.id }}"
+        <button class="technology_type">{{ technology.get_type_display }}</button>
+        {% endfor %}
+        </div>
 
 
-
-            >
+        {% for technology in technologies %}
+            
+            <div class="technology-item" data-tech-id="{{ technology.id }}">
                 <div class="tech-name" id="tech-{{ technology.id }}">
                     {% if technology.image %}
                         <img src="{{ technology.image }}" alt="{{ technology.name }}" data-expanded="false">
                     {% endif %}
-                    <p class="tech-name-label">{{ technology.name }}</p>
+                    <p class="tech-name-label">{{ technology.name }} </p>
                     <p class="tech-name-description">{{ technology.description }}</p>
-                    <p class="tech-name-resource_1">{{ technology.resource_1 }}</p>
+                    <p class="tech-name-resource_1"><img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-image">
+                    </p>
                     <p class="tech-name-quantity_1">{{ technology.quantity_1 }}</p>
-                    <p class="tech-name-resource_2">{{ technology.resource_2 }}</p>
+                    <p class="tech-name-resource_2"><img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-image"></p>
                     <p class="tech-name-quantity_2">{{ technology.quantity_2 }}</p>
-                    <p class="tech-name-resource_3">{{ technology.resource_3 }}</p>
+                    <p class="tech-name-resource_3"><img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-image"></p>
                     <p class="tech-name-quantity_3">{{ technology.quantity_3 }}</p>
                 </div>
                 <div class="tech-details" style="display: none;">
@@ -99,7 +114,7 @@
                     <p>Efektywność wojskowa: {{ technology.efficiency_military }}</p>
                 </div>
             </div>
-        {% endfor %}
+        {% endfor %} 
     </div>
 
     <!-- Dolna sekcja: Ekologia w jednej linii -->

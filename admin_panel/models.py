@@ -38,6 +38,16 @@ class CountryResource(models.Model):
     def __str__(self):
         return f"{self.resource.name} - {self.country.name} - {self.quantity}"
 
+TechnologyTypeChoices = [
+    ('ARMY', 'Wojskowa'),
+    ('ECONOMY', 'Gospodarcza'),
+    ('SOCIETY', 'Społeczna'),
+    ('SCIENCE', 'Naukowa'),
+    ('CULTURE', 'Kulturowa'),
+    ('OTHER', 'Inna'),
+]
+
+
 class Technology(models.Model):
     age = models.ForeignKey(Age, on_delete=models.CASCADE, related_name='age')
     name = models.CharField(max_length=100, unique=True)
@@ -55,10 +65,14 @@ class Technology(models.Model):
     quantity_3 = models.IntegerField(null=True, blank=True)
     time_to_unlock = models.IntegerField(null=True, blank=True)
     vailable = models.BooleanField(default=False)
+    type = models.CharField(max_length=20 ,choices=TechnologyTypeChoices, null=True, blank=True)
     
     
     def __str__(self):
         return self.name
+    
+    def type_name(self):
+        return self.get_type_display()
     
     
 class Factory(models.Model):

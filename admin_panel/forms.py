@@ -457,7 +457,7 @@ class TechnologyCreateForm(forms.ModelForm):
     class Meta:
         model = Technology
         fields = ('age', 'name', 'efficiency_production', 'efficiency_trade', 'efficiency_military', 'image', 'prerequisite', 'description',
-                  'time_to_unlock', 'resource_1', 'quantity_1', 'resource_2', 'quantity_2', 'resource_3', 'quantity_3', )
+                  'time_to_unlock', 'resource_1', 'quantity_1', 'resource_2', 'quantity_2', 'resource_3', 'quantity_3', 'type')
         labels = {
             'age': 'Epoka',
             'name': 'Nazwa',
@@ -474,6 +474,7 @@ class TechnologyCreateForm(forms.ModelForm):
             'quantity_2': 'Ilość zasobu 2',
             'resource_3': 'Zasób 3',
             'quantity_3': 'Ilość zasobu 3',
+            'type': 'Typ technologii',
         }
         widgets = {
             'age': forms.Select(attrs={'class': 'form-control'}),
@@ -489,6 +490,7 @@ class TechnologyCreateForm(forms.ModelForm):
             'quantity_2': forms.NumberInput(attrs={'class': 'form-control'}),
             'resource_3': forms.Select(attrs={'class': 'form-control'}),
             'quantity_3': forms.NumberInput(attrs={'class': 'form-control'}),
+            'type': forms.Select(attrs={'class': 'form-control'}),
         }
 
     

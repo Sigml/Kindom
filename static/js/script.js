@@ -120,6 +120,17 @@ function toggleBackpack() {
     }
 }
 
+function toggleTechnology() {
+    var technologyDetails = document.getElementById("technologySection");
+    if (technologyDetails.style.display === "none") {
+        technologyDetails.style.display = "block";
+    } else {
+        technologyDetails.style.display = "none";
+    }
+}
+
+
+
 document.addEventListener('DOMContentLoaded', function() {
     const updateGameDayUrl = document.getElementById('game-container').dataset.url;
     console.log(updateGameDayUrl); 
@@ -149,22 +160,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 15000);
 });
 
-expandAllBtn.addEventListener('click', () => {
-    techItems.forEach(item => {
-        const techImg = item.querySelector('img');
-        const techDetails = item.querySelector('.tech-details');
-        const techNameLabel = item.querySelector('.tech-name-label');
-
-        const isExpanded = item.getAttribute('data-expanded') === 'true';
-        if (isExpanded) {
-            techImg.setAttribute('data-expanded', 'false');
-            techNameLabel.style.color = 'red';
-            item.setAttribute('data-expanded', 'false');
-        } else {
-            techImg.setAttribute('data-expanded', 'true');
-            techNameLabel.style.color = 'green';
-            item.setAttribute('data-expanded', 'true');
-        }
-        techDetails.style.display = isExpanded ? 'none' : 'block';
-    });
-});
