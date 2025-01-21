@@ -852,121 +852,72 @@ a:hover {
     gap: 20px;
 }
 
-/* Stylizacja dla sekcji technologii */
-#technologySection {
-    background-color: rgba(0, 0, 0, 0.5); /* Półprzezroczyste tło */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 600px;
-    margin: auto;
-    color: rgba(0, 0, 0, 0.2);
+/* Stylizacja przycisku po lewej stronie, na środku */
+.left-center {
+    position: absolute;
+    top: 50%; 
+    left: 10px; 
+    transform: translateY(-50%); 
 }
 
 .left-center-button {
-    position: absolute;
-    left: 10px; /* Odległość od lewej krawędzi */
-    top: 50%; /* Ustawienie na środku strony w pionie */
-    transform: translateY(-50%); /* Wyrównanie środka przycisku */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .tech-button {
-    padding: 15px 20px;
+    padding: 15px;
     background-color: rgba(0, 0, 0, 0.2);
-    color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
+    border-radius: 10px;
 }
 
 .tech-button:hover {
-    background-color: rgba(0, 0, 0, 0.5);
-    transform: scale(1.05);
+    background-color: rgba(0, 0, 0, 0.6);
+    transform: scale(1.1);
 }
 
-.tech-button:active {
-    transform: scale(0.95);
+.tech-button img {
+    width: 30px;
+    height: 30px;
+    pointer-events: none; /* Wyłączenie interakcji z obrazem */
 }
 
-
-.technology-item {
-    background-color: #f9f9f9;
-    color: #333;
-    border: 1px solid #ddd;
+/* Sekcja listy technologii */
+#technologySection {
+    position: absolute;
+    top: 50%; /* Wyśrodkowanie w pionie względem strony */
+    left: 60px; /* Odległość od przycisku */
+    transform: translateY(-50%);
+    background-color: rgba(10, 9, 9, 0.9);
     border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 300px; /* Szerokość listy */
+    display: none; /* Ukrywanie domyślne */
+    animation: slideIn 0.4s ease-out;
+    z-index: 1000;
 }
 
-.technology-item img {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
 
-.tech-name-label {
-    font-size: 1.2em;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
 
-.tech-name-description {
-    font-size: 0.9em;
-    margin-bottom: 5px;
-    color: #555;
-}
-
-.tech-details {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #777;
-    display: none; /* Ukryte domyślnie */
-    text-align: left;
-}
-
-.tech-name-resource_1,
-.tech-name-resource_2,
-.tech-name-resource_3 {
-    font-size: 0.9em;
-    color: #444;
-    margin: 3px 0;
-}
-
-.tech-name-quantity_1,
-.tech-name-quantity_2,
-.tech-name-quantity_3 {
-    font-size: 0.9em;
-    color: #333;
-    margin: 3px 0;
-}
-
-/* Rozwijanie szczegółów technologii */
-.technology-item:hover .tech-details {
-    display: block;
-    background-color: #eee;
-    padding: 10px;
-    border-radius: 5px;
-}
-
+/* Przyciski kategorii technologii */
 .technology_type {
-    margin: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-  
-  .technology-item {
-    margin: 10px;
+    background-color: rgba(0, 0, 255, 0.1);
+    color: #333;
+    border: 1px solid rgba(0, 0, 255, 0.3);
+    border-radius: 5px;
     padding: 10px;
-    border: 1px solid #ccc;
-    display: block;
-  }
-  
+    margin: 5px 0;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.technology_type:hover {
+    background-color: rgba(0, 0, 255, 0.3);
+}
+

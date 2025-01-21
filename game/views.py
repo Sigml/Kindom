@@ -131,13 +131,14 @@ class InGameView(View):
         backpack = NewWorldResource.objects.filter(
             new_world=game,  
         )
-        technology = game.technologies.filter(age=game.age)
+        technology = game.technologies.all()
         resources = game.resources.all()
         ecology = game.ecology.first() if game.ecology.exists() else None
         
+        
         if ecology:
             ecology_bars = {
-                'air_quality': float(ecology.air_quality) * 10,  # szerokość wypełniona
+                'air_quality': float(ecology.air_quality) * 10,  
                 'water_pollution': float(ecology.water_pollution) * 10,
                 'forest_coverage': float(ecology.forest_coverage) * 10,
                 'wildlife_population': float(ecology.wildlife_population) * 10,
@@ -168,10 +169,6 @@ class InGameView(View):
             'ecology_bars': ecology_bars,
             'technologies':technology
         }
-        print(f'cala lista technologii{game.technologies.all()}') 
-        print(f'dostepne technologii:{technology}') 
-        technology_all = game.technologies.all()
-        print(technology_all)  # Debugowanie
 
         return render(request, 'in_game.html', context)
     

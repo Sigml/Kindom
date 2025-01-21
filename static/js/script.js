@@ -129,6 +129,15 @@ function toggleTechnology() {
     }
 }
 
+function toggleTechnologyGroup(groupName) {
+    var groupContent = document.getElementById(groupName);
+    if (groupContent.style.display === "none") {
+        groupContent.style.display = "block";
+    } else {
+        groupContent.style.display = "none";
+    }
+}
+
 
 
 document.addEventListener('DOMContentLoaded', function() {

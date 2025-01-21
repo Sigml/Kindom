@@ -70,7 +70,6 @@
 
     <!-- Lewa sekcja: Technologia -->
     <div class="left-center">
-        
         <div class="left-center-button">
             <button id="technologyButton" class="tech-button" onclick="toggleTechnology()">
                 <span class="tooltip" data-title="">
@@ -79,43 +78,102 @@
                 </span>
             </button>
         </div>
-        <div id="technologySection"
-        {% comment %} style="display: none;" {% endcomment %}
-        >
-            
-        <div class="type-technology">
-        {% for technology in technologies %}
-        <button class="technology_type">{{ technology.get_type_display }}</button>
-        {% endfor %}
-        </div>
-
-
-        {% for technology in technologies %}
-            
-            <div class="technology-item" data-tech-id="{{ technology.id }}">
-                <div class="tech-name" id="tech-{{ technology.id }}">
-                    {% if technology.image %}
-                        <img src="{{ technology.image }}" alt="{{ technology.name }}" data-expanded="false">
-                    {% endif %}
-                    <p class="tech-name-label">{{ technology.name }} </p>
-                    <p class="tech-name-description">{{ technology.description }}</p>
-                    <p class="tech-name-resource_1"><img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-image">
-                    </p>
-                    <p class="tech-name-quantity_1">{{ technology.quantity_1 }}</p>
-                    <p class="tech-name-resource_2"><img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-image"></p>
-                    <p class="tech-name-quantity_2">{{ technology.quantity_2 }}</p>
-                    <p class="tech-name-resource_3"><img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-image"></p>
-                    <p class="tech-name-quantity_3">{{ technology.quantity_3 }}</p>
-                </div>
-                <div class="tech-details" style="display: none;">
-                    <p>{{ technology.description }}</p>
-                    <p>Efektywność produkcji: {{ technology.efficiency_production }}</p>
-                    <p>Efektywność handlu: {{ technology.efficiency_trade }}</p>
-                    <p>Efektywność wojskowa: {{ technology.efficiency_military }}</p>
-                </div>
+        <div id="technologySection">
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Wojskowa')">Wojskowa</button>
+            <div class="tech-info-content" id="Wojskowa" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'ARMY' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
             </div>
-        {% endfor %} 
+            
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Gospodarcza')">Gospodarcza</button>
+            <div class="tech-info-content" id="Gospodarcza" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'ECONOMY' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Społeczna')">Społeczna</button>
+            <div class="tech-info-content" id="Społeczna" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'SOCIETY' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Naukowa')">Naukowa</button>
+            <div class="tech-info-content" id="Naukowa" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'SCIENCE' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Kulturowa')">Kulturowa</button>
+            <div class="tech-info-content" id="Kulturowa" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'CULTURE' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <button class="tech-info_button" onclick="toggleTechnologyGroup('Inna')">Inna</button>
+            <div class="tech-info-content" id="Inna" style="display: none;">
+                {% if technologies|length == 0 %}
+                    <h1>Brak technologii</h1>
+                {% else %}
+                    {% for technology in technologies %}
+                        {% if technology.type == 'OTHER' %}
+                            <div class="technologySectionInfo">
+                                {{ technology.name }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        
+        
+        
     </div>
+
 
     <!-- Dolna sekcja: Ekologia w jednej linii -->
     <div class="bottom-row">
