@@ -855,9 +855,10 @@ a:hover {
 /* Stylizacja przycisku po lewej stronie, na środku */
 .left-center {
     position: absolute;
-    top: 50%; 
-    left: 10px; 
-    transform: translateY(-50%); 
+    top: 35%;
+    left: 10px;
+    transform: translateY(-50%);
+    z-index: 1000;
 }
 
 .left-center-button {
@@ -867,10 +868,12 @@ a:hover {
 }
 
 .tech-button {
-    padding: 15px;
+    padding: 10px;
     background-color: rgba(0, 0, 0, 0.2);
     border: none;
     border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .tech-button:hover {
@@ -879,45 +882,78 @@ a:hover {
 }
 
 .tech-button img {
-    width: 30px;
-    height: 30px;
-    pointer-events: none; /* Wyłączenie interakcji z obrazem */
+    width: 40px;
+    height: 40px;
+    pointer-events: none;
 }
 
-/* Sekcja listy technologii */
+/* Sekcja technologii */
 #technologySection {
     position: absolute;
-    top: 50%; /* Wyśrodkowanie w pionie względem strony */
-    left: 60px; /* Odległość od przycisku */
+    left: 70px; /* Po prawej stronie przycisku */
+    top: 50%; /* Wyrównanie do środka */
     transform: translateY(-50%);
-    background-color: rgba(10, 9, 9, 0.9);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    width: 300px; /* Szerokość listy */
-    display: none; /* Ukrywanie domyślne */
-    animation: slideIn 0.4s ease-out;
-    z-index: 1000;
+    display: flex; /* Ustawienie Flexbox */
+    flex-direction: row;
+    max-height: 500px; 
+    gap: 10px; /* Odstępy między elementami */
+    overflow-y: auto; /* Przewijanie w pionie, jeśli treść jest zbyt długa */
 }
 
-
-
-/* Przyciski kategorii technologii */
-.technology_type {
-    background-color: rgba(0, 0, 255, 0.1);
-    color: #333;
-    border: 1px solid rgba(0, 0, 255, 0.3);
+/* Przyciski technologii */
+.tech-info_button {
+    background-color: rgba(7, 166, 4, 0.1);
+    color: #fff;
+    border: 1px solid rgba(123, 243, 11, 0.3);
     border-radius: 5px;
     padding: 10px;
-    margin: 5px 0;
+    margin-bottom: 10px;
     font-size: 14px;
     cursor: pointer;
-    width: 100%;
-    text-align: left;
+    display: flex;
+    text-align: center;
     transition: background-color 0.3s ease;
+    max-height: 45px;
 }
 
-.technology_type:hover {
-    background-color: rgba(0, 0, 255, 0.3);
+.tech-info_button:hover {
+    background-color: rgba(2, 74, 1, 0.5);
 }
 
+.tech-info-content {
+    display: none; /* Ukryj sekcje domyślnie */
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    position: relative;
+    max-width: 300px;
+}
+
+.tech-info-content.flex {
+    display: flex; /* Wyświetl sekcję jako flex */
+}
+
+.technologySectionInfo {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.technologySectionInfo img.icon {
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.technologySectionInfo img.icon:hover {
+    transform: scale(1.1);
+}

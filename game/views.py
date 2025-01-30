@@ -131,7 +131,7 @@ class InGameView(View):
         backpack = NewWorldResource.objects.filter(
             new_world=game,  
         )
-        technology = game.technologies.all()
+        technology = game.technologies.filter(age=game.age)
         resources = game.resources.all()
         ecology = game.ecology.first() if game.ecology.exists() else None
         

@@ -123,19 +123,26 @@ function toggleBackpack() {
 function toggleTechnology() {
     var technologyDetails = document.getElementById("technologySection");
     if (technologyDetails.style.display === "none") {
-        technologyDetails.style.display = "block";
+        technologyDetails.style.display = "flex";
     } else {
         technologyDetails.style.display = "none";
     }
 }
 
-function toggleTechnologyGroup(groupName) {
-    var groupContent = document.getElementById(groupName);
-    if (groupContent.style.display === "none") {
-        groupContent.style.display = "block";
-    } else {
-        groupContent.style.display = "none";
-    }
+function toggleTechnologyGroup(groupId) {
+    const allGroups = document.querySelectorAll('.tech-info-content');
+
+    allGroups.forEach((group) => {
+        if (group.id === groupId) {
+            if (group.style.display === 'flex') {
+                group.style.display = 'none';
+            } else {
+                group.style.display = 'flex';
+            }
+        } else {
+            group.style.display = 'none';
+        }
+    });
 }
 
 

@@ -11,6 +11,7 @@
             <tr>
                 <th>#</th>
                 <th>Państwo</th>
+                <th>Obrazek</th>
                 <th>Zasób</th>
                 <th>Ilość</th>
          
@@ -21,6 +22,7 @@
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ resource.country.name }}</td>
+                <td><img src="{{ resource.resource.image.url }}" width='50px' length='50px'></td>
                 <td>{{ resource.resource.name }}</td>
                 <td>{{ resource.quantity }}</td>
                 <td>
