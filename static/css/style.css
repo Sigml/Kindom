@@ -890,19 +890,26 @@ a:hover {
 /* Sekcja technologii */
 #technologySection {
     position: absolute;
-    left: 70px; /* Po prawej stronie przycisku */
-    top: 50%; /* Wyrównanie do środka */
+    left: 70px; 
+    top: 280%; /* Wyrównanie do środka */
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 20px;
-    display: flex; /* Ustawienie Flexbox */
+    display: flex;
     flex-direction: row;
-    max-height: 500px; 
-    gap: 10px; /* Odstępy między elementami */
-    overflow-y: auto; /* Przewijanie w pionie, jeśli treść jest zbyt długa */
+    max-width: 1000px;
+    gap: 10px; 
+    overflow: hidden;
+    height: 300px;
+    z-index: 1000;
 }
+
+#technologySection.expanded {
+    height: 300px; /* Docelowa wysokość po rozwinięciu */
+}
+
 
 /* Przyciski technologii */
 .tech-info_button {
@@ -925,16 +932,16 @@ a:hover {
 }
 
 .tech-info-content {
-    display: none; /* Ukryj sekcje domyślnie */
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.8);
+    display: none; 
+    position: relative;
+    flex-direction: flex;
+    gap: 30px;
+    padding: 50px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     z-index: 1000;
     position: relative;
-    max-width: 300px;
+    max-width: 1000px;
 }
 
 .tech-info-content.flex {
@@ -942,13 +949,33 @@ a:hover {
 }
 
 .technologySectionInfo {
+    display: flex;
+    flex-direction: column; /* Układa elementy w kolumnie */
+    align-items: center; /* Centruje zawartość w poziomie */
     text-align: center;
     margin-bottom: 10px;
+    width: calc(20.33%); /* Ustal szerokość na 1/3 kontenera minus margines */
+    margin-right: 12px; /* Odstęp między elementami */
+    margin-left: 12px; /* Odstęp między elementami */
+    box-sizing: border-box; /* Uwzględnia marginesy w szerokości elementu */
+    height: 150px; /* Ustal wysokość, aby elementy się wyrównały */
+    
+}
+
+.tech-info-content {
+    display: flex;
+    flex-wrap: wrap; /* Umożliwia zawijanie elementów */
+    justify-content: space-between; /* Rozstawia elementy równo */
+    gap: 10px; /* Odstęp między elementami */
+    overflow-y: auto; /* Dodaje pasek przewijania w pionie, jeśli zawartość jest zbyt długa */
+    max-height: 400px; /* Określa maksymalną wysokość kontenera */
+    max-width: 1000px; /* Określa maksymalną szerokość kontenera */
+    width: 1000px
 }
 
 .technologySectionInfo img.icon {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
     margin: 5px;
     border-radius: 5px;
     transition: transform 0.3s ease;
@@ -956,4 +983,22 @@ a:hover {
 
 .technologySectionInfo img.icon:hover {
     transform: scale(1.1);
+}
+
+.technologySectionInfoRecources {
+    display: flex;
+    justify-content: row; /* Wyrównanie w poziomie */
+    text-align: center;
+    gap:0px;
+}
+
+.technologySectionInfoRecources span {
+    margin-top: 15px; /* Dodanie odstępu od góry */
+}
+
+.technologySectionInfoRecources img.icon {
+    width: 20px;
+    height: 20px;
+    margin-top: -1px;
+    transition: transform 0.3s ease;
 }

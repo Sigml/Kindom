@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmEpochBtn = document.getElementById('confirm-epoch-btn');
     const expandAllBtn = document.getElementById('expand-all-btn');
     const techItems = document.querySelectorAll('.technology-item');
+    
 
     const updateCountryView = () => {
         const selectedOption = countrySelect.options[countrySelect.selectedIndex];

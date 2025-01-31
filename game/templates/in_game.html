@@ -87,10 +87,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'ARMY' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
                             <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
                             <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
                             <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -105,10 +113,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'ECONOMY' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
+                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
+                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
+                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -123,10 +139,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'SOCIETY' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
+                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
+                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
+                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -141,10 +165,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'SCIENCE' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
+                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
+                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
+                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -159,10 +191,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'CULTURE' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
+                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
+                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
+                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -177,10 +217,18 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'OTHER' %}
                             <div class="technologySectionInfo">
+                            {% if technology.image %}
                             <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                            {% else %}
+                            <span>
+                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
+                            </span>
+                            {% endif %}
+                            <div class="technologySectionInfoRecources">
+                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
+                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
+                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                </div>
                             </div>
                         {% endif %}
                     {% endfor %}
