@@ -8,6 +8,27 @@ body {
     flex-direction: column;
 }
 
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #007c15, #2e7d32); 
+    border-radius: 10px;
+    border: 2px solid transparent; 
+    background-clip: content-box; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #007c15, #388e3c); 
+}
+
+
 a {
     color: #fff; 
     text-decoration: none;
@@ -668,6 +689,7 @@ a:hover {
     width: 100%;
     height: 80vh;
     color: #fff;
+    overflow: hidden;
 }
 
 .background-image {
@@ -689,12 +711,12 @@ a:hover {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    max-width: 400px; /* Ustalamy maksymalną szerokość kontenera */
+    max-width: 400px; 
 }
 
 .era-info {
     text-align: center; 
-    margin-bottom: 20px; /* Większy dolny margines */
+    margin-bottom: 20px; 
 }
 
 .era-name-in-game {
@@ -852,7 +874,7 @@ a:hover {
     gap: 20px;
 }
 
-/* Stylizacja przycisku po lewej stronie, na środku */
+
 .left-center {
     position: absolute;
     top: 35%;
@@ -891,7 +913,7 @@ a:hover {
 #technologySection {
     position: absolute;
     left: 70px; 
-    top: 280%; /* Wyrównanie do środka */
+    top: 280%;
     transform: translateY(-50%);
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
@@ -904,14 +926,96 @@ a:hover {
     overflow: hidden;
     height: 300px;
     z-index: 1000;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
 #technologySection.expanded {
-    height: 300px; /* Docelowa wysokość po rozwinięciu */
+    height: 300px;
 }
 
 
-/* Przyciski technologii */
+* Styl scrollbarów */
+#technologySection::-webkit-scrollbar {
+    width: 8px;  
+    height: 8px; 
+}
+
+#technologySection::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5); 
+    border-radius: 4px;
+}
+
+#technologySection::-webkit-scrollbar-track {
+    background: transparent; /
+}
+
+
+#technologySection.expanded {
+    max-height: 500px; 
+    overflow-y: auto;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.requirement-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.requirement-content img {
+    width: 20px;
+    height: 20px;
+}
+
+.requirement-content p {
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
 .tech-info_button {
     background-color: rgba(7, 166, 4, 0.1);
     color: #fff;
@@ -945,35 +1049,40 @@ a:hover {
 }
 
 .tech-info-content.flex {
-    display: flex; /* Wyświetl sekcję jako flex */
+    display: flex;
 }
 
 .technologySectionInfo {
     display: flex;
-    flex-direction: column; /* Układa elementy w kolumnie */
-    align-items: center; /* Centruje zawartość w poziomie */
+    flex-direction: column; 
+    align-items: center;
     text-align: center;
     margin-bottom: 10px;
-    width: calc(20.33%); /* Ustal szerokość na 1/3 kontenera minus margines */
-    margin-right: 12px; /* Odstęp między elementami */
-    margin-left: 12px; /* Odstęp między elementami */
-    box-sizing: border-box; /* Uwzględnia marginesy w szerokości elementu */
-    height: 150px; /* Ustal wysokość, aby elementy się wyrównały */
+    width: calc(20.33%);
+    margin-right: 12px; 
+    margin-left: 12px; 
+    box-sizing: border-box; 
+    height: 150px; 
     
 }
 
 .tech-info-content {
     display: flex;
-    flex-wrap: wrap; /* Umożliwia zawijanie elementów */
-    justify-content: space-between; /* Rozstawia elementy równo */
-    gap: 10px; /* Odstęp między elementami */
-    overflow-y: auto; /* Dodaje pasek przewijania w pionie, jeśli zawartość jest zbyt długa */
-    max-height: 400px; /* Określa maksymalną wysokość kontenera */
-    max-width: 1000px; /* Określa maksymalną szerokość kontenera */
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    gap: 10px;
+    overflow-y: auto; 
+    max-height: 400px; 
+    max-width: 1000px; 
     width: 1000px
 }
 
-.technologySectionInfo img.icon {
+.tech-image-container {
+    position: relative; 
+    display: inline-block;
+}
+
+.tech-image {
     width: 70px;
     height: 70px;
     margin: 5px;
@@ -981,24 +1090,128 @@ a:hover {
     transition: transform 0.3s ease;
 }
 
-.technologySectionInfo img.icon:hover {
-    transform: scale(1.1);
+.tech-badge {
+    position: absolute;
+    bottom: 10px;  
+    right: 5px;   
+    width: 20px; 
+    height: 20px;
+    background-color: transparent;
+    z-index: 10;  
+    
+}
+
+.tech-badge:hover {
+    transform: scale(1.1); 
+}
+
+.tech-tooltip {
+    display: none; 
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 1000;
+    font-size: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none; 
+}
+
+
+.tech-image-container:hover .tech-tooltip {
+    display: block;
+    opacity: 1;
+}
+
+.tech-image:hover {
+    transform: scale(1.1); 
 }
 
 .technologySectionInfoRecources {
     display: flex;
-    justify-content: row; /* Wyrównanie w poziomie */
+    align-items: center;
+    gap: 10px;
+}
+
+.resource-container {
+    position: relative; 
+    display: inline-block;
     text-align: center;
-    gap:0px;
 }
 
-.technologySectionInfoRecources span {
-    margin-top: 15px; /* Dodanie odstępu od góry */
-}
-
-.technologySectionInfoRecources img.icon {
+.resource-icon {
     width: 20px;
     height: 20px;
-    margin-top: -1px;
+    margin: 5px;
     transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.tech-resourse-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 30px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+
+.resource-container:hover .tech-resourse-tooltip {
+    display: block;
+}
+
+
+.resource-icon:hover {
+    transform: scale(1.2);
+}
+
+.modal {
+    display: none; /* Ukryte domyślnie */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4); /* Przezroczyste tło */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }

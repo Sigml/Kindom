@@ -190,3 +190,44 @@ def update_game_day(request, pk):
     new_time = game.time.strftime('%d-%m-%Y')  
     
     return JsonResponse({"new_time": new_time,  "percentage": percentage})
+
+
+def unlock_technology(request, pk, technology_id ):
+    game = get_object_or_404(NewWorld, pk=pk)
+    technology_to_unlock = get_object_or_404(Technology, pk=technology_id)
+    if technology_to_unlock.age != game.age:
+        return JsonResponse({"error": "Nie można odblokować tej  technologii w tej erze."}, status=400)
+    
+    required_resources = [
+        (technology_to_unlock.resource_1, technology_to_unlock.resource_1_quantity),
+        (technology_to_unlock.resource_2, technology_to_unlock.resource_2_quantity),
+        (technology_to_unlock.resource_3, technology_to_unlock.resource_3_quantity),
+    ]
+    
+    for resorces, quantity in required_resources:
+        if resorces and quantity:
+            if not game.resources.filter(pk=resorces.pk, quantity__gte=quantity).exists():
+                return JsonResponse({"error": "Brakuje zasobów do odblokowania technologii."}, status=400)
+            
+    if technology_to_unlock.prerequisite:
+        if not technology_to_unlock.prerequisite.vailable:
+            return JsonResponse({"error": f"Należy odblokować technologię {technology_to_unlock.name}."}, status=400)
+        
+    if technology_to_unlock.time_to_unlock:
+        time_needed = timedelta(days=technology_to_unlock.time_to_unlock)
+        game.time += time_needed
+        game.save()
+        
+        return JsonResponse({
+            "message": f"Technologia będzie dostępna za {technology_to_unlock.time_to_unlock} dni.",
+            "new_time": game.time.strftime('%d-%m-%Y')
+        })
+    
+    technology_to_unlock.vailable = True
+    technology_to_unlock.save()
+    
+    game.technologies.add(technology_to_unlock)
+    game.save()
+    
+    return JsonResponse({"message": f"Technologia {technology_to_unlock.name} została odblokowana."})
+    

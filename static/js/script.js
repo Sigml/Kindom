@@ -148,8 +148,47 @@ function toggleTechnologyGroup(groupId) {
 
 
 
-document.addEventListener('DOMContentLoaded', function() {
-    const updateGameDayUrl = document.getElementById('game-container').dataset.url;
+function onTechImageClick(event) {
+    const imageElement = event.target;
+    const technologyId = imageElement.getAttribute('data-tech-id');
+    const requirement = imageElement.getAttribute('data-requirement');
+    const url = imageElement.closest('.technologySectionInfo').getAttribute('data-url');
+
+    console.log('Kliknięto obrazek technologii o ID:', technologyId);
+    console.log('Wymagania:', requirement);
+    console.log('URL:', url);
+
+
+    document.getElementById('modalTechnologyName').innerText = "Technologia ID: " + technologyId;
+    document.getElementById('modalRequirement').innerText = "Wymagania: " + requirement;
+
+
+    document.getElementById('technologyModal').style.display = "block";
+
+
+    window.unlockTechnologyUrl = url;
+}
+
+
+function closeModal() {
+    document.getElementById('technologyModal').style.display = "none";
+}
+
+
+function unlockTechnology() {
+    const url = window.unlockTechnologyUrl;
+
+    console.log('Odblokowano technologię, przechodzimy do: ' + url);
+
+    window.location.href = url; 
+}
+
+document.querySelectorAll('.tech-badge').forEach(function (img) {
+    img.addEventListener('click', onTechImageClick);
+});
+
+
+const updateGameDayUrl = document.getElementById('game-container').dataset.url;
     console.log(updateGameDayUrl); 
 
     setInterval(function() {
@@ -175,5 +214,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .catch(error => console.error('Error updating day:', error));
     }, 15000);
-});
 
+
+
+    

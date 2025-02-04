@@ -70,7 +70,7 @@
 
     <!-- Lewa sekcja: Technologia -->
     <div class="left-center">
-        <div class="left-center-button">
+        <div class="left-center-button"  >
             <button id="technologyButton" class="tech-button" onclick="toggleTechnology()">
                 <span class="tooltip" data-title="">
                     <img src="{% static 'images/Screenshot from 2025-01-20 10-15-54.png' %}" 
@@ -78,7 +78,7 @@
                 </span>
             </button>
         </div>
-        <div id="technologySection" style="display: none;">
+        <div id="technologySection" style="display: none;" >
             <button class="tech-info_button" onclick="toggleTechnologyGroup('Wojskowa')">Wojskowa</button>
             <div class="tech-info-content" id="Wojskowa" style="display: none;">
                 {% if technologies|length == 0 %}
@@ -86,18 +86,54 @@
                 {% else %}
                     {% for technology in technologies %}
                         {% if technology.type == 'ARMY' %}
-                            <div class="technologySectionInfo">
+                            <div class="technologySectionInfo" data-url="{% url 'unlock_technology' technology.pk %}">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+<img src="{% static 'images/update_technology.png' %}" 
+     class="tech-badge" 
+     data-tech-id="{{ technology.id }}"
+     data-requirement="{{ technology.requirement }}"">
+
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+<img src="{% static 'images/update_technology.png' %}" 
+     class="tech-badge" 
+     data-tech-id="{{ technology.id }}"
+     data-requirement="{{ technology.requirement }}">
+
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                            <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                            <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                            <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
                             </div>
                             </div>
                         {% endif %}
@@ -114,17 +150,45 @@
                         {% if technology.type == 'ECONOMY' %}
                             <div class="technologySectionInfo">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
                                 </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -140,17 +204,45 @@
                         {% if technology.type == 'SOCIETY' %}
                             <div class="technologySectionInfo">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}" class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
                                 </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -166,17 +258,45 @@
                         {% if technology.type == 'SCIENCE' %}
                             <div class="technologySectionInfo">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
                                 </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -192,17 +312,45 @@
                         {% if technology.type == 'CULTURE' %}
                             <div class="technologySectionInfo">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}" class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
                                 </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -217,18 +365,47 @@
                     {% for technology in technologies %}
                         {% if technology.type == 'OTHER' %}
                             <div class="technologySectionInfo">
+                            <div class="technologySectionInfo">
                             {% if technology.image %}
-                            <img src="{{ technology.image.url }}" "title="{{ technology.name }}" alt="{{ technology.name }} /n {{ technology.description }}" class="icon">
+                                <div class="tech-image-container">
+                                    <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% else %}
-                            <span>
-                                <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="icon">
-                            </span>
+                                <div class="tech-image-container">
+                                    <img src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" class="tech-image" alt="{{ technology.name }}">
+                                    <div class="tech-tooltip">{{ technology.name }} <br> {{ technology.description }}</div>
+                                    {% if technology.vailable is True %}
+                                     <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
+                                    {% else %}
+                                        <img src="{% static 'images/pngwing(2).com.png' %}"  class="tech-badge">
+                                    {% endif %}
+                                </div>
                             {% endif %}
                             <div class="technologySectionInfoRecources">
-                                <img src="{{ technology.resource_1.image.url }}" "title="{{ resource_1.name }}" alt="{{ resource_1.name }}" class="icon">{{ technology.quantity_1 }}
-                                <img src="{{ technology.resource_2.image.url }}" "title="{{ resource_2.name }}" alt="{{ resource_2.name }}" class="icon">{{ technology.quantity_2 }}
-                                <img src="{{ technology.resource_3.image.url }}" "title="{{ resource_3.name }}" alt="{{ resource_3.name }}" class="icon">{{ technology.quantity_3 }}
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_1.image.url }}" alt="{{ technology.resource_1.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_1 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_1.name }}</div>
                                 </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_2.image.url }}" alt="{{ technology.resource_2.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_2 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_2.name }}</div>
+                                </div>
+
+                                <div class="resource-container">
+                                    <img src="{{ technology.resource_3.image.url }}" alt="{{ technology.resource_3.name }}" class="resource-icon">
+                                    <span>{{ technology.quantity_3 }}</span>
+                                    <div class="tech-resourse-tooltip">{{ technology.resource_3.name }}</div>
+                                </div>
+                            </div>
                             </div>
                         {% endif %}
                     {% endfor %}
@@ -236,6 +413,20 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Okno modalne -->
+<div id="technologyModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Odblokowanie technologii</h2>
+        <p id="modalTechnologyName"></p>
+        <p id="modalRequirement"></p>
+        <button id="unlockTechnologyBtn" onclick="unlockTechnology()">Odblokuj technologię</button>
+    </div>
+</div>
+
+</div>
 
 
     <!-- Dolna sekcja: Ekologia w jednej linii -->
