@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.querySelector('form').submit();
     });
 
-    // Initialize view with the first country (if any)
+
     if (countrySelect.options.length > 0) {
         countrySelect.selectedIndex = 0;
         updateCountryView();
@@ -150,37 +150,81 @@ function toggleTechnologyGroup(groupId) {
 
 function onTechImageClick(event) {
     const imageElement = event.target;
+    const technologyContainer = imageElement.closest('.technologySectionInfo');
+
     const technologyId = imageElement.getAttribute('data-tech-id');
     const requirement = imageElement.getAttribute('data-requirement');
-    const url = imageElement.closest('.technologySectionInfo').getAttribute('data-url');
+    const prerequisite = imageElement.getAttribute('data-prerequisite');
+    const technologyName = technologyContainer.querySelector('.tech-tooltip')?.innerText || 'Nieznana technologia';
+    const technologyImage = technologyContainer.querySelector('.tech-image')?.src;
+    const url = technologyContainer.getAttribute('data-url');
+    const resources = technologyContainer.querySelector('.technologySectionInfoRecources');
+    const timeToUnlock = imageElement.getAttribute('data-time-to-unlock');
+    
 
-    console.log('Kliknięto obrazek technologii o ID:', technologyId);
-    console.log('Wymagania:', requirement);
-    console.log('URL:', url);
+    document.getElementById('modalTechnologyName').innerText = technologyName;
+    const requirementElement = document.getElementById('modalRequirement');
+    if (prerequisite && prerequisite !== "None" && prerequisite !== null) {
+        requirementElement.innerText = "Wymagana technologia: " + prerequisite;
+        requirementElement.style.display = "block";  
+    } else {
+        requirementElement.style.display = "none";
+    }
 
+    const modalImage = document.getElementById('modalTechnologyImage');
+    if (technologyImage) {
+        modalImage.src = technologyImage;
+    } else {
+        modalImage.src = '/static/images/Screenshot from 2024-11-01 14-13-09.png';
+    }
 
-    document.getElementById('modalTechnologyName').innerText = "Technologia ID: " + technologyId;
-    document.getElementById('modalRequirement').innerText = "Wymagania: " + requirement;
+    const ModalTime = document.getElementById('modalTimeToUnlock');
+
+    if (timeToUnlock) {
+        ModalTime.innerText = "Czas na odblokowanie: " + timeToUnlock;
+    } else {
+        ModalTime.innerText = "Brak informacji o czasie odblokowania";
+    }
+    
+
+    const ModalResources = document.getElementById('modalResources');
+
+    if (resources) {
+        ModalResources.innerHTML = resources.innerHTML; 
+    } else {
+        ModalResources.innerText = "Brak informacji o zasobach";
+    }
+
+    window.unlockTechnologyUrl = url;
 
 
     document.getElementById('technologyModal').style.display = "block";
+    }
+
+    // const unlockBtn = document.getElementById('unlockTechnologyBtn');
+    // unlockBtn.setAttribute('data-tech-id', technologyId);
+    // unlockBtn.setAttribute('href', `/game/unlock_technology/${technologyId}/`); // Tworzenie pełnego URL
+
+    const modalTexhnologyId = document.getElementById('modalResourcesId');
+    
+    if (technologyId) {
+        modalTexhnologyId.innerText = technologyId;
+    }  else {
+        modalTexhnologyId.innerText = "Brak informacji o ID technologii";
+    }
 
 
-    window.unlockTechnologyUrl = url;
-}
 
+    // function unlockTechnology() {
+    //     const technologyBtn = document.getElementById("unlockTechnologyBtn");
+    //     const technologyPk = technologyBtn.getAttribute("data-tech-id"); 
+        
+    //     // Przekierowanie na dynamicznie wygenerowany URL
+    //     window.location.href = `/game/unlock_technology/${technologyPk}/`;
+    // }
 
 function closeModal() {
     document.getElementById('technologyModal').style.display = "none";
-}
-
-
-function unlockTechnology() {
-    const url = window.unlockTechnologyUrl;
-
-    console.log('Odblokowano technologię, przechodzimy do: ' + url);
-
-    window.location.href = url; 
 }
 
 document.querySelectorAll('.tech-badge').forEach(function (img) {

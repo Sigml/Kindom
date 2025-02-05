@@ -94,10 +94,10 @@
                                     {% if technology.vailable is True %}
                                      <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
                                     {% else %}
-<img src="{% static 'images/update_technology.png' %}" 
-     class="tech-badge" 
-     data-tech-id="{{ technology.id }}"
-     data-requirement="{{ technology.requirement }}"">
+                                    <img src="{% static 'images/update_technology.png' %}" 
+                                        class="tech-badge" 
+                                        data-tech-id="{{ technology.id }}"
+                                        data-requirement="{{ technology.requirement }}" data-prerequisite="{{ technology.prerequisite }}" data-time-to-unlock={{ technology.time_to_unlock }}>
 
                                     {% endif %}
                                 </div>
@@ -108,10 +108,10 @@
                                     {% if technology.vailable is True %}
                                      <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
                                     {% else %}
-<img src="{% static 'images/update_technology.png' %}" 
-     class="tech-badge" 
-     data-tech-id="{{ technology.id }}"
-     data-requirement="{{ technology.requirement }}">
+                                    <img src="{% static 'images/update_technology.png' %}" 
+                                        class="tech-badge" 
+                                        data-tech-id="{{ technology.id }}"
+                                        data-requirement="{{ technology.requirement }}" data-prerequisite="{{ technology.prerequisite }}"  data-time-to-unlock={{ technology.time_to_unlock }}>
 
                                     {% endif %}
                                 </div>
@@ -416,14 +416,25 @@
 
 
     <!-- Okno modalne -->
-<div id="technologyModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2>Odblokowanie technologii</h2>
-        <p id="modalTechnologyName"></p>
-        <p id="modalRequirement"></p>
-        <button id="unlockTechnologyBtn" onclick="unlockTechnology()">Odblokuj technologię</button>
+    <div id="technologyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalTechnologyImage" src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" 
+                 alt="Technologia" class="modal-image">
+            <h2 id="modalTechnologyName">Odblokowanie technologii</h2>
+            
+            
+    
+            <p id="modalTechnologyDescription"></p>
+            <p id="modalRequirement"></p>
+            <p id="modalResources"></p>
+            <p id="modalTimeToUnlock"></p>
+            <p id="modalTechnologyId"></p>
+            <a id="unlockTechnologyBtn" href="#" class="tech-info_button">Rozwiń technologię</a>
+
+        </div>
     </div>
+    
 </div>
 
 </div>
