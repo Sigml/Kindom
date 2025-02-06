@@ -86,7 +86,7 @@
                 {% else %}
                     {% for technology in technologies %}
                         {% if technology.type == 'ARMY' %}
-                            <div class="technologySectionInfo" data-url="{% url 'unlock_technology' technology.pk %}">
+                            <div class="technologySectionInfo" data-url="{% url 'unlock_technology' game.pk technology.pk %}" data-game-id="{{ game_id }}">
                             {% if technology.image %}
                                 <div class="tech-image-container">
                                     <img src="{{ technology.image.url }}" class="tech-image" alt="{{ technology.name }}">
@@ -95,9 +95,14 @@
                                      <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
                                     {% else %}
                                     <img src="{% static 'images/update_technology.png' %}" 
-                                        class="tech-badge" 
-                                        data-tech-id="{{ technology.id }}"
-                                        data-requirement="{{ technology.requirement }}" data-prerequisite="{{ technology.prerequisite }}" data-time-to-unlock={{ technology.time_to_unlock }}>
+                                    class="tech-badge" 
+                                    data-tech-id="{{ technology.id }}"
+                                    data-requirement="{{ technology.requirement }}" 
+                                    data-prerequisite="{{ technology.prerequisite }}"  
+                                    data-prerequisite-vailable="{{ technology.prerequisite_vailable }}" 
+                                    data-time-to-unlock="{{ technology.time_to_unlock }}"
+                                    data-resources-sufficient="{{ technology.resources_dict_sufficient }}"
+                                    data-game-id="{{ game_id }}" >
 
                                     {% endif %}
                                 </div>
@@ -109,9 +114,14 @@
                                      <img src="{% static 'images/pngwing.com.png' %}" class="tech-badge">
                                     {% else %}
                                     <img src="{% static 'images/update_technology.png' %}" 
-                                        class="tech-badge" 
-                                        data-tech-id="{{ technology.id }}"
-                                        data-requirement="{{ technology.requirement }}" data-prerequisite="{{ technology.prerequisite }}"  data-time-to-unlock={{ technology.time_to_unlock }}>
+                                    class="tech-badge" 
+                                    data-tech-id="{{ technology.id }}"
+                                    data-requirement="{{ technology.requirement }}" 
+                                    data-prerequisite="{{ technology.prerequisite }}"  
+                                    data-prerequisite-vailable="{{ technology.prerequisite_vailable }}" 
+                                    data-time-to-unlock="{{ technology.time_to_unlock }}"
+                                    data-resources-sufficient="{{ technology.resources_dict_sufficient }}"
+                                    data-game-id="{{ game_id }}" >
 
                                     {% endif %}
                                 </div>
@@ -140,8 +150,38 @@
                     {% endfor %}
                 {% endif %}
             </div>
+            </div>
+            </div>
+ 
+
+
+    <!-- Okno modalne -->
+    <div id="technologyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <img id="modalTechnologyImage" src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" 
+                 alt="Technologia" class="modal-image">
             
-            <button class="tech-info_button" onclick="toggleTechnologyGroup('Gospodarcza')">Gospodarcza</button>
+            <h2 id="modalTechnologyName">Odblokowanie technologii</h2>
+            
+            
+    
+            <p id="modalTechnologyDescription"></p>
+            <p id="modalRequirement"></p>
+            <p id="modalResources"></p>
+            <p id="modalTimeToUnlock"></p>
+            <p id="modalTechnologyId"></p>
+            <a id="unlockTechnologyBtn" href="#" class="tech-info_button">Rozwiń technologię</a>
+            <p id="modalErrorMessage" style="color: red; display: none;"></p>
+
+        </div>
+    </div>
+    
+</div>
+
+</div>
+{% comment %} 
+           <button class="tech-info_button" onclick="toggleTechnologyGroup('Gospodarcza')">Gospodarcza</button>
             <div class="tech-info-content" id="Gospodarcza" style="display: none;">
                 {% if technologies|length == 0 %}
                     <h1>Brak technologii</h1>
@@ -412,32 +452,7 @@
                 {% endif %}
             </div>
         </div>
-    </div>
-
-
-    <!-- Okno modalne -->
-    <div id="technologyModal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <img id="modalTechnologyImage" src="{% static 'images/Screenshot from 2024-11-01 14-13-09.png' %}" 
-                 alt="Technologia" class="modal-image">
-            <h2 id="modalTechnologyName">Odblokowanie technologii</h2>
-            
-            
-    
-            <p id="modalTechnologyDescription"></p>
-            <p id="modalRequirement"></p>
-            <p id="modalResources"></p>
-            <p id="modalTimeToUnlock"></p>
-            <p id="modalTechnologyId"></p>
-            <a id="unlockTechnologyBtn" href="#" class="tech-info_button">Rozwiń technologię</a>
-
-        </div>
-    </div>
-    
-</div>
-
-</div>
+    </div> {% endcomment %}
 
 
     <!-- Dolna sekcja: Ekologia w jednej linii -->

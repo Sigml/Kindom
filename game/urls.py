@@ -7,6 +7,6 @@ urlpatterns = [
     path('delete_game/<pk>', DeleteGameDeleteView.as_view(), name='delete_game'),
     path('in_game/<int:pk>/', InGameView.as_view(), name='in_game'),
     path('update_game_day/<int:pk>/', update_game_day, name='update_game_day'),
-    path('unlock_technology/<int:pk>/', unlock_technology, name='unlock_technology'),
+    path('unlock_technology/<int:pk>/<int:technology_pk>/', unlock_technology, name='unlock_technology'),
     
 ]

@@ -10,6 +10,7 @@ from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, R
 from user.models import CustomUser
 from .models import NewWorld, NewWorldResource, NewWorldFactory
 from .forms import NewWorldForm
+from django.http import HttpResponse
 
 
 
@@ -133,6 +134,7 @@ class InGameView(View):
         )
         technology = game.technologies.filter(age=game.age)
         resources = game.resources.all()
+        resources_dict = {res.resource.image.url: res.quantity for res in backpack}
         ecology = game.ecology.first() if game.ecology.exists() else None
         
         
@@ -158,11 +160,39 @@ class InGameView(View):
                 game.time = datetime.combine(game.age.end_of_era, datetime.min.time())
 
         game.save()
+        
+        for tech in technology:
+            if tech.prerequisite:
+                prerequisite_tech = game.technologies.filter(name=tech.prerequisite).first()
+                tech.prerequisite_vailable = prerequisite_tech.vailable if prerequisite_tech else False
+            else:
+                tech.prerequisite_vailable = False
+            
+            sufficient_resources = True
 
+            if tech.resource_1 and tech.quantity_1:
+                resource_1_image = tech.resource_1.image
+                if not resources_dict.get(resource_1_image) or resources_dict.get(resource_1_image) < tech.quantity_1:
+                    sufficient_resources = False
+                    
+            if tech.resource_2 and tech.quantity_2:
+                resource_2_image = tech.resource_2.image
+                if not resources_dict.get(resource_2_image) or resources_dict.get(resource_2_image) < tech.quantity_2:
+                    sufficient_resources = False
+
+            if tech.resource_3 and tech.quantity_3:
+                resource_3_image = tech.resource_3.image
+                if not resources_dict.get(resource_3_image) or resources_dict.get(resource_3_image) < tech.quantity_3:
+                    sufficient_resources = False
+
+            tech.sufficient_resources = sufficient_resources
+            
         context = {
             'game': game,
+            'game_id': game.pk, 
             'time': game.time.strftime('%d-%m-%Y'),
             'resources': resources,
+            'resources_dict': resources_dict,
             'backpack': backpack,
             'backpack_resources': backpack,
             'ecology': ecology, 
@@ -192,22 +222,22 @@ def update_game_day(request, pk):
     return JsonResponse({"new_time": new_time,  "percentage": percentage})
 
 
-def unlock_technology(request, pk, technology_id ):
+def unlock_technology(request, pk,technology_pk ):
     game = get_object_or_404(NewWorld, pk=pk)
-    technology_to_unlock = get_object_or_404(Technology, pk=technology_id)
+    technology_to_unlock = get_object_or_404(Technology, pk=technology_pk)
     if technology_to_unlock.age != game.age:
         return JsonResponse({"error": "Nie można odblokować tej  technologii w tej erze."}, status=400)
     
     required_resources = [
-        (technology_to_unlock.resource_1, technology_to_unlock.resource_1_quantity),
-        (technology_to_unlock.resource_2, technology_to_unlock.resource_2_quantity),
-        (technology_to_unlock.resource_3, technology_to_unlock.resource_3_quantity),
+        (technology_to_unlock.resource_1, technology_to_unlock.quantity_1),
+        (technology_to_unlock.resource_2, technology_to_unlock.quantity_2),
+        (technology_to_unlock.resource_3, technology_to_unlock.quantity_3),
     ]
     
     for resorces, quantity in required_resources:
         if resorces and quantity:
-            if not game.resources.filter(pk=resorces.pk, quantity__gte=quantity).exists():
-                return JsonResponse({"error": "Brakuje zasobów do odblokowania technologii."}, status=400)
+            if not NewWorldResource.filter(pk=resorces.pk, quantity__gte=quantity).exists():
+                return HttpResponse("<h1>Brakuje zasobów do odblokowania technologii.</h1>", status=400)
             
     if technology_to_unlock.prerequisite:
         if not technology_to_unlock.prerequisite.vailable:

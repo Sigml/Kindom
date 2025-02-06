@@ -148,80 +148,94 @@ function toggleTechnologyGroup(groupId) {
 
 
 
-function onTechImageClick(event) {
-    const imageElement = event.target;
-    const technologyContainer = imageElement.closest('.technologySectionInfo');
+    function onTechImageClick(event) {
+        const imageElement = event.target;
+        const technologyContainer = imageElement.closest('.technologySectionInfo');
+    
+        const technologyId = imageElement.getAttribute('data-tech-id');
+        const requirement = imageElement.getAttribute('data-requirement');
+        const prerequisite = imageElement.getAttribute('data-prerequisite');
+        const technologyName = technologyContainer.querySelector('.tech-tooltip')?.innerText || 'Nieznana technologia';
+        const technologyImage = technologyContainer.querySelector('.tech-image')?.src;
+        const url = technologyContainer.getAttribute('data-url');
+        const resources = technologyContainer.querySelector('.technologySectionInfoRecources');
+        const timeToUnlock = imageElement.getAttribute('data-time-to-unlock');
+        const vailable = imageElement.getAttribute('data-vailable');
+        const prerequisiteVailable = imageElement.getAttribute('data-prerequisite-vailable');
+        const resourcesSufficient = imageElement.getAttribute('data-resources-sufficient') === "True";
+        const gameId = imageElement.getAttribute('data-game-id');
 
-    const technologyId = imageElement.getAttribute('data-tech-id');
-    const requirement = imageElement.getAttribute('data-requirement');
-    const prerequisite = imageElement.getAttribute('data-prerequisite');
-    const technologyName = technologyContainer.querySelector('.tech-tooltip')?.innerText || 'Nieznana technologia';
-    const technologyImage = technologyContainer.querySelector('.tech-image')?.src;
-    const url = technologyContainer.getAttribute('data-url');
-    const resources = technologyContainer.querySelector('.technologySectionInfoRecources');
-    const timeToUnlock = imageElement.getAttribute('data-time-to-unlock');
+        document.getElementById('modalTechnologyName').innerText = technologyName;
+    
+        const errorMessageElement = document.getElementById('modalErrorMessage');
+        if (!resourcesSufficient) {
+            errorMessageElement.style.display = "block";
+            errorMessageElement.innerText = "Brakuje zasobów do odblokowania technologii.";
+        } else {
+            errorMessageElement.style.display = "none";
+        }
+
+
+        const requirementElement = document.getElementById('modalRequirement');
+        if (prerequisite && prerequisite !== "None" && prerequisite !== null) {
+            requirementElement.innerText = "Wymagana technologia: " + prerequisite;
+            requirementElement.style.display = "block"; 
+            
+            if (prerequisiteVailable === "True") {
+                requirementElement.style.color = "green"; 
+            } else {
+                requirementElement.style.color = "red";   
+            }
+        } else {
+            requirementElement.style.display = "none";
+        }
+
+        console.log("Prerequisite:", prerequisite);
+        console.log("Prerequisite Vailable:", prerequisiteVailable);    
+    
+  
+        const modalImage = document.getElementById('modalTechnologyImage');
+        if (technologyImage) {
+            modalImage.src = technologyImage;
+        } else {
+            modalImage.src = '/static/images/Screenshot from 2024-11-01 14-13-09.png';
+        }
     
 
-    document.getElementById('modalTechnologyName').innerText = technologyName;
-    const requirementElement = document.getElementById('modalRequirement');
-    if (prerequisite && prerequisite !== "None" && prerequisite !== null) {
-        requirementElement.innerText = "Wymagana technologia: " + prerequisite;
-        requirementElement.style.display = "block";  
-    } else {
-        requirementElement.style.display = "none";
-    }
-
-    const modalImage = document.getElementById('modalTechnologyImage');
-    if (technologyImage) {
-        modalImage.src = technologyImage;
-    } else {
-        modalImage.src = '/static/images/Screenshot from 2024-11-01 14-13-09.png';
-    }
-
-    const ModalTime = document.getElementById('modalTimeToUnlock');
-
-    if (timeToUnlock) {
-        ModalTime.innerText = "Czas na odblokowanie: " + timeToUnlock;
-    } else {
-        ModalTime.innerText = "Brak informacji o czasie odblokowania";
-    }
+        const ModalTime = document.getElementById('modalTimeToUnlock');
+        if (timeToUnlock) {
+            ModalTime.innerText = "Czas na odblokowanie: " + timeToUnlock;
+        } else {
+            ModalTime.innerText = "Brak informacji o czasie odblokowania";
+        }
     
 
-    const ModalResources = document.getElementById('modalResources');
+        const ModalResources = document.getElementById('modalResources');
+        if (resources) {
+            ModalResources.innerHTML = resources.innerHTML; 
+        } else {
+            ModalResources.innerText = "Brak informacji o zasobach";
+        }
 
-    if (resources) {
-        ModalResources.innerHTML = resources.innerHTML; 
-    } else {
-        ModalResources.innerText = "Brak informacji o zasobach";
-    }
-
-    window.unlockTechnologyUrl = url;
-
-
-    document.getElementById('technologyModal').style.display = "block";
-    }
-
-    // const unlockBtn = document.getElementById('unlockTechnologyBtn');
-    // unlockBtn.setAttribute('data-tech-id', technologyId);
-    // unlockBtn.setAttribute('href', `/game/unlock_technology/${technologyId}/`); // Tworzenie pełnego URL
-
-    const modalTexhnologyId = document.getElementById('modalResourcesId');
+        window.unlockTechnologyUrl = url;
     
-    if (technologyId) {
-        modalTexhnologyId.innerText = technologyId;
-    }  else {
-        modalTexhnologyId.innerText = "Brak informacji o ID technologii";
+        const unlockBtn = document.getElementById('unlockTechnologyBtn');
+        unlockBtn.setAttribute('data-tech-id', technologyId);
+        unlockBtn.setAttribute('href', `/game/unlock_technology/${gameId}/${technologyId}/`);
+
+        document.getElementById('technologyModal').style.display = "block";
     }
+    
+   
+    function closeModal() {
+        document.getElementById('technologyModal').style.display = "none";
+    }
+    
+    document.querySelectorAll('.tech-badge').forEach(function (img) {
+        img.addEventListener('click', onTechImageClick);
+    });
+    
 
-
-
-    // function unlockTechnology() {
-    //     const technologyBtn = document.getElementById("unlockTechnologyBtn");
-    //     const technologyPk = technologyBtn.getAttribute("data-tech-id"); 
-        
-    //     // Przekierowanie na dynamicznie wygenerowany URL
-    //     window.location.href = `/game/unlock_technology/${technologyPk}/`;
-    // }
 
 function closeModal() {
     document.getElementById('technologyModal').style.display = "none";
