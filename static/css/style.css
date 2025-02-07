@@ -877,7 +877,7 @@ a:hover {
 
 .left-center {
     position: absolute;
-    top: 35%;
+    top: 45%;
     left: 10px;
     transform: translateY(-50%);
     z-index: 1000;

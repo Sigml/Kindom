@@ -74,6 +74,9 @@ class Technology(models.Model):
     def type_name(self):
         return self.get_type_display()
     
+    def time_left(self):
+        return self.time_to_unlock
+    
     
 class Factory(models.Model):
     FACTORY_TYPE_CHOICES = [

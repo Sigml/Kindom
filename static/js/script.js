@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmEpochBtn = document.getElementById('confirm-epoch-btn');
     const expandAllBtn = document.getElementById('expand-all-btn');
     const techItems = document.querySelectorAll('.technology-item');
+    const updateTechnologyCountdownUrl = document.getElementById('game-container').dataset.url + '/update_technology_countdown/';
     
 
     const updateCountryView = () => {
@@ -148,93 +149,83 @@ function toggleTechnologyGroup(groupId) {
 
 
 
-    function onTechImageClick(event) {
-        const imageElement = event.target;
-        const technologyContainer = imageElement.closest('.technologySectionInfo');
-    
-        const technologyId = imageElement.getAttribute('data-tech-id');
-        const requirement = imageElement.getAttribute('data-requirement');
-        const prerequisite = imageElement.getAttribute('data-prerequisite');
-        const technologyName = technologyContainer.querySelector('.tech-tooltip')?.innerText || 'Nieznana technologia';
-        const technologyImage = technologyContainer.querySelector('.tech-image')?.src;
-        const url = technologyContainer.getAttribute('data-url');
-        const resources = technologyContainer.querySelector('.technologySectionInfoRecources');
-        const timeToUnlock = imageElement.getAttribute('data-time-to-unlock');
-        const vailable = imageElement.getAttribute('data-vailable');
-        const prerequisiteVailable = imageElement.getAttribute('data-prerequisite-vailable');
-        const resourcesSufficient = imageElement.getAttribute('data-resources-sufficient') === "True";
-        const gameId = imageElement.getAttribute('data-game-id');
+function onTechImageClick(event) {
+    const imageElement = event.target;
+    const technologyContainer = imageElement.closest('.technologySectionInfo');
 
-        document.getElementById('modalTechnologyName').innerText = technologyName;
-    
-        const errorMessageElement = document.getElementById('modalErrorMessage');
-        if (!resourcesSufficient) {
-            errorMessageElement.style.display = "block";
-            errorMessageElement.innerText = "Brakuje zasobów do odblokowania technologii.";
-        } else {
-            errorMessageElement.style.display = "none";
-        }
+    const technologyId = imageElement.getAttribute('data-tech-id');
+    const requirement = imageElement.getAttribute('data-requirement');
+    const prerequisite = imageElement.getAttribute('data-prerequisite');
+    const technologyName = technologyContainer.querySelector('.tech-tooltip')?.innerText || 'Nieznana technologia';
+    const technologyImage = technologyContainer.querySelector('.tech-image')?.src;
+    const url = technologyContainer.getAttribute('data-url');
+    const resources = technologyContainer.querySelector('.technologySectionInfoRecources');
+    const timeToUnlock = imageElement.getAttribute('data-time-to-unlock');
+    const vailable = imageElement.getAttribute('data-vailable');
+    const prerequisiteVailable = imageElement.getAttribute('data-prerequisite-vailable');
+    const resourcesSufficient = imageElement.getAttribute('data-resources-sufficient') === "True";
+    const gameId = imageElement.getAttribute('data-game-id');
 
+    document.getElementById('modalTechnologyName').innerText = technologyName;
 
-        const requirementElement = document.getElementById('modalRequirement');
-        if (prerequisite && prerequisite !== "None" && prerequisite !== null) {
-            requirementElement.innerText = "Wymagana technologia: " + prerequisite;
-            requirementElement.style.display = "block"; 
-            
-            if (prerequisiteVailable === "True") {
-                requirementElement.style.color = "green"; 
-            } else {
-                requirementElement.style.color = "red";   
-            }
-        } else {
-            requirementElement.style.display = "none";
-        }
-
-        console.log("Prerequisite:", prerequisite);
-        console.log("Prerequisite Vailable:", prerequisiteVailable);    
-    
-  
-        const modalImage = document.getElementById('modalTechnologyImage');
-        if (technologyImage) {
-            modalImage.src = technologyImage;
-        } else {
-            modalImage.src = '/static/images/Screenshot from 2024-11-01 14-13-09.png';
-        }
-    
-
-        const ModalTime = document.getElementById('modalTimeToUnlock');
-        if (timeToUnlock) {
-            ModalTime.innerText = "Czas na odblokowanie: " + timeToUnlock;
-        } else {
-            ModalTime.innerText = "Brak informacji o czasie odblokowania";
-        }
-    
-
-        const ModalResources = document.getElementById('modalResources');
-        if (resources) {
-            ModalResources.innerHTML = resources.innerHTML; 
-        } else {
-            ModalResources.innerText = "Brak informacji o zasobach";
-        }
-
-        window.unlockTechnologyUrl = url;
-    
-        const unlockBtn = document.getElementById('unlockTechnologyBtn');
-        unlockBtn.setAttribute('data-tech-id', technologyId);
-        unlockBtn.setAttribute('href', `/game/unlock_technology/${gameId}/${technologyId}/`);
-
-        document.getElementById('technologyModal').style.display = "block";
+    const errorMessageElement = document.getElementById('modalErrorMessage');
+    if (!resourcesSufficient) {
+        errorMessageElement.style.display = "block";
+        // errorMessageElement.innerText = "Brakuje zasobów do odblokowania technologii.";
+    } else {
+        errorMessageElement.style.display = "none";
     }
-    
-   
-    function closeModal() {
-        document.getElementById('technologyModal').style.display = "none";
+
+
+    const requirementElement = document.getElementById('modalRequirement');
+    if (prerequisite && prerequisite !== "None" && prerequisite !== null) {
+        requirementElement.innerText = "Wymagana technologia: " + prerequisite;
+        requirementElement.style.display = "block"; 
+        
+        if (prerequisiteVailable === "True") {
+            requirementElement.style.color = "green"; 
+        } else {
+            requirementElement.style.color = "red";   
+        }
+    } else {
+        requirementElement.style.display = "none";
     }
-    
-    document.querySelectorAll('.tech-badge').forEach(function (img) {
-        img.addEventListener('click', onTechImageClick);
-    });
-    
+
+    console.log("Prerequisite:", prerequisite);
+    console.log("Prerequisite Vailable:", prerequisiteVailable);    
+
+
+    const modalImage = document.getElementById('modalTechnologyImage');
+    if (technologyImage) {
+        modalImage.src = technologyImage;
+    } else {
+        modalImage.src = '/static/images/Screenshot from 2024-11-01 14-13-09.png';
+    }
+
+
+    const ModalTime = document.getElementById('modalTimeToUnlock');
+    if (timeToUnlock) {
+        ModalTime.innerText = "Czas na odblokowanie: " + timeToUnlock + " dni";
+    } else {
+        ModalTime.innerText = "Brak informacji o czasie odblokowania";
+    }
+
+
+    const ModalResources = document.getElementById('modalResources');
+    if (resources) {
+        ModalResources.innerHTML = resources.innerHTML; 
+    } else {
+        ModalResources.innerText = "Brak informacji o zasobach";
+    }
+
+    window.unlockTechnologyUrl = url;
+
+    const unlockBtn = document.getElementById('unlockTechnologyBtn');
+    unlockBtn.setAttribute('data-tech-id', technologyId);
+    unlockBtn.setAttribute('href', `/game/unlock_technology/${gameId}/${technologyId}/`);
+
+    document.getElementById('technologyModal').style.display = "block";
+}
 
 
 function closeModal() {
@@ -246,33 +237,43 @@ document.querySelectorAll('.tech-badge').forEach(function (img) {
 });
 
 
-const updateGameDayUrl = document.getElementById('game-container').dataset.url;
-    console.log(updateGameDayUrl); 
 
-    setInterval(function() {
-        fetch(updateGameDayUrl)
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
+function closeModal() {
+    document.getElementById('technologyModal').style.display = "none";
+}
+
+document.querySelectorAll('.tech-badge').forEach(function (img) {
+    img.addEventListener('click', onTechImageClick);
+});
+
+
+setInterval(function() {
+    fetch(updateTechnologyCountdownUrl)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                console.error('Error:', response.statusText);
+                return null;
+            }
+        })
+        .then(data => {
+            if (data) {
+                const timeLeftElement = document.getElementById('time-left');
+                const progressBar = document.querySelector('.progress-bar');
+                
+                
+                if (data.is_unlocking) {
+                    timeLeftElement.textContent = `Pozostały czas: ${data.time_left} dni`;
+                    timeLeftElement.style.display = 'block'; 
+
+                    // Oblicz procentowy postęp
+                    const percentage = ((data.time_to_unlock - data.time_left) / data.time_to_unlock) * 100;
+                    progressBar.style.width = `${percentage}%`;
                 } else {
-                    console.error('Error:', response.statusText);
-                    return null;
+                    timeLeftElement.style.display = 'none'; 
                 }
-            })
-            .then(data => {
-                if (data) {
-                    if (data.new_time) {
-                        document.getElementById('current-date').textContent = data.new_time;
-                    }
-                    const percentageBar = document.querySelector('.progress-bar');
-                    if (percentageBar) {
-                        percentageBar.style.width = data.percentage + '%'; 
-                    }
-                }
-            })
-            .catch(error => console.error('Error updating day:', error));
-    }, 15000);
-
-
-
-    
+            }
+        })
+        .catch(error => console.error('Error updating countdown:', error));
+}, 15000);

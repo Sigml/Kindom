@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewWorldCreateView, SelectGameView, InGameView, DeleteGameDeleteView, update_game_day, unlock_technology
+from .views import NewWorldCreateView, SelectGameView, InGameView, DeleteGameDeleteView, update_game_day, unlock_technology, update_technology_countdown
 
 urlpatterns = [
     path('create_new_world/', NewWorldCreateView.as_view(), name='create_new_world'),
@@ -8,5 +8,6 @@ urlpatterns = [
     path('in_game/<int:pk>/', InGameView.as_view(), name='in_game'),
     path('update_game_day/<int:pk>/', update_game_day, name='update_game_day'),
     path('unlock_technology/<int:pk>/<int:technology_pk>/', unlock_technology, name='unlock_technology'),
-    
+    path('update_technology_countdown/<int:pk>/<int:technology_pk>/', update_technology_countdown, name='update_technology_countdown'),
 ]
+    

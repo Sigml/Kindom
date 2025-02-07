@@ -5,6 +5,7 @@ from django.views.generic.edit import DeleteView
 from datetime import timedelta, date, datetime
 import json
 from django.http import JsonResponse
+from django.contrib import messages
 from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
                    Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, CountryResource)
 from user.models import CustomUser
@@ -222,42 +223,61 @@ def update_game_day(request, pk):
     return JsonResponse({"new_time": new_time,  "percentage": percentage})
 
 
-def unlock_technology(request, pk,technology_pk ):
+def unlock_technology(request, pk, technology_pk):
     game = get_object_or_404(NewWorld, pk=pk)
     technology_to_unlock = get_object_or_404(Technology, pk=technology_pk)
+
+
     if technology_to_unlock.age != game.age:
-        return JsonResponse({"error": "Nie można odblokować tej  technologii w tej erze."}, status=400)
-    
+        messages.error(request, "Nie można odblokować tej technologii w tej erze.")
+        return redirect('in_game', pk=pk)
+
     required_resources = [
         (technology_to_unlock.resource_1, technology_to_unlock.quantity_1),
         (technology_to_unlock.resource_2, technology_to_unlock.quantity_2),
         (technology_to_unlock.resource_3, technology_to_unlock.quantity_3),
     ]
-    
-    for resorces, quantity in required_resources:
-        if resorces and quantity:
-            if not NewWorldResource.filter(pk=resorces.pk, quantity__gte=quantity).exists():
-                return HttpResponse("<h1>Brakuje zasobów do odblokowania technologii.</h1>", status=400)
+
+    for resource, quantity in required_resources:
+        if resource and quantity:
+            if not NewWorldResource.objects.filter(new_world=game, resource=resource, quantity__gte=quantity).exists():
+                messages.error(request, "Brakuje zasobów do odblokowania technologii.")
+                return redirect('in_game', pk=pk)
             
-    if technology_to_unlock.prerequisite:
-        if not technology_to_unlock.prerequisite.vailable:
-            return JsonResponse({"error": f"Należy odblokować technologię {technology_to_unlock.name}."}, status=400)
-        
-    if technology_to_unlock.time_to_unlock:
-        time_needed = timedelta(days=technology_to_unlock.time_to_unlock)
-        game.time += time_needed
-        game.save()
-        
-        return JsonResponse({
-            "message": f"Technologia będzie dostępna za {technology_to_unlock.time_to_unlock} dni.",
-            "new_time": game.time.strftime('%d-%m-%Y')
-        })
-    
+    for resource, quantity in required_resources:
+        if resource and quantity:
+            resource_to_update = NewWorldResource.objects.get(new_world=game, resource=resource)
+            resource_to_update.quantity -= quantity
+            resource_to_update.save()
+
+    messages.success(request, f"Technologia {technology_to_unlock.name} została odblokowana.")
     technology_to_unlock.vailable = True
     technology_to_unlock.save()
-    
     game.technologies.add(technology_to_unlock)
     game.save()
+
+    return redirect('in_game', pk=pk)
+
+def update_technology_countdown(request, pk, technology_pk):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
     
-    return JsonResponse({"message": f"Technologia {technology_to_unlock.name} została odblokowana."})
+    game = get_object_or_404(NewWorld, pk=pk)
+    technology = get_object_or_404(Technology, pk=technology_pk)
+
+    if technology.time_to_unlock:
+        technology.time_to_unlock -= 1
+        technology.save()
+
+    print(f"Technology name: {technology.name}, Time to unlock: {technology.time_to_unlock}")
+
+    return JsonResponse({
+        "time_left": technology.time_to_unlock,
+        "is_unlocking": True,
+    })
+        
+    # percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
     
+
+
+
