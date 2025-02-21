@@ -22,7 +22,7 @@ class NewWorld(models.Model):
     peace_treaties = models.ManyToManyField(PeaceTreaty, related_name='worlds', blank=True)
     armies = models.ManyToManyField(Army, related_name='worlds', blank=True)
     wars = models.ManyToManyField(War, related_name='worlds', blank=True)
-    technologies = models.ManyToManyField(Technology, related_name='worlds', blank=True)
+    technologies = models.ManyToManyField(Technology, related_name='NewWorldTechnology', blank=True)
     events = models.ManyToManyField(Event, related_name='worlds', blank=True)
     social_development = models.OneToOneField(SocialDevelopment, on_delete=models.CASCADE, related_name='worlds', null=True, blank=True)
 
@@ -56,3 +56,12 @@ class NewWorldFactory(models.Model):
 
     def __str__(self):
         return f"{self.factory.name} ({self.quantity}) dla {self.new_world.country.name}"
+
+
+class NewWorldTechology(models.Model):
+    new_world = models.ForeignKey(NewWorld, on_delete=models.CASCADE)
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
+    variable = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.technology.name} dla {self.new_world.country.name}"

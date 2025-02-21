@@ -9,7 +9,7 @@ from django.contrib import messages
 from admin_panel.models import (Country, Age,Resources, Factory, BuildFactory, RequiredResources, Ecology, Trade,
                    Alliance, TradeAgreement, PeaceTreaty, Army, War, Technology, Event, SocialDevelopment, CountryResource)
 from user.models import CustomUser
-from .models import NewWorld, NewWorldResource, NewWorldFactory
+from .models import NewWorld, NewWorldResource, NewWorldFactory, NewWorldTechology
 from .forms import NewWorldForm
 from django.http import HttpResponse
 
@@ -78,7 +78,14 @@ class NewWorldCreateView(View):
             new_world.build_factories.set(factories)
 
             technologies = Technology.objects.all()
-            new_world.technologies.set(technologies)
+            for tech in technologies:
+                new_tech = NewWorldTechology.objects.create(
+                    new_world=new_world,
+                    technology=tech,
+                    variable=False
+                )
+
+                
 
             new_world.save()
             
@@ -133,7 +140,8 @@ class InGameView(View):
         backpack = NewWorldResource.objects.filter(
             new_world=game,  
         )
-        technology = game.technologies.filter(age=game.age)
+        technology = NewWorldTechology.objects.filter(new_world=game, technology__age=game.age).select_related('technology')
+
         resources = game.resources.all()
         resources_dict = {res.resource.image.url: res.quantity for res in backpack}
         ecology = game.ecology.first() if game.ecology.exists() else None
@@ -162,10 +170,14 @@ class InGameView(View):
 
         game.save()
         
-        for tech in technology:
+        for tech_entry in technology:
+            tech = tech_entry.technology
+            tech.vailable = tech_entry.variable
+            
+            
             if tech.prerequisite:
-                prerequisite_tech = game.technologies.filter(name=tech.prerequisite).first()
-                tech.prerequisite_vailable = prerequisite_tech.vailable if prerequisite_tech else False
+                prerequisite_tech_entry = NewWorldTechology.objects.filter(new_world=game, technology=tech.prerequisite).first()
+                tech.prerequisite_vailable = prerequisite_tech_entry.variable if prerequisite_tech_entry else False
             else:
                 tech.prerequisite_vailable = False
             
@@ -204,25 +216,6 @@ class InGameView(View):
         return render(request, 'in_game.html', context)
     
     
-def update_game_day(request, pk):
-    game = get_object_or_404(NewWorld, pk=pk)
-    game.time += timedelta(days=1)
-    
-    current_date = game.time.date()
-    start_date = game.age.start_of_era
-    end_date = game.age.end_of_era
-    
-    total_duration = (end_date - start_date).days
-    elapsed_duration = (current_date - start_date).days
-    percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
-   
-    game.save()
-    
-    new_time = game.time.strftime('%d-%m-%Y')  
-    
-    return JsonResponse({"new_time": new_time,  "percentage": percentage})
-
-
 def unlock_technology(request, pk, technology_pk):
     game = get_object_or_404(NewWorld, pk=pk)
     technology_to_unlock = get_object_or_404(Technology, pk=technology_pk)
@@ -250,34 +243,30 @@ def unlock_technology(request, pk, technology_pk):
             resource_to_update.quantity -= quantity
             resource_to_update.save()
 
-    messages.success(request, f"Technologia {technology_to_unlock.name} została odblokowana.")
-    technology_to_unlock.vailable = True
-    technology_to_unlock.save()
-    game.technologies.add(technology_to_unlock)
-    game.save()
+    new_world_technology, created= NewWorldTechology.objects.get_or_create(
+        new_world = game,
+        technology = technology_to_unlock,
+        )
+    new_world_technology.variable = True
+    new_world_technology.save()
 
     return redirect('in_game', pk=pk)
+  
 
-def update_technology_countdown(request, pk, technology_pk):
-    if request.method != 'POST':
-        return JsonResponse({'error': 'Invalid request method'}, status=400)
-    
+def update_game_day(request, pk):
     game = get_object_or_404(NewWorld, pk=pk)
-    technology = get_object_or_404(Technology, pk=technology_pk)
-
-    if technology.time_to_unlock:
-        technology.time_to_unlock -= 1
-        technology.save()
-
-    print(f"Technology name: {technology.name}, Time to unlock: {technology.time_to_unlock}")
-
-    return JsonResponse({
-        "time_left": technology.time_to_unlock,
-        "is_unlocking": True,
-    })
-        
-    # percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
+    game.time += timedelta(days=1)
     
-
-
-
+    current_date = game.time.date()
+    start_date = game.age.start_of_era
+    end_date = game.age.end_of_era
+    
+    total_duration = (end_date - start_date).days
+    elapsed_duration = (current_date - start_date).days
+    percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
+   
+    game.save()
+    
+    new_time = game.time.strftime('%d-%m-%Y')  
+    
+    return JsonResponse({"new_time": new_time,  "percentage": percentage})

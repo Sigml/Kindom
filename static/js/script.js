@@ -12,9 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const prevEpochBtn = document.getElementById('prev-epoch-btn');
     const nextEpochBtn = document.getElementById('next-epoch-btn');
     const confirmEpochBtn = document.getElementById('confirm-epoch-btn');
-    const expandAllBtn = document.getElementById('expand-all-btn');
-    const techItems = document.querySelectorAll('.technology-item');
-    const updateTechnologyCountdownUrl = document.getElementById('game-container').dataset.url + '/update_technology_countdown/';
     
 
     const updateCountryView = () => {
@@ -27,8 +24,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const population = selectedOption.getAttribute('data-country-population');
         const income = selectedOption.getAttribute('data-country-income');
         const imageUrl = selectedOption.getAttribute('data-country-image');
-        
-        console.log('Updating Country View:', { name, capital, population, income, imageUrl });
 
         countryName.textContent = name;
         countryCapital.textContent = `Kapital początkowy: ${capital}`;
@@ -189,10 +184,7 @@ function onTechImageClick(event) {
         }
     } else {
         requirementElement.style.display = "none";
-    }
-
-    console.log("Prerequisite:", prerequisite);
-    console.log("Prerequisite Vailable:", prerequisiteVailable);    
+    }  
 
 
     const modalImage = document.getElementById('modalTechnologyImage');
@@ -248,7 +240,7 @@ document.querySelectorAll('.tech-badge').forEach(function (img) {
 
 
 setInterval(function() {
-    fetch(updateTechnologyCountdownUrl)
+    fetch(document.getElementById('game-container').dataset.url)  
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -259,20 +251,15 @@ setInterval(function() {
         })
         .then(data => {
             if (data) {
-                const timeLeftElement = document.getElementById('time-left');
+                const currentDateElement = document.getElementById('current-date');
                 const progressBar = document.querySelector('.progress-bar');
                 
+                // Aktualizuj datę
+                currentDateElement.textContent = data.new_time;
                 
-                if (data.is_unlocking) {
-                    timeLeftElement.textContent = `Pozostały czas: ${data.time_left} dni`;
-                    timeLeftElement.style.display = 'block'; 
-
-                    // Oblicz procentowy postęp
-                    const percentage = ((data.time_to_unlock - data.time_left) / data.time_to_unlock) * 100;
-                    progressBar.style.width = `${percentage}%`;
-                } else {
-                    timeLeftElement.style.display = 'none'; 
-                }
+                // Aktualizuj pasek postępu
+                const percentage = data.percentage;
+                progressBar.style.width = `${percentage}%`;
             }
         })
         .catch(error => console.error('Error updating countdown:', error));

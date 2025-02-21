@@ -64,7 +64,6 @@ class Technology(models.Model):
     resource_3 = models.ForeignKey(Resources, related_name='resources_to_unlock_3', blank=True, on_delete=models.CASCADE)
     quantity_3 = models.IntegerField(null=True, blank=True)
     time_to_unlock = models.IntegerField(null=True, blank=True)
-    vailable = models.BooleanField(default=False)
     type = models.CharField(max_length=20 ,choices=TechnologyTypeChoices, null=True, blank=True)
     
     
