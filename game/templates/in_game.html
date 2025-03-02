@@ -8,7 +8,7 @@
     {% endif %}
 
     <!-- Górna lewa sekcja: Kraj, Era, czas -->
- <div class="top-left">   
+    <div class="top-left">   
         <div id="game-container" data-url="{% url 'update_game_day' game.pk %}">
             <div class="era-info">
                 <h3 class="era-name-in-game">{{ game.age.name }}</h3>
@@ -21,28 +21,28 @@
                 </div>
                 <div class="current-date">
                     <strong>Aktualna data:</strong> <span id="current-date">{{ time }}</span>
-                </div>
-                
-                </div>
-            
-        </div>
-    </div>
-    <div id="time-left-container">
+                </div>   
+            </div>
+        </div> 
+    </div> 
 
-        <span id="time-left" >Pozostaly czas: {{time_left}}</span>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{time_left}}</div>
-        </div>
- 
-
-    
-    <div id="time-left-container" style="display: none;">
-        <span id="time-left"></span>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
+    <div class="time-left-container">
+        {% if technology_unlock %}
+            <h3 class="name_unlock">{{ technology_unlock.name }}</h3>
+            <div id="time-left-technology">
+                <span id="time-left" data-tech-id="{{ tech.pk }}">
+                    Pozostałe dni: {{ technology_unlock.time_to_unlock  }}
+                </span>
+                <div class="progress-container">
+                    <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                        {{ remaining_days }}
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="progress" style="display: none;">
+        {% endif %}
     </div>
-    
     
 
     <!-- Górna środkowa sekcja: Populacja -->
@@ -51,7 +51,7 @@
             <img src="{% static 'images/Screenshot from 2024-10-25 17-47-57.png' %}" title="Populacja" alt="Populacja" class="icon">
             {{ game.country.population }} osób
         </span>
-    </div>
+    </div> <!-- Zamknięcie top-center -->
 
     <!-- Górna prawa sekcja: Plecak i Złoto z możliwością ukrycia -->
     <div class="top-right">
@@ -85,8 +85,7 @@
                 {% endfor %}
             </ul>
         </div>
-    </div>
-
+    </div> 
     <!-- Lewa sekcja: Technologia -->
     <div class="left-center">
     <div class="left-center-button"  >

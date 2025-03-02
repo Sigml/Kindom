@@ -1226,3 +1226,47 @@ a:hover {
     display: block;
     margin: 0 auto; 
 }
+/* 
+.time-left-container {
+
+    top: 200px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5); 
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px; 
+}
+
+.time-left {
+    font-size: 1.2em; 
+    color: #fff; 
+    margin: 0; 
+}
+
+.name_unlock {
+    font-size: 1.2em; 
+    color: #007c15; 
+    margin: 0; 
+}
+
+.time-left-technology{
+    font-size: 1.2em; 
+    color: #fff; 
+    margin: 0; 
+}
+
+
+.progress-container {
+    background-color: rgba(0, 102, 255, 0.5);
+    border-radius: 5px; 
+    height: 12px; 
+    overflow: hidden;
+    margin: 15px 0; 
+}
+
+.progress-bar {
+    background-color: #4CAF50; 
+    height: 100%; 
+    transition: width 0.3s;
+} */

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
 from django.views.generic.edit import DeleteView
 from datetime import timedelta, date, datetime
@@ -131,7 +131,7 @@ class DeleteGameDeleteView(DeleteView):
     
     
 class InGameView(View):
-    def get(self, request, pk):
+    def get(self, request, pk,):
         game = get_object_or_404(
             NewWorld.objects.prefetch_related('country', 'age', 'resources', 'ecology', 'technologies'),
             user=request.user, pk=pk
@@ -141,7 +141,7 @@ class InGameView(View):
             new_world=game,  
         )
         technology = NewWorldTechology.objects.filter(new_world=game, technology__age=game.age).select_related('technology')
-
+        
         resources = game.resources.all()
         resources_dict = {res.resource.image.url: res.quantity for res in backpack}
         ecology = game.ecology.first() if game.ecology.exists() else None
@@ -200,6 +200,19 @@ class InGameView(View):
 
             tech.sufficient_resources = sufficient_resources
             
+        
+        
+        technology_pk = request.GET.get('technology_pk')
+        technology_unlock = Technology.objects.filter(pk=technology_pk).first() if technology_pk else None
+        
+        if technology_unlock:
+            end_date = game.time.date() + timedelta(days=technology_unlock.time_to_unlock)
+            remaining_time = technology_unlock.time_to_unlock - game.time.date()
+            remaining_days = remaining_time.days if remaining_time.days > 0 else 0
+            technology_unlock.remaining_time = remaining_days 
+            technology_unlock.variable = True if remaining_days == 0 else technology_unlock.variable
+            technology_unlock.save()
+            
         context = {
             'game': game,
             'game_id': game.pk, 
@@ -210,10 +223,30 @@ class InGameView(View):
             'backpack_resources': backpack,
             'ecology': ecology, 
             'ecology_bars': ecology_bars,
-            'technologies':technology
+            'technologies': technology,
+            'time_to_unlock': int(technology_pk) if technology_pk else None,
+            'technology_unlock': technology_unlock
         }
 
         return render(request, 'in_game.html', context)
+    
+def update_game_day(request, pk):
+    game = get_object_or_404(NewWorld, pk=pk)
+    game.time += timedelta(days=1)
+    
+    current_date = game.time.date()
+    start_date = game.age.start_of_era
+    end_date = game.age.end_of_era
+    
+    total_duration = (end_date - start_date).days
+    elapsed_duration = (current_date - start_date).days
+    percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
+   
+    game.save()
+    
+    new_time = game.time.strftime('%d-%m-%Y')  
+    
+    return JsonResponse({"new_time": new_time,  "percentage": percentage})
     
     
 def unlock_technology(request, pk, technology_pk):
@@ -247,26 +280,6 @@ def unlock_technology(request, pk, technology_pk):
         new_world = game,
         technology = technology_to_unlock,
         )
-    new_world_technology.variable = True
     new_world_technology.save()
 
-    return redirect('in_game', pk=pk)
-  
-
-def update_game_day(request, pk):
-    game = get_object_or_404(NewWorld, pk=pk)
-    game.time += timedelta(days=1)
-    
-    current_date = game.time.date()
-    start_date = game.age.start_of_era
-    end_date = game.age.end_of_era
-    
-    total_duration = (end_date - start_date).days
-    elapsed_duration = (current_date - start_date).days
-    percentage = (elapsed_duration/total_duration) * 100  if total_duration > 0 else 0
-   
-    game.save()
-    
-    new_time = game.time.strftime('%d-%m-%Y')  
-    
-    return JsonResponse({"new_time": new_time,  "percentage": percentage})
+    return redirect(f'/game/in_game/{pk}/?technology_pk={technology_pk}')
