@@ -239,30 +239,6 @@ document.querySelectorAll('.tech-badge').forEach(function (img) {
 });
 
 
-// setInterval(function() {
-//     fetch(document.getElementById('game-container').dataset.url)  
-//         .then(response => {
-//             if (response.ok) {
-//                 return response.json();
-//             } else {
-//                 console.error('Error:', response.statusText);
-//                 return null;
-//             }
-//         })
-//         .then(data => {
-//             if (data) {
-//                 const currentDateElement = document.getElementById('current-date');
-//                 const progressBar = document.querySelector('.progress-bar');
-                
-//                 currentDateElement.textContent = data.new_time;
-                
-//                 const percentage = data.percentage;
-//                 progressBar.style.width = `${percentage}%`;
-//             }
-//         })
-//         .catch(error => console.error('Error updating countdown:', error));
-// }, 15000);
-
 
 setInterval(function() {
     fetch(document.getElementById('game-container').dataset.url)  
@@ -291,33 +267,33 @@ setInterval(function() {
 }, 15000); 
 
 
-function updateRemainingTime() {
-    const technologyPk = "{{ technology_unlock.pk }}";  
-    const gameId = "{{ game.pk }}"; 
+setInterval(updateRemainingTime, 15000);
 
-    const timeToUnlock = parseInt(document.getElementById('technology-time-to-unlock').getAttribute('data-time-to-unlock'), 10);
 
-    fetch(`/game/in_game/${gameId}/?technology_pk=${technologyPk}`, {
-        method: 'GET', 
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'ongoing') {
-            document.getElementById('time-left').textContent = "Pozostałe dni: " + data.remaining_days;
+const endDate = new Date("{{ end_date }}").getTime();
+const progressBar = document.querySelector('.progress-bar');
+const countdownTime = document.getElementById("time-left-technology");
 
-            // Obliczamy procent postępu
-            const progress = (data.remaining_days / timeToUnlock) * 100;
-            document.querySelector('.progress-bar').style.width = progress + '%';
-        } else {
-            document.getElementById('time-left-container').style.display = 'none';
-        }
-    })
-    .catch(error => {
-        console.error('Błąd podczas aktualizacji czasu:', error);
-    });
+function updateCountdownTimer() {
+    const now = new Date().getTime();
+    const distance = endDate - now;
+
+    if (distance <= 0) {
+        clearInterval(countdownInterval);
+        countdownTime.textContent = "Technologia odblokowana!";
+        progressBar.style.width = "100%"; 
+    } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownTime.textContent = `Pozostały czas: ${days} dni ${hours} godzin ${minutes} minut ${seconds} sekund`;
+
+        const progress = ((endDate - now) / (endDate - new Date("{{ current_time }}").getTime())) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
 }
 
-setInterval(updateRemainingTime, 15000);
+
+const countdownInterval = setInterval(updateCountdownTimer, 15000);

@@ -26,18 +26,21 @@
         </div> 
     </div> 
     {% if technology_unlock %}
-    <div class="time-left-container" data-url="{% url 'update_technology_time' game.pk technology_unlock.pk %}">
+    <div class="time-right-container">
         <h3 class="name_unlock">{{ technology_unlock.name }}</h3>
         <div id="time-left-technology">
             <span id="time-left" data-tech-id="{{ technology_unlock.pk }}">
-                Pozostałe dni: {{ remaining_days }}
             </span>
             <div class="progress-container">
                 <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                    {{ remaining_days }}
+                    Pozostaly czas: <span id="time-left-technology">{{ technology_unlock.time_to_unlock }}</span>
                 </div>
             </div>
         </div>
+    </div>
+    {% else %}
+    <div class="no-technology-container">
+        <p>Brak technologii do odblokowania.</p>
     </div>
     {% endif %}
 
