@@ -152,6 +152,16 @@ class InGameView(View):
         resources_dict = {res.resource.image.url: res.quantity for res in backpack}
         ecology = game.ecology.first() if game.ecology.exists() else None
         
+        technology_pk = request.GET.get('technology_pk')
+        if technology_pk:
+            technology_unlock = Technology.objects.filter(pk=technology_pk).first()
+        elif technology_unlock := NewWorldTechology.objects.filter(new_world=game, unlocking_technology=True).first():
+            print(f'technology_unlock {technology_unlock}')
+            end_date = technology_unlock.time_to_unlock if technology_unlock else None
+        else:
+            technology_unlock = None
+            end_date = None
+        
         
         if ecology:
             ecology_bars = {
@@ -206,12 +216,8 @@ class InGameView(View):
 
             tech.sufficient_resources = sufficient_resources
             
-        technology_unlock = None 
-        for tech_entry in technology:
-            tech = tech_entry.technology
-            if tech.vailable: 
-                technology_unlock = tech
-                break 
+
+        
 
         context = {
             'game': game,
@@ -225,7 +231,7 @@ class InGameView(View):
             'ecology_bars': ecology_bars,
             'technologies': technology,
             'technology_unlock': technology_unlock,
-            'end_date': game.time.date() + timedelta(days=technology_unlock.time_to_unlock) if technology_unlock else None,
+            # 'end_date': end_date,
         }
 
         return render(request, 'in_game.html', context)
@@ -284,9 +290,11 @@ def unlock_technology(request, pk, technology_pk):
     new_world_technology, created= NewWorldTechology.objects.get_or_create(
         new_world = game,
         technology = technology_to_unlock,
+        
         )
     
     new_world_technology.time_to_unlock = game.time.date() + timedelta(days=technology_to_unlock.time_to_unlock)
+    new_world_technology.unlocking_technology = True
     new_world_technology.save()
     return redirect(f'/game/update_technology_time/{pk}/?technology_pk={technology_pk}')
 
@@ -332,5 +340,6 @@ def update_technology_time(request, pk):
         thread.daemon = True  
         thread.start()
         
+        return redirect(reverse('in_game', kwargs={'pk': pk}) + f'?technology_pk={technology_pk}')
         
     return redirect('in_game', pk=pk)

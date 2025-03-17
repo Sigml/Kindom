@@ -26,8 +26,10 @@
         </div> 
     </div> 
     {% if technology_unlock %}
-    <div class="time-right-container">
-        <h3 class="name_unlock">{{ technology_unlock.name }}</h3>
+    <div class="time-right-container" 
+     {% comment %} data-url="{% url 'update_technology_time' game.pk %} {% endcomment %}
+     >
+        <h3 class="name_unlock">{{ technology_unlock.technology.name }}</h3>
         <div id="time-left-technology">
             <span id="time-left" data-tech-id="{{ technology_unlock.pk }}">
             </span>

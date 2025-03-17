@@ -25,7 +25,7 @@ class NewWorld(models.Model):
     technologies = models.ManyToManyField(Technology, related_name='NewWorldTechnology', blank=True)
     events = models.ManyToManyField(Event, related_name='worlds', blank=True)
     social_development = models.OneToOneField(SocialDevelopment, on_delete=models.CASCADE, related_name='worlds', null=True, blank=True)
-
+   
     def __str__(self):
         return f"{self.user.username} - {self.country.name} - {self.age.name}"
 
@@ -62,6 +62,9 @@ class NewWorldTechology(models.Model):
     new_world = models.ForeignKey(NewWorld, on_delete=models.CASCADE)
     technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     variable = models.BooleanField(default=False)
+    unlocking_technology =  models.BooleanField(default=False)
+    time_to_unlock = models.DateField(null=True, blank=True)
+
 
     def __str__(self):
         return f"{self.technology.name} dla {self.new_world.country.name}"
