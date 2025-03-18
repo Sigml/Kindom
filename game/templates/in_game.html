@@ -29,13 +29,27 @@
     <div class="time-right-container" 
      {% comment %} data-url="{% url 'update_technology_time' game.pk %} {% endcomment %}
      >
-        <h3 class="name_unlock">{{ technology_unlock.technology.name }}</h3>
+        <h3 class="name_unlock">
+           {% if technology_unlock.technology.name %}
+        {{ technology_unlock.technology.name }}
+        {% else %}
+            {{ technology_unlock.name }}
+        {% endif %}
+
         <div id="time-left-technology">
             <span id="time-left" data-tech-id="{{ technology_unlock.pk }}">
             </span>
             <div class="progress-container">
                 <div class="progress-bar" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                    Pozostaly czas: <span id="time-left-technology">{{ technology_unlock.time_to_unlock }}</span>
+                    <span id="time-left-technology" data-tech-id="{{ technology_unlock.pk }}" data-game-id="{{ game.pk }}">
+                    {{ remaining_time }} dni
+                </span>
+                    {% comment %} {% if technology_unlock.technology.time_to_unlock %}
+                    {{ technology_unlock.technology.time_to_unlock }} 
+                    {% else %}
+                    {{ technology_unlock.time_to_unlock }} dni
+                    {% endif %} {% endcomment %}
+                     </span>
                 </div>
             </div>
         </div>

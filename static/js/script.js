@@ -270,30 +270,25 @@ setInterval(function() {
 setInterval(updateRemainingTime, 15000);
 
 
-const endDate = new Date("{{ end_date }}").getTime();
-const progressBar = document.querySelector('.progress-bar');
-const countdownTime = document.getElementById("time-left-technology");
+function updateTechnologyTime() {
+    const timeLeftElement = document.getElementById("time-left-technology");
+    if (!timeLeftElement) return; // Jeśli nie ma elementu, przerywamy
 
-function updateCountdownTimer() {
-    const now = new Date().getTime();
-    const distance = endDate - now;
+    const techId = timeLeftElement.getAttribute("data-tech-id");
+    const gameId = timeLeftElement.getAttribute("data-game-id");
 
-    if (distance <= 0) {
-        clearInterval(countdownInterval);
-        countdownTime.textContent = "Technologia odblokowana!";
-        progressBar.style.width = "100%"; 
-    } else {
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    if (!techId || !gameId) return; // Jeśli brakuje ID, przerywamy
 
-        countdownTime.textContent = `Pozostały czas: ${days} dni ${hours} godzin ${minutes} minut ${seconds} sekund`;
-
-        const progress = ((endDate - now) / (endDate - new Date("{{ current_time }}").getTime())) * 100;
-        progressBar.style.width = `${progress}%`;
-    }
+    fetch(`/game/update_technology_time/${gameId}/${techId}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.remaining_time !== undefined) {
+                timeLeftElement.textContent = `${data.remaining_time} dni`;
+            }
+        })
+        .catch(error => console.error("Błąd pobierania danych:", error));
 }
 
+setInterval(updateTechnologyTime, 15000);
 
-const countdownInterval = setInterval(updateCountdownTimer, 15000);
+updateTechnologyTime();
