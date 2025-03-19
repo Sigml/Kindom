@@ -267,28 +267,39 @@ setInterval(function() {
 }, 15000); 
 
 
-setInterval(updateRemainingTime, 15000);
+
+document.addEventListener("DOMContentLoaded", function () {
+    const timeLeftSpan = document.getElementById("time-left");
+    const currentDateElement = document.getElementById("current-date");
+    const nameUnlock = document.querySelector(".name_unlock");
+
+    if (timeLeftSpan) {
+        let daysLeft = parseInt(timeLeftSpan.dataset.timeLeft, 10);
+
+        function updateDaysLeft() {
+            if (daysLeft > 0) {
+                daysLeft -= 1;
+                timeLeftSpan.textContent = `${daysLeft+1} dni`;
+           
+
+                const progressBar = document.querySelector(".progress-bar-technology");
+                if (progressBar) {
+                    const totalDays = parseInt(timeLeftSpan.dataset.timeLeft, 10);
+                    const percentage = (daysLeft / totalDays) * 100;
+                    progressBar.style.width = `${percentage}%`;
+                }
 
 
-function updateTechnologyTime() {
-    const timeLeftElement = document.getElementById("time-left-technology");
-    if (!timeLeftElement) return; // Jeśli nie ma elementu, przerywamy
-
-    const techId = timeLeftElement.getAttribute("data-tech-id");
-    const gameId = timeLeftElement.getAttribute("data-game-id");
-
-    if (!techId || !gameId) return; // Jeśli brakuje ID, przerywamy
-
-    fetch(`/game/update_technology_time/${gameId}/${techId}/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.remaining_time !== undefined) {
-                timeLeftElement.textContent = `${data.remaining_time} dni`;
+                timeLeftSpan.dataset.timeLeft = daysLeft;
+            } else {
+                timeLeftSpan.textContent = "Technologia odblokowana!";
+                clearInterval(timer); 
             }
-        })
-        .catch(error => console.error("Błąd pobierania danych:", error));
-}
+        }
 
-setInterval(updateTechnologyTime, 15000);
+        // Uruchamiamy odliczanie co 15 sekund
+        const timer = setInterval(updateDaysLeft, 15000);
+        updateDaysLeft(); // Pierwsze wywołanie natychmiast po załadowaniu strony
+    }
 
-updateTechnologyTime();
+});

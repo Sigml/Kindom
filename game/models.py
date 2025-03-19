@@ -64,6 +64,7 @@ class NewWorldTechology(models.Model):
     variable = models.BooleanField(default=False)
     unlocking_technology =  models.BooleanField(default=False)
     time_to_unlock = models.DateField(null=True, blank=True)
+    remaining_days = models.IntegerField(default=0)
 
 
     def __str__(self):
