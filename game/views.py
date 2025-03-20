@@ -152,19 +152,28 @@ class InGameView(View):
         resources_dict = {res.resource.image.url: res.quantity for res in backpack}
         ecology = game.ecology.first() if game.ecology.exists() else None
         
+        
         technology_pk = request.GET.get('technology_pk')
         if technology_pk:
             technology_unlock = NewWorldTechology.objects.filter(pk=technology_pk).first()
-        elif technology_unlock := NewWorldTechology.objects.filter(new_world=game, unlocking_technology=True).first():
-            print(f'technology_unlock {technology_unlock}')
-        else:
-            technology_unlock = None
             
-        remaining_time = None
-        if technology_unlock and technology_unlock.technology:
-            end_date = game.time.date() + timedelta(days=technology_unlock.technology.time_to_unlock)
-            remaining_time = (end_date - game.time.date()).days
-        
+            if technology_unlock or (technology_unlock := NewWorldTechology.objects.filter(new_world=game, unlocking_technology=True).first()):
+                thread = threading.Thread(target=check_time_background, args=(pk, technology_pk))
+                thread.daemon = True
+                thread.start()
+                print(f'Uruchamiam wątek 1 dla technologii: {technology_unlock}')
+            else:
+                print("Brak technologii do odblokowania lub nie ma technologii w trakcie odblokowywania.")
+                
+        elif technology_unlock := NewWorldTechology.objects.filter(new_world=game, unlocking_technology=True).first():
+            thread = threading.Thread(target=check_time_background, args=(pk, technology_pk))
+            thread.daemon = True
+            thread.start()
+            print(f'Uruchamiam wątek 2 dla technologii: {technology_unlock}')
+            
+        else:
+            
+            print("Nie przekazano technologii do odblokowania.")
         
         if ecology:
             ecology_bars = {
@@ -301,40 +310,6 @@ def unlock_technology(request, pk, technology_pk):
     new_world_technology.save()
     return redirect(f'/game/update_technology_time/{pk}/?technology_pk={technology_pk}')
 
-
-# def check_time_background(game_pk, technology_pk=None):
-#     game = NewWorld.objects.get(pk=game_pk)
-#     technology_unlock = Technology.objects.filter(pk=technology_pk).first()
-
-#     if technology_unlock:
-#         end_date = game.time.date() + timedelta(days=technology_unlock.time_to_unlock)
-#         print(f"End Date: {end_date}, Current Time: {game.time.date()}")
-        
-#         while True:
-#             time.sleep(15)  
-#             game.refresh_from_db() 
-#             new_world_technology = NewWorldTechology.objects.filter(new_world=game, technology_id=technology_pk).first()
-                
-#             if new_world_technology:
-#                 if end_date <= game.time.date():
-#                     new_world_technology.variable = True
-#                     new_world_technology.unlocking_technology = False
-#                     new_world_technology.save()
-#                     print(f"Technologia {new_world_technology.technology.name} została odblokowana.")
-#                     print(f"Technologia ustawiona na {new_world_technology.unlocking_technology }")
-#                     break  
-#             else:
-#                 new_world_technology = NewWorldTechology.objects.filter(new_world=game, technology_id=technology_pk).first()
-#                 remaining_time = new_world_technology.technology.time_to_unlock
-#                 if remaining_time > 0:
-#                     remaining_time -= 1
-#                     remaining_time
-#                     new_world_technology.remaining_days = remaining_time
-#                     new_world_technology.save()
-#                     print(f"Zostalo dni  {new_world_technology.remaining_days} zapisuje")
-#                 print(f"End date: {end_date}, Current time: {game.time.date()}. Technologia nie jest jeszcze odblokowana.")
-#                 print(f"czas na odblokowywanie {new_world_technology.technology.time_to_unlock } ")
-#                 print(f"pozostaly czas {remaining_time } ")
                 
 def check_time_background(game_pk, technology_pk=None):
     game = NewWorld.objects.get(pk=game_pk)
@@ -345,15 +320,14 @@ def check_time_background(game_pk, technology_pk=None):
         print(f"End Date: {end_date}, Current Time: {game.time.date()}")
 
         while True:
-            time.sleep(15)  # Wstrzymanie na 15 sekund, aby symulować upływ czasu.
-            game.refresh_from_db()  # Odświeżenie stanu gry w bazie danych.
+            time.sleep(15) 
+            game.refresh_from_db()  
             
             new_world_technology = NewWorldTechology.objects.filter(new_world=game, technology_id=technology_pk).first()
                 
             if new_world_technology:
-                # Obliczamy pozostały czas (days) jako różnicę pomiędzy end_date a bieżącą datą
                 if end_date > game.time.date():
-                    remaining_days = (end_date - game.time.date()).days  # Obliczanie pozostałych dni
+                    remaining_days = (end_date - game.time.date()).days  
 
                     if remaining_days > 0:
                         new_world_technology.remaining_days = remaining_days
@@ -364,7 +338,6 @@ def check_time_background(game_pk, technology_pk=None):
                     print(f"czas na odblokowywanie: {new_world_technology.technology.time_to_unlock}")
                     print(f"pozostaly czas: {remaining_days}")
                 else:
-                    # Odblokowanie technologii, jeśli czas minął
                     new_world_technology.variable = True
                     new_world_technology.unlocking_technology = False
                     new_world_technology.save()
@@ -381,10 +354,11 @@ def update_technology_time(request, pk):
 
     if technology_unlock:
         end_date = game.time.date() + timedelta(days=technology_unlock.time_to_unlock)
+        remaining_days = technology_unlock.time_to_unlock
         if update_technology_time.remaining_days > 0:
             remaining_time = update_technology_time.remaining_days
         else:
-            remaining_time = technology_unlock.time_to_unlock
+            remaining_time = update_technology_time.remaining_days
         print(f"End Date: {end_date}, Current Time: {game.time.date()}")
         
         technology_data = {
@@ -396,8 +370,9 @@ def update_technology_time(request, pk):
         thread = threading.Thread(target=check_time_background, args=(pk, technology_pk))
         thread.daemon = True  
         thread.start()
+        print(f'uruchamiam {thread}')
         
-        # return JsonResponse({"technology_unlock": technology_data, })
+
         return redirect('in_game', pk=pk)
 
         

@@ -280,7 +280,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (daysLeft > 0) {
                 daysLeft -= 1;
                 timeLeftSpan.textContent = `${daysLeft+1} dni`;
-           
 
                 const progressBar = document.querySelector(".progress-bar-technology");
                 if (progressBar) {
@@ -289,17 +288,14 @@ document.addEventListener("DOMContentLoaded", function () {
                     progressBar.style.width = `${percentage}%`;
                 }
 
-
                 timeLeftSpan.dataset.timeLeft = daysLeft;
             } else {
-                timeLeftSpan.textContent = "Technologia odblokowana!";
+                timeLeftSpan.style.display = "none";
                 clearInterval(timer); 
             }
         }
 
-        // Uruchamiamy odliczanie co 15 sekund
         const timer = setInterval(updateDaysLeft, 15000);
-        updateDaysLeft(); // Pierwsze wywołanie natychmiast po załadowaniu strony
+        updateDaysLeft(); 
     }
-
 });
